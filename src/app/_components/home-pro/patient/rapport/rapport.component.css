@@ -1,0 +1,7 @@
+table {
+  width: 90%;
+  margin:5%;
+  background-color: white;
+}
+.mat-stroked-button{border:5px solid black; width: 100%; margin-top: 2em; margin-left: 2em}
+

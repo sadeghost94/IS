@@ -1,0 +1,23 @@
+.example-card {
+  width: 100%;
+}
+button {
+  padding: 0 6px 0 6px;
+  margin-bottom: 1em;
+  margin-top: 1em;
+  border: #323232;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration:none;
+  border: none;
+  outline: none;
+}
+.mat-stroked-button{border:5px solid black; width: 100%; margin-top: 2em; margin-left: 2em}
+
+.example-header-image {
+  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR2pKfz6MeqrIgC0FDDhcn6pnFoxf3nF1iqjgv1XmWlUEXeoDy3');
+  background-size: cover;
+}
+

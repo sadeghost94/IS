@@ -1,0 +1,206 @@
+<div class="container" >
+  <mat-card style=" color : white; background : #323232;">  PODOMETRE
+
+    <h5>(les informations sont afficher par visite)</h5>
+  </mat-card>
+  <mat-form-field appearance="fill" style="height: 1em;  margin-left: 40%">
+    <mat-label style="">Afficher : </mat-label>
+    <select #afficher_par style="color: black" matInput matNativeControl [(ngModel)]="afficher" >
+      <option>
+        Derniere visite : 19/02/2020
+      </option>
+      <option>
+        visite : 12/12/2019
+      </option>
+      <option>
+        visite : 15/11/2019
+      </option>
+      <option>
+        visite : 19/09/2019
+      </option>
+      <option>
+        Global
+      </option>
+    </select>
+  </mat-form-field>
+  <mat-card style="color : #323232;">Statistiques descriptives:</mat-card>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <!-- Max Column -->
+    <ng-container matColumnDef="max">
+      <th mat-header-cell *matHeaderCellDef> Max </th>
+      <td mat-cell *matCellDef="let element"> {{element.max}} </td>
+    </ng-container>
+
+    <!-- Min Column -->
+    <ng-container matColumnDef="min">
+      <th mat-header-cell *matHeaderCellDef> Min </th>
+      <td mat-cell *matCellDef="let element"> {{element.min}} </td>
+    </ng-container>
+
+    <!-- Average Column -->
+    <ng-container matColumnDef="average">
+      <th mat-header-cell *matHeaderCellDef> Average </th>
+      <td mat-cell *matCellDef="let element"> {{element.average}} </td>
+    </ng-container>
+
+    <!-- Median Column -->
+    <ng-container matColumnDef="median">
+      <th mat-header-cell *matHeaderCellDef> Median </th>
+      <td mat-cell *matCellDef="let element"> {{element.median}} </td>
+    </ng-container>
+
+    <!-- Variance Column -->
+    <ng-container matColumnDef="variance">
+      <th mat-header-cell *matHeaderCellDef> Variance </th>
+      <td mat-cell *matCellDef="let element"> {{element.variance}} </td>
+    </ng-container>
+
+    <!-- SD Column -->
+    <ng-container matColumnDef="sd">
+      <th mat-header-cell *matHeaderCellDef> SD </th>
+      <td mat-cell *matCellDef="let element"> {{element.sd}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr class="active" mat-row *matRowDef="let row; columns: displayedColumns;"
+        class="example-element-row"></tr>
+  </table>
+
+  <mat-divider></mat-divider>
+  <mat-card style="color : #323232;">Graphes :</mat-card>
+
+  <mat-tab-group mat-align-tabs="center"  >
+
+    <mat-tab label="Minutes">
+      <div class="col-sm-4 text-center" >
+        <h2 class="text-center">Minutes</h2>
+      </div>
+      <div class="chart" style="margin-top:2em" *ngIf="pieChartLabels?.length > 0">
+        <div style="display: block;">
+          <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"></canvas>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Steps">
+      <div class="col-sm-4 text-center">
+        <h2 class="text-center">Steps</h2>
+      </div>
+      <div class="chart" style="margin-top:2em" *ngIf="barChartData?.length > 0">
+        <div style="display: block;">
+          <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"></canvas>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Distance">
+      <div class="col-sm-4 text-center">
+        <h2 class="text-center">Distance</h2>
+      </div>
+      <div class="chart" style="margin-top:2em" *ngIf="barChartData?.length > 0">
+        <div style="display: block;">
+          <canvas baseChart [data]="barChartType" [labels]="barChartLabels" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"></canvas>
+        </div>
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+
+
+  <mat-expansion-panel style="  width:100%; margin-top: 5em;">
+    <mat-expansion-panel-header style="color: white; font-weight: bold; background : #323232; height: 5em;">
+      <mat-panel-title style="color: white; margin-top: 1em">
+        Données anthropométriques
+      </mat-panel-title>
+      <h6 style="color: white; ">(les courbes ici sont affichees d une maniere globale depuis la prepiere visites)</h6>
+    </mat-expansion-panel-header>
+    <mat-tab-group mat-align-tabs="center"  >
+      <mat-card style="color : #323232;">Graphes :</mat-card>
+
+      <mat-tab label="Poids">
+        <div class="col-sm-4 text-center" >
+          <h2 class="text-center">Poids</h2>
+        </div>
+        <div class="chart" style="margin-top:2em" *ngIf="pieChartLabels?.length > 0">
+          <div style="display: block;">
+            <canvas baseChart  baseChart
+                    [datasets]="lineChartData"
+                    [labels]="lineChartLabels"
+                    [options]="lineChartOptions"
+                    [colors]="lineChartColors"
+                    [legend]="lineChartLegend"
+                    [chartType]="lineChartType"
+                    [plugins]="lineChartPlugins">(chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Tour de taille">
+        <div class="col-sm-4 text-center">
+          <h2 class="text-center">Tour de taille</h2>
+        </div>
+        <div class="chart" style="margin-top:2em" *ngIf="barChartData?.length > 0">
+          <div style="display: block;">
+            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+      </mat-tab>
+
+
+
+    </mat-tab-group>
+
+  </mat-expansion-panel>
+  <mat-divider></mat-divider>
+  <mat-expansion-panel style="  width:100%; margin-top: 5em;">
+    <mat-expansion-panel-header style="color: white;  background : #323232; height: 5em;">
+      <mat-panel-title style="color: white; margin-top: 1em">
+        Fréquence cardiaque (repos)
+      </mat-panel-title>
+      <h6 style="color: white; ">(les courbes ici sont affichees d une maniere globale depuis la premiere visites)</h6>
+      <br>
+    </mat-expansion-panel-header>
+    <mat-tab-group mat-align-tabs="center"  >
+      <mat-card style="color : #323232;">Graphes :</mat-card>
+
+      <mat-tab label="FC (repos)">
+        <div class="col-sm-4 text-center" >
+          <h2 class="text-center"> batt. / par minute</h2>
+        </div>
+        <div class="chart" style="margin-top:2em" *ngIf="pieChartLabels?.length > 0">
+          <div style="display: block;">
+            <canvas baseChart  baseChart
+                    [datasets]="lineChartData_fcrepos"
+                    [labels]="lineChartLabels"
+                    [options]="lineChartOptions"
+                    [colors]="lineChartColors"
+                    [legend]="lineChartLegend"
+                    [chartType]="lineChartType"
+                    [plugins]="lineChartPlugins">(chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+      </mat-tab>
+
+
+
+    </mat-tab-group>
+
+  </mat-expansion-panel>
+
+
+
+</div>
