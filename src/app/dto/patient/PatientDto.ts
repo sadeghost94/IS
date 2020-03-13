@@ -3,26 +3,40 @@ import {FamilyDoctorDto} from "./FamilyDoctorDto";
 import {PharmacyDto} from "./PharmacyDto";
 import {ProfessionalDto} from "./ProfessionalDto";
 import {MedicalFileDto} from "../medicalfile/MedicalFileDto";
+import {AppointmentDto} from "../AppointmentDto";
+import {QuestionnaireDto} from "../QuestionnaireDto";
 
 
 export class PatientDto {
 
-    id : string;
-    fileNumber : string;
-    firstName : string;
-    lastName : string;
-    birthday : string;
-    motherName : string;
-    contact : ContactDto;
-   familyDoctor : FamilyDoctorDto[];
-    pharmacy : PharmacyDto [];
-    professionals : ProfessionalDto[];
-   isActive : boolean;
-    medicalFileDto : MedicalFileDto;
-    loginCode : string
+  id: string;
+  fileNumber: string;
+  firstName: string;
+  lastName: string;
+  birthday: string;
+  motherName: string;
+  contact: ContactDto;
+  familyDoctor: FamilyDoctorDto[];
+  pharmacy: PharmacyDto [];
+  isActive: boolean;
+  questionnaireToken: string
+  questionnaireTokenExpirationDate : string
+  professionals: ProfessionalDto[];
+  medicalFileDto: MedicalFileDto;
+  loginCode: string
+  socioDemographicVariables : string
+  appointments : AppointmentDto[]
+  questionnaires : QuestionnaireDto[]
 
 
-  constructor(id: string, fileNumber: string, firstName: string, lastName: string, birthday: string, motherName: string, contact: ContactDto, familyDoctor: FamilyDoctorDto[], pharmacy: PharmacyDto[], professionals: ProfessionalDto[], isActive: boolean, medicalFileDto: MedicalFileDto, loginCode : string) {
+  constructor(id: string, fileNumber: string, firstName: string, lastName: string,
+              birthday: string, motherName: string, contact: ContactDto,
+              familyDoctor: FamilyDoctorDto[], pharmacy: PharmacyDto[],
+              professionals: ProfessionalDto[], isActive: boolean,
+              medicalFileDto: MedicalFileDto, loginCode: string,
+              questionnaireToken: string, socioDemographicVariables : string,
+              questionnaireTokenExpirationDate : string,questionnaires : QuestionnaireDto[],
+              appointments : AppointmentDto[]) {
     this.id = id;
     this.fileNumber = fileNumber;
     this.firstName = firstName;
@@ -36,5 +50,13 @@ export class PatientDto {
     this.isActive = isActive;
     this.medicalFileDto = medicalFileDto
     this.loginCode = loginCode
+    this.questionnaireToken = questionnaireToken
+    this.socioDemographicVariables = socioDemographicVariables
+    this.appointments = appointments
+    this.questionnaireTokenExpirationDate = questionnaireTokenExpirationDate
+    this.questionnaires = questionnaires
+
+
+
   }
 }

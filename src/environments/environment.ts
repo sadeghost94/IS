@@ -30,7 +30,11 @@ export const environment = {
   AUTH_DEVICE : "https://epod-zuul.herokuapp.com/api/v1/fitbit-service/device/authorization",
   LIST_DEVICE_AVAILABLE :"https://epod-zuul.herokuapp.com/api/v1/fitbit-service/device/all/available/institution",
   AFFECT_DEVICE :"https://epod-zuul.herokuapp.com/api/v1/fitbit-service/device/assign",
-  RECUP_DEVICE :"https://epod-zuul.herokuapp.com/api/v1/fitbit-service/device/back"
+  RECUP_DEVICE :"https://epod-zuul.herokuapp.com/api/v1/fitbit-service/device/back",
+  ADD_RDV :"https://epod-zuul.herokuapp.com/api/v1/patient-service/appointment",
+  LIST_RDV : "https://epod-zuul.herokuapp.com/api/v1/patient-service/appointment/all"
+
+
 
 
 

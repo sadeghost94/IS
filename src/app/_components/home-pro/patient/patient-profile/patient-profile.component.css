@@ -14,7 +14,7 @@ button {
   border: none;
   outline: none;
 }
-.mat-stroked-button{border:5px solid black; width: 100%; margin-top: 2em; margin-left: 2em}
+.mat-stroked-button{border:1px solid black;  margin-top: 2em; margin-left: 2em}
 
 .example-header-image {
   background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR2pKfz6MeqrIgC0FDDhcn6pnFoxf3nF1iqjgv1XmWlUEXeoDy3');

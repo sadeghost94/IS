@@ -68,6 +68,11 @@ import {HomeRoutingModule} from "./_components/home/home-routing.module";
 import {HomeProRoutingModule} from "./_components/home-pro/home-pro.routing.module";
 import {HomeSeaRoutingModule} from "./_components/homesea/homesea.routing.module";
 import {PagePatientRoutingModule} from "./_components/pagepatient/pagepatient.routing";
+import {LogiComponent} from "./_components/home-pro/patient/list-patients/appoint/logi.component";
+import {AddDialogComponent} from "./_components/dialogs/add/add.dialog.component";
+import {DeleteDialogComponent} from "./_components/dialogs/delete/delete.dialog.component";
+import {EditDialogComponent} from "./_components/dialogs/edit/edit.dialog.component";
+import {DetailsRecoComponent} from "./_components/home-pro/patient/recomandation/details-reco/details-reco.component";
 
 
 
@@ -108,7 +113,12 @@ import {PagePatientRoutingModule} from "./_components/pagepatient/pagepatient.ro
     BreqComponent,
     QuizComponent,
     CreaterdvComponent,
-    RdvComponent
+    RdvComponent,
+    LogiComponent,
+    AddDialogComponent,
+    DeleteDialogComponent,
+    EditDialogComponent
+
 
 
   ],
@@ -141,12 +151,14 @@ import {PagePatientRoutingModule} from "./_components/pagepatient/pagepatient.ro
     MatDialogModule,
     RouterModule,
 
+
     OAuthModule.forRoot(),
 
     SchedulerModule
   ],
 //{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   providers: [],
+  entryComponents: [AddDialogComponent, DetailsRecoComponent, DeleteDialogComponent, EditDialogComponent],
   exports: [],
   bootstrap: [AppComponent]
 })

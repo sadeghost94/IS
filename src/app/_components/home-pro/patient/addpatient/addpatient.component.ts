@@ -84,7 +84,8 @@ export class AddpatientComponent implements OnInit {
       let data = new PatientDto(null,null,firstName,lastName,birth,motherName,
         new ContactDto(null,phone,email,null),
         familyDoctor , pharmacy,pro
-        ,true,null,null);
+        ,true,null,null, null,
+        null,null,null,null);
       let request = new Request(data);
       console.log(request)
 

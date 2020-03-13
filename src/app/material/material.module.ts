@@ -29,6 +29,7 @@ import {
   MatDialogModule,
   MatSnackBarModule,
   MatSortModule,
+  MatSliderModule
 
 
 
@@ -67,6 +68,7 @@ const MaterialComponents = [
   MatDialogModule,
   MatSnackBarModule,
   MatSortModule,
+  MatSliderModule
 
 
 

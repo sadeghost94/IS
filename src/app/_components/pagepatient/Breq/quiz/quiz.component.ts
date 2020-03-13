@@ -4,6 +4,11 @@ import {QuizService} from '../services/quiz.service';
 import {HelperService} from '../services/helper.service';
 import {Option, Question, Quiz, QuizConfig} from '../models';
 import {Reponse} from '../models/reponse';
+import *  as  data from '../data/breq.json';
+import {Observable} from "rxjs";
+import {HttpClient} from "@angular/common/http";
+
+
 
 @Component({
   selector: 'app-quiz',
@@ -13,6 +18,7 @@ import {Reponse} from '../models/reponse';
 })
 export class QuizComponent implements OnInit {
   quizes: any[];
+   data  = require('../data/breq.json');
   regulations: any [];
   rep: Reponse[] = [];
   quiz: Quiz = new Quiz(null);
@@ -54,21 +60,22 @@ export class QuizComponent implements OnInit {
   ellapsedTime = '00:00';
   duration = '';
 
-  constructor(private quizService: QuizService) {
+  constructor(private quizService: QuizService, private http :HttpClient) {
+
   }
 
   ngOnInit() {
-
+    console.log(this.data)
 
    /* this.quizName = this.quizes[0].id;*/
-    console.log(this.quizName)
-    this.loadQuiz(this.quizName);
+   // console.log(this.quizName)
+    this.loadQuiz();
 
   }
 
-  loadQuiz(quizName: string) {
-    this.quizService.get('breq.json').subscribe(res => {
-      this.quiz = new Quiz(res);
+  loadQuiz() {
+   // this.quizService.get(this.quizName).subscribe(res => {
+      this.quiz = new Quiz(this.data);
       this.pager.count = this.quiz.questions.length;
       this.startTime = new Date();
       this.ellapsedTime = '00:00';
@@ -76,7 +83,7 @@ export class QuizComponent implements OnInit {
         this.tick();
       }, 1000);
       this.duration = this.parseTime(this.config.duration);
-    });
+    //});
     this.mode = 'quiz';
   }
 
@@ -104,7 +111,7 @@ export class QuizComponent implements OnInit {
   }
 
   onSelect(question: Question, option: Option) {
-    if (question.questionTypeId === 1) {
+    if (question.questionTypeId === 1 ) {
       question.options.forEach((x) => {
         if (x.id !== option.id) {
           x.selected = false;
@@ -132,7 +139,7 @@ export class QuizComponent implements OnInit {
     console.log(this.mode);
     this.quizes = this.quizService.getAll();
     this.quizName = this.quizes[0].id;
-    this.loadQuiz(this.quizName);
+    this.loadQuiz();
   }
 
   goTo(index: number) {

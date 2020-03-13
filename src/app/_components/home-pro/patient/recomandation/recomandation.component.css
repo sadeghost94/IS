@@ -5,3 +5,6 @@
   margin-top: 2em;
 
 }
+mat-chip {
+  cursor: pointer;
+}

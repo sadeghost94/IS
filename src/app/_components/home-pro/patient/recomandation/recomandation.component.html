@@ -1,27 +1,217 @@
+<mat-card-title>{{data.patient.firstName}}, {{data.patient.lastName}}</mat-card-title>
+<mat-card-subtitle>Numero de dossier : {{data.patient.fileNumber}}</mat-card-subtitle>
+<mat-card-subtitle>Date de derniere visite : 12/12/2019 </mat-card-subtitle>
+<mat-card-subtitle style="color: crimson">Date de la prochaine visite : 01/01/2020 </mat-card-subtitle>
+<mat-card-subtitle>Code compte patient : {{data.patient.loginCode}}</mat-card-subtitle>
+<mat-tab-group>
+
+<mat-tab label="Ajouter une nouvelle recommandation">
 <mat-form-field class="example-chip-list">
-  <mat-chip-list #chipList aria-label="Fruit selection">
+
+  <mat-chip-list #chipList aria-label="Action">
+
     <mat-chip
       *ngFor="let r of Reco"
+      (click)="chipDetails(r)"
       [selectable]="selectable"
       [removable]="removable"
       (removed)="remove(r)">
       {{r}}
       <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-      <mat-icon (click)="voir()" *ngIf="removable">note_add</mat-icon>
 
     </mat-chip>
     <input
-      placeholder="Nouvelle Recommandation..."
+      placeholder="Actions"
       #RecoInput
-      [formControl]="RecoCtrl"
-      [matAutocomplete]="auto"
+      [formControl]="RecoCtrlA"
+      [matAutocomplete]="auto1"
       [matChipInputFor]="chipList"
       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
       (matChipInputTokenEnd)="add($event)">
   </mat-chip-list>
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-    <mat-option *ngFor="let r of filteredReco | async" [value]="r">
+  <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="selected($event)">
+    <mat-option *ngFor="let r of filteredRecoActions| async" [value]="r">
       {{r}}
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>
+
+
+<mat-form-field class="example-chip-list">
+  <mat-label>Trucs generaux</mat-label>
+
+  <mat-chip-list #chipListsedentaire aria-label="Trucs generaux">
+
+    <mat-chip
+              *ngFor="let r of Reco1"
+              (click)="chipDetails1(r)"
+              [selectable]="selectable"
+              [removable]="removable"
+              (removed)="remove1(r)">
+      {{r}}
+      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+
+    </mat-chip>
+    <input
+      placeholder="Trucs generaux"
+      #RecoInput
+      [formControl]="RecoCtrlG"
+      [matAutocomplete]="auto2"
+      [matChipInputFor]="chipListsedentaire"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="add1($event)">
+  </mat-chip-list>
+  <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="selected1($event)">
+    <mat-option *ngFor="let r of filteredRecoGeneraux | async" [value]="r">
+      {{r}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<mat-form-field class="example-chip-list">
+<mat-label>temps sédentaire</mat-label>
+  <mat-chip-list #chipListsedentaire aria-label="temps sédentaire">
+
+    <mat-chip (click)="chipDetails2()"
+              *ngFor="let r of Reco2"
+              [selectable]="selectable"
+              [removable]="removable"
+              (removed)="remove2(r)">
+      {{r}}
+      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+
+    </mat-chip>
+    <input
+      placeholder="temps sédentaire"
+      #RecoInput
+      [formControl]="RecoCtrlS"
+      [matAutocomplete]="auto3"
+      [matChipInputFor]="chipListsedentaire"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="add2($event)">
+  </mat-chip-list>
+  <mat-autocomplete #auto3="matAutocomplete" (optionSelected)="selected2($event)">
+    <mat-option *ngFor="let r of filteredRecoSedentaires | async" [value]="r">
+      {{r}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+  <button mat-button color="primary" style="background-color: aliceblue; width: 100%">
+    Enregistrer
+  </button>
+</mat-tab>
+  <mat-tab label="Recommandations precedentes">
+
+  </mat-tab>
+<!--<mat-form-field appearance="fill" style="width: 20%;
+  margin-left: 10%;
+  margin-right: 1%;">
+    <mat-label>Paramètre d'intensité</mat-label>
+    <select matNativeControl required>
+      <option value="faible">Faible</option>
+      <option value="moderee">Modérée</option>
+      <option value="faible a moderee">Faible à modérée</option>
+      <option value="leger essouflement">Léger essoufflement</option>
+      <option value="essoufflement moderee">Essoufflement modéré</option>
+      <option value="capable de parler">Être capable de parler pendant l'activité</option>
+      <option value="continue">Continue/option>
+      <option value="fractionnee">Fractionnée dans la journée</option>
+      <option value="intervalle">Par intervalle</option>
+      <option value="Escaliers">Escaliers</option>
+      <option value="pente">Avec pente</option>
+
+
+    </select>
+
+</mat-form-field>
+<mat-form-field appearance="fill" style="width: 20%;
+  margin-left: 10%;
+  margin-right: 1%;">
+  <mat-label>Endroits</mat-label>
+  <select matNativeControl required>
+    <option value="salle entrainement">Salle d'entrainement</option>
+    <option value="domicile">À domicile</option>
+    <option value="centre achats">Au centre d'achats</option>
+    <option value="centre communautaire">Centre communautaire</option>
+    <option value="Piste cyclable">Piste cyclable</option>
+    <option value="Sur tapis roulant">Sur tapis roulant</option>
+    <option value="dehors">Dehors</option>
+    <option value="Parcs">Parcs</option>
+    <option value="Sentiers">Sentiers</option>
+
+
+  </select>
+
+</mat-form-field>
+<mat-form-field appearance="fill" style="width: 20%;
+  margin-left: 10%;
+  margin-right: 1%;">
+  <mat-label>Précautions</mat-label>
+  <select matNativeControl required>
+    <option value="echauffement long">Échauffement long (5min)</option>
+    <option value="Retour au calme long (5min)">Retour au calme long (5min)</option>
+    <option value="Commencer lentement lors des températures froides">Commencer lentement lors des températures froides</option>
+    <option value="Avoir sa nitroglycérines sur soi lors des périodes d'activité physique (près du corps)">Avoir sa nitroglycérines sur soi lors des périodes d'activité physique (près du corps)</option>
+    <option value="Utiliser les crampons">Utiliser les crampons</option>
+    <option value="Utiliser des bâtons de marche/canne">Utiliser des bâtons de marche/canne</option>
+    <option value="Utiliser des bâtons de marche/canne">L'hiver, s'échauffer avant de pelleter</option>
+
+
+
+  </select>
+
+</mat-form-field>
+<mat-form-field appearance="fill" style="width: 20%;
+  margin-left: 10%;
+  margin-right: 1%;">
+  <mat-label>Moments</mat-label>
+  <select matNativeControl required>
+    <option value="Matin">Matin</option>
+    <option value="Après-midi">Après-midi</option>
+    <option value="Soir">Soir</option>
+    <option value="Semaine">Semaine</option>
+    <option value="Fin de semaine">Fin de semaine</option>
+    <option value="audi">Déjeuner</option>
+    <option value="audi">Dîner</option>
+    <option value="audi">Souper</option>
+    <option value="Au travail">Au travail</option>
+
+
+
+  </select>
+
+</mat-form-field>
+<mat-form-field appearance="fill" style="width: 20%;
+  margin-left: 10%;
+  margin-right: 1%;">
+  <mat-label>Frequence jour/semaine</mat-label>
+  <select matNativeControl required>
+    <option value="1-2 jours par semaine">1-2 jours par semaine</option>
+    <option value="Après-midi">3 jours par semaine</option>
+    <option value="4 jours par semaine">4 jours par semaine</option>
+    <option value="5 jours par semaine">5 jours par semaine</option>
+    <option value="6 jours par semaine">6 jours par semaine</option>
+
+
+
+
+  </select>
+
+</mat-form-field>
+<mat-form-field appearance="fill" style="width: 20%;
+  margin-left: 10%;
+  margin-right: 1%;">
+  <mat-label>Frequence fois/jour</mat-label>
+  <select matNativeControl required>
+    <option value="1 fois par jour">1 fois par jour</option>
+    <option value="2 fois par jour">2 fois par jour</option>
+    <option value="3 fois par jour">3 fois par jour</option>
+
+
+
+
+
+  </select>
+
+</mat-form-field>-->
+</mat-tab-group>

@@ -3,10 +3,11 @@ import {MAT_DIALOG_DATA, MatDialogRef,MatDialog} from "@angular/material/dialog"
 import {ActivatedRoute, Router, RouterLinkActive} from "@angular/router";
 import {PatientService} from "../../../../_services/patient.service";
 import {DeviceDto} from "../../../../dto/DeviceDto";
-import {Request} from "../../../../dto";
+import {Request, Response} from "../../../../dto";
 import {PatientDeviceDto} from "../../../../dto/PatientDeviceDto";
 import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 import {first, map} from "rxjs/operators";
+import {PatientDto} from "../../../../dto/patient/PatientDto";
 
 @Component({
   selector: 'app-affectpodometre',
@@ -18,20 +19,25 @@ export class AffectpodometreComponent implements OnInit{
   devices : DeviceDto []
   pod;
   patientId;
+  patient;
   birthday: string = "";
   po : PatientDeviceDto[];
   hiden_affecter = true;
   model;
   type
+  patientEmail : string
   idDevice
 
 
   ngOnInit(){
+    this.getPatientById()
+      console.log(this.patientEmail)
 
 
   }
   ngOnChanges(changes: SimpleChanges) {
     console.log(this.id)
+    this.getPatientById()
 
     this.patientId = this.id
     this.available_device()
@@ -66,6 +72,7 @@ export class AffectpodometreComponent implements OnInit{
   }
   constructor(private router : Router, private route : ActivatedRoute, private patientService : PatientService)
     {
+      this.getPatientById()
 
     }
  available_device(){
@@ -109,7 +116,7 @@ export class AffectpodometreComponent implements OnInit{
     let currentUser = localStorage.getItem("currentUser")
     let id_pro = JSON.parse(currentUser).id
 
-    this.po = [new PatientDeviceDto(null,null,this.birthday,id_pro,idpat,null)]
+    this.po = [new PatientDeviceDto(null,null,this.birthday,id_pro,idpat,null,this.patientEmail)]
     let device = new DeviceDto(deviceId,null,null,
       null,null,null,null,null,
       null,this.po)
@@ -123,6 +130,23 @@ export class AffectpodometreComponent implements OnInit{
             console.log(error)
       }
     )
+
+  }
+  getPatientById(){
+    this.patientService.getPatient(this.id).subscribe(patients => {
+      let socio = patients as Response
+      this.patient = socio.object as PatientDto
+      console.log(patients)
+      console.log(typeof this.patient)
+      this.patientEmail = this.patient.contact.email
+      console.log(this.patientEmail)
+
+
+      //this.liste_antecedants = JSON.parse(JSON.stringify(this.patient.medicalFile.medicalFileHistory)) as MedicalFileHistoryDto[]
+      //console.log(this.liste_antecedants[0].antecedents)
+
+
+    });
 
   }
 

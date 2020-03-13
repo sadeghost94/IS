@@ -1,5 +1,14 @@
 export const environment = {
   environmentName: 'production',
+  production : true,
+  firebase: {
+    apiKey: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    authDomain: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    databaseURL: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    projectId: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    storageBucket: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    messagingSenderId: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  },
   LOGIN_URL : 'https://epod-zuul.herokuapp.com/api/v1/auth-service/oauth/token',
   FORGET_PASSWORD_URL  : "https://epod-zuul.herokuapp.com/api/v1/auth-service/update/password/mail",
   CONFIRMATION_EMAIL_URL : "https://epod-zuul.herokuapp.com/api/v1/auth-service/registration/confirm?token=",
@@ -26,7 +35,11 @@ export const environment = {
   AUTH_DEVICE : "https://epod-zuul.herokuapp.com/api/v1/fitbit-service/device/authorization",
   LIST_DEVICE_AVAILABLE :"https://epod-zuul.herokuapp.com/api/v1/fitbit-service/device/all/available/institution",
   AFFECT_DEVICE :"https://epod-zuul.herokuapp.com/api/v1/fitbit-service/device/assign",
-  RECUP_DEVICE :"https://epod-zuul.herokuapp.com/api/v1/fitbit-service/device/back"
+  RECUP_DEVICE :"https://epod-zuul.herokuapp.com/api/v1/fitbit-service/device/back",
+  ADD_RDV :"https://epod-zuul.herokuapp.com/api/v1/patient-service/appointment",
+  LIST_RDV : "https://epod-zuul.herokuapp.com/api/v1/patient-service/appointment/all"
+
+
 
 
 

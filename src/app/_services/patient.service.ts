@@ -26,6 +26,8 @@ export class PatientService {
   LIST_DEVICE_AVAILABLE : string;
   AFFECT_DEVICE : string;
   RECUP_DEVICE: string;
+  ADD_RDV : string
+  LIST_RDV : string
 
 
   constructor(private http : HttpClient) {
@@ -41,6 +43,8 @@ export class PatientService {
     this. LIST_DEVICE_AVAILABLE = environment.LIST_DEVICE_AVAILABLE
     this.AFFECT_DEVICE = environment.AFFECT_DEVICE
     this.RECUP_DEVICE = environment.RECUP_DEVICE
+    this.ADD_RDV = environment.ADD_RDV
+    this.LIST_RDV = environment.LIST_RDV
   }
 
 
@@ -84,6 +88,18 @@ export class PatientService {
 
 
   }
+  deleteRdv(request: Request){
+    let token = localStorage.getItem("currentToken");
+    const obj = JSON.parse(token);
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json', 'Authorization': "bearer " + obj.access_token
+      }),
+      body: request
+    };
+    return this.http.delete(this.ADD_RDV, options);
+
+  }
   getSocio(id : string) {
     let token = localStorage.getItem("currentToken");
     const obj = JSON.parse(token);
@@ -115,6 +131,7 @@ export class PatientService {
 
 
   }
+
   addExam(request: Request, patientId  : string) {
     let token = localStorage.getItem("currentToken");
     const obj = JSON.parse(token);
@@ -123,6 +140,33 @@ export class PatientService {
     let header = new HttpHeaders({'Authorization': "bearer "+obj.access_token,'Content-Type': 'application/json'} );
     return this.http.post(this.ADD_EXAM, request, {headers: header, params: params});
 
+
+
+  }
+  addRdv(request : Request){
+    let token = localStorage.getItem("currentToken");
+    const obj = JSON.parse(token);
+    let header = new HttpHeaders({'Authorization': "bearer "+obj.access_token,'Content-Type': 'application/json'} );
+    return this.http.post(this.ADD_RDV, request, {headers: header});
+
+
+
+
+  }
+  getRdv(id: string){
+    let token = localStorage.getItem("currentToken");
+    const obj = JSON.parse(token);
+    let params = new HttpParams()
+      .set('patientId', id )
+    let header = new HttpHeaders({'Authorization': "bearer "+obj.access_token});
+    return this.http.get(this.LIST_RDV, {headers: header, params: params})
+
+  }
+  editRdv(request : Request){
+    let token = localStorage.getItem("currentToken");
+    const obj = JSON.parse(token);
+    let header = new HttpHeaders({'Authorization': "bearer "+obj.access_token,'Content-Type': 'application/json'} );
+    return this.http.put(this.ADD_RDV, request, {headers: header});
 
 
   }

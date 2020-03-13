@@ -1,10 +1,16 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {Router} from "@angular/router";
-import {UserRequestDto} from "../../../../dto";
+import {Request, UserRequestDto} from "../../../../dto";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
 import {PatientDto} from "../../../../dto/patient/PatientDto";
+import {AppointmentDto} from "../../../../dto/AppointmentDto";
+import {PatientService} from "../../../../_services/patient.service";
+import {RecomandationComponent} from "../recomandation/recomandation.component";
+import {MatDialog} from "@angular/material/dialog";
+import {DeleteDialogComponent} from "../../../dialogs/delete/delete.dialog.component";
+import {EditDialogComponent} from "../../../dialogs/edit/edit.dialog.component";
 
 @Component({
   selector: 'app-list-visites',
@@ -14,12 +20,15 @@ import {PatientDto} from "../../../../dto/patient/PatientDto";
 export class ListVisitesComponent implements OnInit {
   @ViewChild(MatSort,{static: false}) sort: MatSort;
   @ViewChild(MatPaginator,{static: false}) paginator: MatPaginator;
-  patients : any[];
-  public displayedColumns = ['nom', 'date', 'description'
+  @Input() patient: PatientDto;
+  patients : any[] = null;
+  public displayedColumns = ['numero', 'date', 'action'
   ];
-  public dataSource = new MatTableDataSource<PatientDto>();
+  public dataSource = new MatTableDataSource<AppointmentDto>();
   currentUser = localStorage.getItem("currentUser");
-  constructor(private router : Router) {
+  constructor(private router : Router, private  patientService : PatientService
+  ,public dialog: MatDialog) {
+  // console.log(this.patient.id)
     if (localStorage.getItem("currentRole" ) === "role_professional") {
 
 
@@ -29,8 +38,33 @@ export class ListVisitesComponent implements OnInit {
     }
 
   }
+  update(rdv : AppointmentDto){
+    let request = new Request(rdv)
+    const dialogRef = this.dialog.open(EditDialogComponent, {
+      data: {request: request }
+    });
+  }
+  delete(rdv : AppointmentDto){
+    //let appoint = new AppointmentDto(id,null,null,null,null)
+    let request = new Request(rdv)
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      data: {request: request }
+
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
+      console.log(this.dataSource.data)
+
+    });
+
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.getAllUsers()
 
 
+
+  }
 
   ngOnInit() {
     this.getAllUsers();
@@ -44,15 +78,16 @@ export class ListVisitesComponent implements OnInit {
     this.dataSource.filter = value.trim().toLocaleLowerCase();
   }
   public getAllUsers = () => {
-    /*this.userService.getData('api/owner')
-      .subscribe(res => {
-        this.dataSource.data = res as Owner[];
-      })*/
-    this.patients = [ new PatientDto(null,"visite 1","12/12/2020","premiere visite ",null,null,null, null, null,null,null,null,null)
+    this.patientService.getRdv(this.patient.id).subscribe( patients => {
+      // let tabusers = JSON.parse(JSON.stringify(users.toString()))
+      let pat = JSON.parse(JSON.stringify(patients))
+      console.log(pat)
+      this.dataSource.data = pat.object as AppointmentDto[]
+      this.patients = pat.object as AppointmentDto[]
 
 
-    ]
-    this.dataSource.data = this.patients;
+
+    });
     // console.log("yes "+this.users)
   }
 

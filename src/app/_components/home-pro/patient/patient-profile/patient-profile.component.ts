@@ -20,8 +20,9 @@ import {LoginComponent} from "../../../login/login.component";
 import {ListVisitesComponent} from "../list-visites/list-visites.component";
 import {CreaterdvComponent} from "../../../createrdv/createrdv.component";
 import {PagepatientComponent} from "../../../pagepatient/pagepatient.component";
-import {ForgetpasswordComponent} from "../../../forgetpassword/forgetpassword.component";
-import {RdvComponent} from "../../rdv/rdv.component";
+import {LogiComponent} from "../list-patients/appoint/logi.component";
+import {AddDialogComponent} from "../../../dialogs/add/add.dialog.component";
+import {RecomandationComponent} from "../recomandation/recomandation.component";
 @Component({
   selector: 'app-patient-profile',
   templateUrl: './patient-profile.component.html',
@@ -29,7 +30,7 @@ import {RdvComponent} from "../../rdv/rdv.component";
 })
 export class PatientProfileComponent implements OnInit {
   @Input() id: string;
-  patient ;
+  patient : PatientDto ;
   liste_antecedants
   list_ante : AntecedentsDto[]
   public selectedDate: Date = displayDate;
@@ -41,33 +42,28 @@ export class PatientProfileComponent implements OnInit {
   public events: SchedulerEvent[] = sampleData;
 
   constructor(private  patientService: PatientService, private modalService : ModalService,
-              public matDialog: MatDialog) {
+              public dialog: MatDialog) {
   }
 
   ngOnInit() {
+    this.getAllUsers()
 
   }
-  openModel()
-  {
-    const dialogConfig = new MatDialogConfig();
-    // The user can't close the dialog by clicking outside its body
-    dialogConfig.disableClose = true;
-    dialogConfig.id = "modal-component";
-    dialogConfig.height = "200px";
-    dialogConfig.width = "400px";
-    // https://material.angular.io/components/dialog/overview
-    this.modals = this.matDialog.open(LoginComponent,dialogConfig);
 
-  }
-  onNoClick(): void {
-    this.modals.close();
-  }
 
   ngOnChanges(changes: SimpleChanges) {
     this.getAllUsers()
 
 
+
   }
+  reco(patient : PatientDto){
+    const dialogRef = this.dialog.open(RecomandationComponent, {
+      data: {patient: patient }
+    });
+
+  }
+
   openModal(id: string) {
     this.modalService.open(id);
   }
@@ -88,8 +84,8 @@ export class PatientProfileComponent implements OnInit {
       console.log(patients)
 
 
-      this.liste_antecedants = JSON.parse(JSON.stringify(this.patient.medicalFile.medicalFileHistory)) as MedicalFileHistoryDto[]
-      console.log(this.liste_antecedants[0].antecedents)
+      //this.liste_antecedants = JSON.parse(JSON.stringify(this.patient.medicalFile.medicalFileHistory)) as MedicalFileHistoryDto[]
+      //console.log(this.liste_antecedants[0].antecedents)
       for (let i = 0; i < this.liste_antecedants.length; i++){
          this.ant =JSON.parse(this.liste_antecedants[i].antecedents)
 

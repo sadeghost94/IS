@@ -15,7 +15,7 @@ html,body{height:100%;margin:0;padding:0;}
 .patient-wrapper{height:100%;  position: absolute;}
 .box{position:relative;width:100%;max-width:150em;}
 
-.mat-stroked-button{border:5px solid black; width: 100%; margin-top: 2em; margin-left: 2em}
+.mat-stroked-button{border:1px solid black; width: 30%; margin-top: 2em; margin-left: 2em}
 .patient-wrapper .mat-form-field-appearance-legacy .mat-form-field-infix{padding:0.8375em 0;}
 .patient-wrapper .mat-form-field { width: 80%;}
 

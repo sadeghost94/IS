@@ -9,16 +9,18 @@ export class PatientDeviceDto  {
   returnDate : string;
    professionalId : string;
   medicalFileId : string;
+  patientEmail : string
   //devices : DeviceDto[];
 
 
-  constructor( id: string, initDate: Date, returnDate: string, professionalId: string, medicalFileId: string,returnedAt : string) {
+  constructor( id: string, initDate: Date, returnDate: string, professionalId: string, medicalFileId: string,returnedAt : string,patientEmail : string) {
     this.id = id;
     this.initDate = initDate;
     this.returnDate = returnDate;
     this.professionalId = professionalId;
     this.medicalFileId = medicalFileId;
-    this.returnedAt = returnedAt
+    this.returnedAt = returnedAt;
+    this.patientEmail = patientEmail
    // this.devices = devices;
   }
 }
