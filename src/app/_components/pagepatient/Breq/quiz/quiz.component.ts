@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import {QuizService} from '../services/quiz.service';
 import {HelperService} from '../services/helper.service';
@@ -7,6 +7,12 @@ import {Reponse} from '../models/reponse';
 import *  as  data from '../data/breq.json';
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
+import {QuestionnaireDto} from "../../../../dto/QuestionnaireDto";
+import {ActivatedRoute} from "@angular/router";
+import {PatientDto} from "../../../../dto/patient/PatientDto";
+import {Patient} from "../../../../_models/patient";
+import {PatientService} from "../../../../_services/patient.service";
+import {Request} from "../../../../dto";
 
 
 
@@ -17,13 +23,17 @@ import {HttpClient} from "@angular/common/http";
   providers: [QuizService]
 })
 export class QuizComponent implements OnInit {
+  @Input () patient : PatientDto
   quizes: any[];
+  obj
    data  = require('../data/breq.json');
   regulations: any [];
   rep: Reponse[] = [];
   quiz: Quiz = new Quiz(null);
   mode = 'quiz';
   quizName: string = 'breq.json';
+  value : any
+  patientId : string =""
   poid = 0;
   poid1 = 0;
   poid2 = 0;
@@ -59,13 +69,16 @@ export class QuizComponent implements OnInit {
   endTime: Date;
   ellapsedTime = '00:00';
   duration = '';
+  questionnaireToken: string;
 
-  constructor(private quizService: QuizService, private http :HttpClient) {
-
+  constructor(private quizService: QuizService, private http :HttpClient,private  route : ActivatedRoute,
+              private patientService : PatientService) {
+    this.questionnaireToken = localStorage.getItem("currentPatientToken")
   }
 
   ngOnInit() {
     console.log(this.data)
+     this.getCodeFromURI()
 
    /* this.quizName = this.quizes[0].id;*/
    // console.log(this.quizName)
@@ -117,7 +130,6 @@ export class QuizComponent implements OnInit {
           x.selected = false;
         } else {
           this.rep.push(new Reponse(
-            this.quiz.id,
             question.id,
             option.poids));
 
@@ -202,6 +214,60 @@ export class QuizComponent implements OnInit {
     console.log(' score moyen introjected_regulation : ' + moy_introjected);
     console.log(' score moyen identified_regulation : ' + moy_identified);
     console.log(' score moyen intrinsic_regulation : ' + moy_intrinsic);
+    this.value = {
+      reponses : this.rep,
+      score : {
+        amotivation : moy_amotivation,
+        external : moy_external,
+        introjected : moy_introjected,
+        identified : moy_identified,
+        intrinsic : moy_intrinsic
+      }
+
+    }
+
+      let breq = new QuestionnaireDto(null, this.patientId, "BREQ", JSON.stringify(this.value), null)
+    let request = new Request(breq)
+    this.patientService.addQuiz(request).subscribe( reponse =>{
+      console.log("Ajout reussi")
+    }, error => {
+      console.log("erreur")
+    })
+      console.log(breq)
+
+
+  }
+  getCodeFromURI() {
+
+
+
+
+        this.patientService.recup_token(this.questionnaireToken).subscribe(
+          response => {
+            this.obj = JSON.parse(JSON.stringify(response))
+            this.patient = this.obj.object
+            if(this.patient!=null) {
+
+
+
+              this.patientId = this.obj.object.id
+              console.log(this.obj)
+            }else{
+
+            }
+            if(this.obj.error != null){
+              this.questionnaireToken = null
+            }
+
+
+          },
+          error => {
+
+          }
+        );
+
+
+
 
   }
 }

@@ -12,7 +12,6 @@ import {ListPatientsComponent} from "./list-patients/list-patients.component";
 })
 export class PatientComponent implements AfterViewInit {
   @ViewChild(ListPatientsComponent,{static: false}) child;
-  loading = false;
   patient = false;
   currentUser = localStorage.getItem("currentUser");
   constructor(private router: Router,

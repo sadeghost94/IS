@@ -1,28 +1,23 @@
 import {Component, Inject, Input, OnInit, SimpleChanges} from '@angular/core';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {SchedulerEvent, SchedulerModule} from '@progress/kendo-angular-scheduler';
 import {displayDate, sampleData} from "./events.utc";
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {AffectpodometreComponent} from "../affectpodometre/affectpodometre.component";
+import {MatDialog} from '@angular/material/dialog';
 import {PatientDto} from "../../../../dto/patient/PatientDto";
 import {PatientService} from "../../../../_services/patient.service";
 import {SocioDemographicVariablesDto} from "../../../../dto/medicalfile/SocioDemographicVariablesDto";
-import {Request, Response} from "../../../../dto";
-import {MatDatepickerInputEvent} from "@angular/material/datepicker";
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import { MatDialogConfig } from '@angular/material/dialog';
+import { Response} from "../../../../dto";
 import {MedicalFileHistoryDto} from "../../../../dto/medicalfile/MedicalFileHistoryDto";
 import {AntecedentsDto} from "../../../../dto/medicalfile/AntecedentsDto";
 import {ModalService} from "../../../_modal";
-import {LoginComponent} from "../../../login/login.component";
-import {ListVisitesComponent} from "../list-visites/list-visites.component";
-import {CreaterdvComponent} from "../../../createrdv/createrdv.component";
-import {PagepatientComponent} from "../../../pagepatient/pagepatient.component";
-import {LogiComponent} from "../list-patients/appoint/logi.component";
-import {AddDialogComponent} from "../../../dialogs/add/add.dialog.component";
 import {RecomandationComponent} from "../recomandation/recomandation.component";
+import { Router} from "@angular/router";
+import {BilanLipidiqueComponent} from "../bilan-lipidique/bilan-lipidique.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {MedicalFileDto} from "../../../../dto/medicalfile/MedicalFileDto";
+import {AppointmentDto} from "../../../../dto/AppointmentDto";
+import {HistoireSanteComponent} from "../histoire-sante/histoire-sante.component";
+import {SociodemoComponent} from "../sociodemo/sociodemo.component";
+
 @Component({
   selector: 'app-patient-profile',
   templateUrl: './patient-profile.component.html',
@@ -30,38 +25,79 @@ import {RecomandationComponent} from "../recomandation/recomandation.component";
 })
 export class PatientProfileComponent implements OnInit {
   @Input() id: string;
-  patient : PatientDto ;
-  liste_antecedants
-  list_ante : AntecedentsDto[]
+  patient : PatientDto = null;
+  medicalfile : MedicalFileDto = null
+  list_ante : MedicalFileHistoryDto[]
+  antecedents : AntecedentsDto[]
+  socioDemo : SocioDemographicVariablesDto = null;
   public selectedDate: Date = displayDate;
-  ante ;
   ant: any[]
-  antes : any[] ;
+  age = null
+  weight = null
+  imc = null
+  height = null
+  listVisites : AppointmentDto[] = null
+  lastVisite : AppointmentDto = null
+
+  mySubscription : any
   private modals;
-  dataa = "ok"
   public events: SchedulerEvent[] = sampleData;
 
   constructor(private  patientService: PatientService, private modalService : ModalService,
-              public dialog: MatDialog) {
+              public dialog: MatDialog, public router : Router,private _snackBar : MatSnackBar) {
+
+
+
+
+  }
+
+  ngOnDestroy() {
+    //this.patient = null
   }
 
   ngOnInit() {
     this.getAllUsers()
+
 
   }
 
 
   ngOnChanges(changes: SimpleChanges) {
     this.getAllUsers()
-
+    this.patient = changes.patient.currentValue
+    console.log("ayo")
 
 
   }
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+
+    })}
   reco(patient : PatientDto){
     const dialogRef = this.dialog.open(RecomandationComponent, {
       data: {patient: patient }
     });
 
+  }
+  add_antecedent(id : string){
+    const dialogRef = this.dialog.open(HistoireSanteComponent, {
+      data: {id: id }
+    });
+  }
+  add_socio(id : string){
+    const dialogRef = this.dialog.open(SociodemoComponent, {
+      data: {id: id }
+    });
+  }
+  lipdProfile(patient : PatientDto){
+    const dialogRef = this.dialog.open(BilanLipidiqueComponent, {
+      data: {patient: patient,
+             }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+     // this.openSnackBar(result,"Ok")
+    })
   }
 
   openModal(id: string) {
@@ -80,24 +116,66 @@ export class PatientProfileComponent implements OnInit {
   public getAllUsers = () => {
     this.patientService.getPatient(this.id).subscribe(patients => {
       let socio = patients as Response
-      this.patient = socio.object as PatientDto
-      console.log(patients)
+      this.patient = JSON.parse(JSON.stringify(socio.object))as PatientDto
+      this.medicalfile = this.patient.medicalFile as MedicalFileDto
+      this.socioDemo = JSON.parse(this.patient.socioDemographicVariables) as SocioDemographicVariablesDto
+      console.log(this.socioDemo)
+      console.log(this.patient)
+      console.log(this.medicalfile)
+      if(this.medicalfile.clinicalExamination.length > 0)
+      {
+        this.weight = this.medicalfile.clinicalExamination[this.medicalfile.clinicalExamination.length-1].anthropometry.weight
+        this.weight = this.medicalfile.clinicalExamination[this.medicalfile.clinicalExamination.length-1].anthropometry.weight
+        this.imc = this.medicalfile.clinicalExamination[this.medicalfile.clinicalExamination.length-1].anthropometry.imc
+        this.height = this.medicalfile.clinicalExamination[this.medicalfile.clinicalExamination.length-1].anthropometry.height
+        }
+        else{
+          this.weight = null
+          this.age = null
+        this.imc = null
+        this.height = null
+      }
+      if(this.medicalfile.medicalFileHistory.length > 0)
+      {
+        this.list_ante = this.medicalfile.medicalFileHistory
+        for(let i=0; i<this.list_ante.length; i++){
+          if(i==0){
+            this.antecedents = [JSON.parse(this.list_ante[i].antecedents)]
 
+          }else{
+          this.antecedents.push(JSON.parse(this.list_ante[i].antecedents))}
+        }
+        console.log(this.antecedents)
+        console.log(this.list_ante)
 
-      //this.liste_antecedants = JSON.parse(JSON.stringify(this.patient.medicalFile.medicalFileHistory)) as MedicalFileHistoryDto[]
-      //console.log(this.liste_antecedants[0].antecedents)
-      for (let i = 0; i < this.liste_antecedants.length; i++){
-         this.ant =JSON.parse(this.liste_antecedants[i].antecedents)
+      }else{
+        this.list_ante = null
 
       }
-      this.antes = this.ant
-      console.log(this.antes)
+      //this.liste_antecedants = JSON.parse(JSON.stringify(this.patient.medicalFile.medicalFileHistory)) as MedicalFileHistoryDto[]
+      //console.log(this.liste_antecedants[0].antecedents)
+
 
     });
 
+       this.getAllVisites()
+
+
+  }
+  public getAllVisites = () => {
+    this.patientService.getRdv(this.id).subscribe( patients => {
+      // let tabusers = JSON.parse(JSON.stringify(users.toString()))
+      let pat = JSON.parse(JSON.stringify(patients))
+      console.log(pat)
+      this.listVisites = pat.object as AppointmentDto[]
+      this.lastVisite = this.listVisites[this.listVisites.length-1]
+      console.log(this.listVisites)
+      console.log(this.lastVisite)
 
 
 
+    });
+    // console.log("yes "+this.users)
   }
 }
 

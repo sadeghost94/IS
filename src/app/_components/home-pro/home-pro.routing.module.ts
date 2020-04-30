@@ -11,30 +11,32 @@ import { DetailsRecoComponent } from './patient/recomandation/details-reco/detai
 import {MatRadioModule} from "@angular/material/radio";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MaterialModule} from "../../material/material.module";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
+import { BilanLipidiqueComponent } from './patient/bilan-lipidique/bilan-lipidique.component';
+import { HistoireSanteComponent } from './patient/histoire-sante/histoire-sante.component';
 
-const homeProRoutes: Routes = [
+export const homeProRoutes: Routes = [
   {
     path: '',
     component: HomeProComponent,
     children: [
       {
         path: '',
-        component: HomeProComponent
+        component: ListPatientsComponent
       },
       { path: 'patient', component: PatientComponent},
       { path: 'addpatient', component: AddpatientComponent },
       { path: 'listpatient', component: ListPatientsComponent },
       { path: 'logi', component: LogiComponent },
 
-      { path: 'reco', component: RecomandationComponent },
+      { path: 'reco', component: HistoireSanteComponent },
     ]
   }
 ];
 @NgModule({
-  imports: [RouterModule.forChild(homeProRoutes), MatRadioModule, MatFormFieldModule, MaterialModule, FormsModule, CommonModule],
-  exports: [RouterModule],
-  declarations: [AppointComponent, DetailsRecoComponent]
+  imports: [RouterModule.forChild(homeProRoutes), MatRadioModule, MatFormFieldModule, MaterialModule, FormsModule, CommonModule, ReactiveFormsModule],
+    exports: [RouterModule, HistoireSanteComponent],
+  declarations: [AppointComponent, DetailsRecoComponent, BilanLipidiqueComponent, HistoireSanteComponent]
 })
 export class HomeProRoutingModule{ }

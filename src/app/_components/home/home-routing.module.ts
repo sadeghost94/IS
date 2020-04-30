@@ -4,7 +4,7 @@ import {DevicesComponent} from "./devices/devices.component";
 import {InviteComponent} from "./invite/invite.component";
 import {NgModule} from "@angular/core";
 
-const homeRoutes: Routes = [
+export const homeRoutes: Routes = [
   {
     path: '',
     component: HomeComponent,

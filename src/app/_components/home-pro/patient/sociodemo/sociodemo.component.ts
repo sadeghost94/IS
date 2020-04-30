@@ -6,6 +6,7 @@ import {Request, Response} from "../../../../dto";
 import {first} from "rxjs/operators";
 import {PatientDto} from "../../../../dto/patient/PatientDto";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {NavigationEnd, Router} from "@angular/router";
 
 @Component({
   selector: 'app-sociodemo',
@@ -28,11 +29,29 @@ export class SociodemoComponent implements OnInit {
   Sans_activite: string
   Etudiant: string
   Autre: string;
+  mySubscription : any
   maison_uni :boolean= false;
 
-  constructor(private patientService: PatientService,private _snackBar : MatSnackBar) {
+  constructor(private patientService: PatientService,private _snackBar : MatSnackBar , private router : Router) {
 
 
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
+    this.mySubscription = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        // Trick the Router into believing it's last link wasn't previously loaded
+        this.router.navigated = false;
+      }
+    });
+
+
+  }
+
+  ngOnDestroy() {
+    if (this.mySubscription) {
+      this.mySubscription.unsubscribe();
+    }
   }
 
   @Input() id: string;
@@ -94,8 +113,8 @@ export class SociodemoComponent implements OnInit {
 
   }
 
-  ajouter(gender, profession, revenu, retraite, services, house_uni,
-          cottage, bungalow, condo, zone, age, app, marital, scolarity) {
+  ajouter( profession, revenu, retraite, services, house_uni,
+          cottage, bungalow, condo, zone, app, marital, scolarity) {
     let srvice = false, hse_uni, cttge, bglv, cdo, ap, rtraite;
     if (retraite.checked === true) {
       rtraite = retraite.value
@@ -153,7 +172,7 @@ export class SociodemoComponent implements OnInit {
     }
     let type = hse_uni + cttge + bglv + cdo + ap + rtraite
 
-    let socioinformation = new SocioDemographicVariablesDto(25, marital, 10000, profession, scolarity, new LivingEnvironmentDto(zone, type, srvice),gender.value)
+    let socioinformation = new SocioDemographicVariablesDto( marital, 10000, profession, scolarity, new LivingEnvironmentDto(zone, type, srvice))
     console.log(socioinformation)
     console.log(this.id)
     let request = new Request(socioinformation);
@@ -166,7 +185,7 @@ export class SociodemoComponent implements OnInit {
 
         },
         error => {
-          console.log("error")
+          this.openSnackBar(" Erreur verifiez le type de donnes saisi","Ok")
 
 
         });

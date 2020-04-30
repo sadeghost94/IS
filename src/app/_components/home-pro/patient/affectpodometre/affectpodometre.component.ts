@@ -1,6 +1,6 @@
 import {Component, Inject, Input, OnInit, SimpleChanges} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef,MatDialog} from "@angular/material/dialog";
-import {ActivatedRoute, Router, RouterLinkActive} from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router, RouterLinkActive} from "@angular/router";
 import {PatientService} from "../../../../_services/patient.service";
 import {DeviceDto} from "../../../../dto/DeviceDto";
 import {Request, Response} from "../../../../dto";
@@ -8,6 +8,7 @@ import {PatientDeviceDto} from "../../../../dto/PatientDeviceDto";
 import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 import {first, map} from "rxjs/operators";
 import {PatientDto} from "../../../../dto/patient/PatientDto";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-affectpodometre',
@@ -18,6 +19,7 @@ export class AffectpodometreComponent implements OnInit{
   @Input() id: string;
   devices : DeviceDto []
   pod;
+  message : string
   patientId;
   patient;
   birthday: string = "";
@@ -27,11 +29,12 @@ export class AffectpodometreComponent implements OnInit{
   type
   patientEmail : string
   idDevice
+  mySubscription : any
 
 
   ngOnInit(){
+
     this.getPatientById()
-      console.log(this.patientEmail)
 
 
   }
@@ -44,6 +47,11 @@ export class AffectpodometreComponent implements OnInit{
 
 
 
+  }
+  ngOnDestroy() {
+    if (this.mySubscription) {
+      this.mySubscription.unsubscribe();
+    }
   }
 
   getBirthday(event: MatDatepickerInputEvent<Date>) {
@@ -70,9 +78,12 @@ export class AffectpodometreComponent implements OnInit{
     this.birthday = year + '-' + mois + '-' + jr;
     console.log(this.birthday)
   }
-  constructor(private router : Router, private route : ActivatedRoute, private patientService : PatientService)
+  constructor(private router : Router, private route : ActivatedRoute, private _snackBar : MatSnackBar, private patientService : PatientService)
     {
       this.getPatientById()
+
+
+
 
     }
  available_device(){
@@ -105,18 +116,20 @@ export class AffectpodometreComponent implements OnInit{
     let deviceDto = new DeviceDto(id,null,null,null,null,null,null,null,null,null)
     let request = new Request(deviceDto)
     this.patientService.recup_podo(request).pipe(first()).subscribe(reponse =>{
-      console.log(reponse)
+      this.hiden_affecter = true
+      this.message = "POFOMETRE RECUPERE"
+      this.openSnackBar(this.message,"Ok")
+      location.reload()
     })
 
   }
 
 
   affect(deviceId : string, idpat: string){
-    console.log(deviceId)
     let currentUser = localStorage.getItem("currentUser")
     let id_pro = JSON.parse(currentUser).id
 
-    this.po = [new PatientDeviceDto(null,null,this.birthday,id_pro,idpat,null,this.patientEmail)]
+    this.po = [new PatientDeviceDto(null,null,this.birthday,id_pro,this.patient.medicalFile.patient,null,this.patientEmail)]
     let device = new DeviceDto(deviceId,null,null,
       null,null,null,null,null,
       null,this.po)
@@ -124,7 +137,9 @@ export class AffectpodometreComponent implements OnInit{
     console.log(req)
     this.patientService.affectPodo(req).subscribe(
       reponse => {
-        console.log(reponse)
+        this.message = "Ajout reussi"
+        this.openSnackBar(this.message,"Ok")
+        location.reload()
 
       }, error => {
             console.log(error)
@@ -139,6 +154,7 @@ export class AffectpodometreComponent implements OnInit{
       console.log(patients)
       console.log(typeof this.patient)
       this.patientEmail = this.patient.contact.email
+      console.log(this.patient.medicalFile.patient)
       console.log(this.patientEmail)
 
 
@@ -149,6 +165,12 @@ export class AffectpodometreComponent implements OnInit{
     });
 
   }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 500,
+
+    })}
 
 
 

@@ -19,7 +19,7 @@ export class DevicesComponent implements OnInit {
   podos : any [];
   id = null;
   autoriser = false;
-  auth = "https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22DBSJ&redirect_uri=http%3A%2F%2Flocalhost%3A4200%2Fdevice%2Fauthorization&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800"
+  auth = "https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22DBSJ&redirect_uri=https%3A%2F%2Fipodsante-92c27.firebaseapp.com%2Fdevice&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800"
   currentUser = localStorage.getItem("currentUser");
   constructor(private router : Router, private userService : UserService,     private route: ActivatedRoute
   ) {
@@ -59,15 +59,16 @@ export class DevicesComponent implements OnInit {
   }
 
   autorise(element : DeviceDto){
-    window.open('https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22DBSJ&redirect_uri=http%3A%2F%2Flocalhost%3A4200%2Fdevice&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800')
+    window.open(this.auth)
     localStorage.setItem("idautorize", element.id)
+    location.reload()
 
   }
   autorizepodo(id: string, code : string){
 
     this.userService.autorizepodo(id,code).subscribe( rep => {
       localStorage.removeItem("idautorize")
-
+      location.reload()
     console.log(code)
 
     }, error => {

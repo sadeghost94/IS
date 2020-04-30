@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
 import {environment} from "../../../../environments/environment";
 
 
@@ -22,6 +22,7 @@ export class MainNavProfComponent {
  currentUser = localStorage.getItem("currentUser");
  obj : any;
  LOG_OUT_URL : string;
+  mySubscription: any;
 
 
 
@@ -88,8 +89,23 @@ appitems  = [
           }else {
             this.router.navigate(["/"])
           }
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
+    this.mySubscription = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        // Trick the Router into believing it's last link wasn't previously loaded
+        this.router.navigated = false;
+      }
+    });
 
 
+  }
+
+  ngOnDestroy() {
+    if (this.mySubscription) {
+      this.mySubscription.unsubscribe();
+    }
   }
   toggleMenu() {
     this.zone.run(()=>{
@@ -97,7 +113,9 @@ appitems  = [
     })
   }
   logOut() {
-    this.authenticationService.logout()
+  console.log("oui")
+    console.log(this.authenticationService.logout())
+
 
 
 

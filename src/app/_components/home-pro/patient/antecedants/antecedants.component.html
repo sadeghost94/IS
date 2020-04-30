@@ -1,20 +1,20 @@
 <mat-card style=" color : white; background :#323232;">HISTOIRE DE SANTÉ</mat-card>
 <mat-selection-list #antecedants style="width: 100%;">
-  <h3>ANTECEDANTS</h3>
+  <h3>Antécédents</h3>
 
 
-  <mat-list-option #angineinfractus style="margin-left: 1em ; margin-bottom: 2em; width : 30%" value="Angine Infarctus du myocarde">Angine Infarctus du
+  <mat-list-option #angineinfractus style="margin-left: 1em ; margin-bottom: 2em; width : 20%" value="Angine Infarctus du myocarde">Angine Infarctus du
     myocarde
   </mat-list-option>
 
-  <mat-list-option #pontagescoronariens style="margin-left: 1em ; margin-bottom: 2em; width : 30%" value="Pontages coronariens">Pontages coronariens
+  <mat-list-option #pontagescoronariens style="margin-left: 1em ; margin-bottom: 2em; width : 20%" value="Pontages coronariens">Pontages coronariens
   </mat-list-option>
 
-  <mat-list-option #angioplasticoronarienne style="margin-left: 1em ; margin-bottom: 2em; width : 30%" value="Angioplastie coronarienne">Angioplastie
+  <mat-list-option #angioplasticoronarienne style="margin-left: 1em ; margin-bottom: 2em; width : 20%" value="Angioplastie coronarienne">Angioplastie
     coronarienne
   </mat-list-option>
 
-  <mat-list-option #maladievalvulaire style="margin-left: 1em ; margin-bottom: 2em; width : 30%" value="Maladie valvulaire">Maladie valvulaire
+  <mat-list-option #maladievalvulaire style="margin-left: 1em ; margin-bottom: 2em; width : 20%" value="Maladie valvulaire">Maladie valvulaire
   </mat-list-option>
 
   <mat-list-option #insuf_cardiaque_nyha1_2 style="margin-left: 1em ; margin-bottom: 2em; width : 30%" value="Insuffisance cardiaque NYHA 1 ou 2">
@@ -26,20 +26,20 @@
   </mat-list-option>
 
   <mat-list-option #avc style="margin-left: 1em ; margin-bottom: 2em; width : 30%" value="AVC">AVC
-    <input  matInput #avcyear   type="text" placeholder="ANNEE" style="margin-left: 1em; width : 80%  font-weight : bold" appearance="outline">
+    <input  matInput #avcyear   type="text" placeholder="ANNEE" style="margin-left: 1em; width : 80% ; font-weight : bold" appearance="outline">
   </mat-list-option>
 
 
   <mat-list-option #ait style="margin-left: 1em ; margin-bottom: 2em; width : 30%" value="AIT">AIT
-  <input matInput #aityear type="text" placeholder="ANNEE" style="margin-left: 1em; width : 80%  font-weight : bold" appearance="outline">
+  <input matInput #aityear type="text" placeholder="ANNEE" style="margin-left: 1em; width : 80%;  font-weight : bold" appearance="outline">
   </mat-list-option>
   <mat-list-option #thrombectomie style="margin-left: 1em ; margin-bottom: 2em; width : 30%" value="Thrombectomie">Thrombectomie
-  <input matInput  #thrombectomieyear type="text" placeholder="ANNEE" style="margin-left: 1em; width : 80%  font-weight : bold"
+  <input matInput  #thrombectomieyear type="text" placeholder="ANNEE" style="margin-left: 1em; width : 80%;  font-weight : bold"
          appearance="outline">
   </mat-list-option>
 
   <mat-list-option #claudication style="margin-left: 1em ; margin-bottom: 2em; width : 30%" value="Claudication">Claudication
-  <input matInput #claudicationyear type="text" placeholder="ANNEE" style="margin-left: 1em; width : 80%  font-weight : bold"
+  <input matInput #claudicationyear type="text" placeholder="ANNEE" style="margin-left: 1em; width : 80%;  font-weight : bold"
          appearance="outline">
   </mat-list-option>
 
@@ -48,8 +48,8 @@
   </mat-list-option>
 
 
-  <mat-list-option #mpoc style="margin-left: 1em ; margin-bottom: 2em; width : 30%" value="MPOC">MPOC
-  <input matInput #mpocyear type="text" placeholder="ANNEE" style="margin-left: 1em; width : 80%  font-weight : bold" appearance="outline">
+  <mat-list-option #mpoc style="margin-left: 1em ; margin-bottom: 2em; width : 30%" value="MPOC">Maladie pulmonaire obstructive chronique/MPOC
+  <input matInput #mpocyear type="text" placeholder="ANNEE" style="margin-left: 1em; width : 80%;  font-weight : bold" appearance="outline">
   </mat-list-option>
   <mat-list-option #insuffisance_renale style="margin-left: 1em ; margin-bottom: 2em; width : 30%" value="Insuffisance rénale">Insuffisance rénale
   </mat-list-option>
@@ -57,13 +57,13 @@
   <mat-list-option #dialyse id="dialyse" style="margin-left: 1em ; margin-bottom: 2em; width : 30%" value="Dialyse">Dialyse</mat-list-option>
 
   <mat-list-option #cancer1 style="margin-left: 1em ; margin-bottom: 2em; width : 30%" value="Cancer1">Cancer
-  <input  #cancer1_organe type="text" matInput placeholder="Organe" style="margin-left: 1em; width : 80%  font-weight : bold"
+  <input  #cancer1_organe type="text" matInput placeholder="Organe" style="margin-left: 1em; width : 80%;  font-weight : bold"
          appearance="outline"><input matInput  #cancer1_year type="text" placeholder="ANNEE"
                                      style="margin-left: 1em; width : 80%  font-weight : bold" appearance="outline">
   </mat-list-option>
 
   <mat-list-option #cancer2 style="margin-left: 1em ; margin-bottom: 2em; width : 30%" value=" Cancer2">Cancer
-  <input  #cancer2_organe matInput type="text" placeholder="Organe" style="margin-left: 1em; width : 80%  font-weight : bold"
+  <input  #cancer2_organe matInput type="text" placeholder="Organe" style="margin-left: 1em; width : 80%;  font-weight : bold"
          appearance="outline"><input matInput #cancer2_year type="text" placeholder="ANNEE"
                                      style="margin-left: 1em; width : 80%  font-weight : bold" appearance="outline">
   </mat-list-option>
@@ -112,7 +112,7 @@
   <mat-list-option #arret_tabac_plus6 style="margin-left: 50% ; margin-bottom: 2em; width : 30%" value="Tabagisme ancien (arrêt depuis > 6 mois)">Tabagisme ancien (arrêt depuis > 6 mois)</mat-list-option>
   <mat-list-option #atcd_famlly_cardiovas style="margin-left: 50% ; margin-bottom: 2em; width : 30%" value="Antécédents familiaux – maladie cardiovasculaire)">Antécédents familiaux – maladie cardiovasculaire)</mat-list-option>
   <mat-list-option #atcd_famlly_cancer style="margin-left: 50% ; margin-bottom: 2em; width : 30%" value="Antécédents familiaux – cancer">Antécédents familiaux – cancer</mat-list-option>
-  <mat-list-option #troubles_anxieux style="margin-left: 50% ; margin-bottom: 2em; width : 30%" value="Troubles anxieux<">Troubles anxieux</mat-list-option>
+  <mat-list-option #troubles_anxieux style="margin-left: 50% ; margin-bottom: 2em; width : 30%" value="Troubles anxieux">Troubles anxieux</mat-list-option>
   <mat-list-option #depression style="margin-left: 50% ; margin-bottom: 2em; width : 30%" value="Dépression">Dépression</mat-list-option>
   <mat-form-field appearance="fill" style="margin-left: 50% ; margin-bottom: 2em; width : 30%; font-weight : bold">
     <mat-label>  Autres  :

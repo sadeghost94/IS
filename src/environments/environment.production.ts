@@ -1,13 +1,15 @@
 export const environment = {
   environmentName: 'production',
   production : true,
-  firebase: {
-    apiKey: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    authDomain: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    databaseURL: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    projectId: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    storageBucket: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    messagingSenderId: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  firebase : {
+    apiKey: "AIzaSyB8xKzoTy5mVoTGfX42ZKJfSgTIS5v-uys",
+    authDomain: "ipodsante-92c27.firebaseapp.com",
+    databaseURL: "https://ipodsante-92c27.firebaseio.com",
+    projectId: "ipodsante-92c27",
+    storageBucket: "ipodsante-92c27.appspot.com",
+    messagingSenderId: "26554076167",
+    appId: "1:26554076167:web:96d000417a85f2c3a62ea2",
+    measurementId: "G-BD9XWB2ELC"
   },
   LOGIN_URL : 'https://epod-zuul.herokuapp.com/api/v1/auth-service/oauth/token',
   FORGET_PASSWORD_URL  : "https://epod-zuul.herokuapp.com/api/v1/auth-service/update/password/mail",
@@ -23,6 +25,7 @@ export const environment = {
   ADD_PATIENT_URL :"https://epod-zuul.herokuapp.com/api/v1/patient-service/create",
   LIST_PATIENT_URL :"https://epod-zuul.herokuapp.com/api/v1/patient-service/all/professional",
   ADD_SOCIO :"https://epod-zuul.herokuapp.com/api/v1/patient-service/socio",
+  ADD_LIPID : "https://epod-zuul.herokuapp.com/api/v1/patient-service/lipidprofile",
   ADD_ANTE :"https://epod-zuul.herokuapp.com/api/v1/patient-service/antecedents",
   GET_SOCIO :"https://epod-zuul.herokuapp.com/api/v1/patient-service/socio",
   ADD_EXAM : "https://epod-zuul.herokuapp.com/api/v1/patient-service/clinicalexamination",
@@ -37,7 +40,11 @@ export const environment = {
   AFFECT_DEVICE :"https://epod-zuul.herokuapp.com/api/v1/fitbit-service/device/assign",
   RECUP_DEVICE :"https://epod-zuul.herokuapp.com/api/v1/fitbit-service/device/back",
   ADD_RDV :"https://epod-zuul.herokuapp.com/api/v1/patient-service/appointment",
-  LIST_RDV : "https://epod-zuul.herokuapp.com/api/v1/patient-service/appointment/all"
+  LIST_RDV : "https://epod-zuul.herokuapp.com/api/v1/patient-service/appointment/all",
+  ADD_QUIZ : "https://epod-zuul.herokuapp.com/api/v1/patient-service/questionnaire",
+  ADD_RECO : "https://epod-zuul.herokuapp.com/api/v1/patient-service/recommendation",
+  REFRESH_TOKEN : 'https://epod-zuul.herokuapp.com/api/v1/auth-service/oauth/token'
+
 
 
 

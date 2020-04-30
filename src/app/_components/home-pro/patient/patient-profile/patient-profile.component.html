@@ -2,112 +2,167 @@
   <mat-card-header>
     <div mat-card-avatar class="example-header-image">
     </div>
-    <mat-card-title>{{patient.firstName}}, {{patient.lastName}}</mat-card-title>
-    <mat-card-subtitle>Numero de dossier : {{patient.fileNumber}}</mat-card-subtitle>
-    <mat-card-subtitle *ngIf="patient">Date de derniere visite : 12/12/2019 </mat-card-subtitle>
-    <mat-card-subtitle style="color: crimson">Date de la prochaine visite : 01/01/2020 </mat-card-subtitle>
-    <mat-card-subtitle>Code compte patient : {{patient.loginCode}}</mat-card-subtitle>
+    <mat-card-title>{{patient?.firstName}}, {{patient?.lastName}}</mat-card-title>
+    <span  class="iconify" data-icon="mdi-gender-male" data-inline="false"></span>
+    <mat-card-subtitle>Numero de dossier : {{patient?.fileNumber}}</mat-card-subtitle>
+    <mat-card-subtitle *ngIf="lastVisite!=null">Date de la prochaine visite : {{lastVisite.appointmentDate}}</mat-card-subtitle>
+    <mat-card-subtitle>Code compte patient : {{patient?.loginCode}}</mat-card-subtitle>
 
 
 
 
   </mat-card-header>
-  <mat-card-actions >
-    <button mat-button color="primary" (click)="reco(patient)">Recommandations</button>
+<!--  <mat-button-toggle-group  name="fontStyle" aria-label="Font Style">
+    <mat-button-toggle value="bold" (click)="add_socio(patient.id)">
+      <span class="material-icons">note_add</span>
+      Informations Socio-démographiques </mat-button-toggle>
+    <mat-button-toggle value="italic" (click)="add_antecedent(patient.id)">
+      <span class="material-icons">local_hospital</span>
+      Antécédents</mat-button-toggle>
+    <mat-button-toggle value="italic">
+      <span class="material-icons">accessibility_new</span>
+      Examen clinique</mat-button-toggle>
+    <mat-button-toggle value="italic">
+      <span class="material-icons">watch</span>
+      PODOMETRE</mat-button-toggle>
 
+  </mat-button-toggle-group>-->
+  <mat-card-actions >
+    <button mat-button color="primary" (click)="reco(patient)">
+      <span class="material-icons">
+add
+</span>Recommandations</button>
+    <button mat-button color="primary" (click)="lipdProfile(patient)">
+      <span class="material-icons">
+add
+</span>Bilan lipidique</button>
 
   </mat-card-actions>
-  <mat-tab-group style="margin-top: 2em; margin-bottom: 2em;">
+  <mat-tab-group style="margin-top: 2em; margin-bottom: 2em;" *ngIf="patient!=null">
     <mat-tab label="informations du patient">
-      <mat-card style=" color : white; background :#323232; margin-bottom: 1em;">Informations personnels</mat-card>
       <mat-form-field appearance="fill" style="width: 30%;">
         <mat-label>Nom</mat-label>
-        <input disabled=true #firstname matInput placeholder="Nom*" [value]="patient.firstName" color="primary"  >
+        <input disabled=true #firstname matInput placeholder="Nom*" [value]="patient?.firstName" color="primary"  >
       </mat-form-field>
       <mat-form-field appearance="fill" style="width: 30%;">
         <mat-label>Prenom</mat-label>
-        <input disabled=true #lastname matInput placeholder="Prenom*" [value]="patient.lastName" color="primary"  >
+        <input disabled=true #lastname matInput placeholder="Prenom*" [value]="patient?.lastName" color="primary"  >
       </mat-form-field>
       <mat-form-field appearance="fill" style="width: 30%;">
         <mat-label>Nom de mere </mat-label>
-        <input disabled=true #mothername matInput placeholder="Nom de mere* "  [value]="patient.motherName" color="primary"  >
+        <input disabled=true #mothername matInput placeholder="Nom de mere* "  [value]="patient?.motherName" color="primary"  >
       </mat-form-field>
 
       <mat-form-field appearance="fill" style="width: 30%;">
         <mat-label>Numero de telephone</mat-label>
-        <input #phone type="number" matInput placeholder="Numero de telephone*" [value]="patient.contact.phone" color="primary"  >
+        <input #phone  disabled=true type="number" matInput placeholder="Numero de telephone*" [value]="patient?.contact.phone" color="primary"  >
       </mat-form-field>
-      <mat-form-field class="example-full-width" appearance="fill">
-        <input  #email matInput placeholder="Email" [value]="patient.contact.email" >
+      <mat-form-field  appearance="fill">
+        <mat-label>Numero de telephone</mat-label>
+        <input  #email disabled=true matInput placeholder="Email" [value]="patient?.contact.email" >
       </mat-form-field>
-      <mat-form-field appearance="fill" style="width: 30%;">
-        <mat-label> AGE </mat-label>
-        <input disabled=true #birthday matInput type="number" placeholder="Age*" color="primary"  [value]="">
+      <mat-form-field appearance="fill" >
+        <mat-label> Date de naissance </mat-label>
+        <input #birthday disabled=true matInput color="primary"    placeholder="weight"    [value]="patient?.birthday">
 
       </mat-form-field>
-      <mat-form-field appearance="fill" style="width: 30%;">
+      <mat-form-field *ngIf="height!=null" appearance="fill" style="width: 30%;">
         <mat-label> Taille en cm </mat-label>
-        <input disabled=true #birthday matInput type="number" placeholder="Age*" color="primary"  value="175" >
+        <input disabled = true  #birthday matInput  placeholder="Age*"  [value]="height" >
 
       </mat-form-field>
-      <mat-form-field appearance="fill" style="width: 30%;">
+      <mat-form-field *ngIf="weight!=null" appearance="fill" style="width: 30%;">
         <mat-label> Poids en kg </mat-label>
-        <input disabled=true  matInput type="number" placeholder="Poids*" color="primary"  value="58" >
+        <input disabled=true  matInput  placeholder="Poids*"  color="primary"    [value]="weight" >
 
       </mat-form-field>
-      <mat-form-field appearance="fill" style="width: 30%;">
+      <mat-form-field *ngIf="imc!=null"  appearance="fill" style="width: 30%;">
         <mat-label> IMC </mat-label>
-        <input disabled=true  matInput type="number" placeholder="Age*" color="primary"  value="19.6" >
+        <input disabled=true  matInput  placeholder="Age*" color="primary"  [value]="imc" >
 
       </mat-form-field>
-
-      <mat-card style=" color : white; background :#323232; margin-bottom: 1em;">Antecedants </mat-card>
-      <mat-list #antecedants>
-        <h2>Antecedants</h2>
-        <mat-list-item *ngFor="let p of ant">
-          <h4>{{p.antecedent }} </h4>
-          <h4 *ngIf="p.year!=null">
-            ANNEE : {{p.year}}
+      <mat-expansion-panel style=" margin-top: 2em;  margin-bottom: 2em;" *ngIf="list_ante!=null" >
+        <mat-expansion-panel-header>
+          <mat-panel-title style="color: #323232; font-weight: bold ">
+            <h4>Histoire de Sante:</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+      <mat-list   #antecedants>
+        <mat-list-item *ngFor="let ante of antecedents ">
+           <h5 *ngFor="let x of ante">{{x.antecedent}}</h5>
+          <h4 *ngIf="ante.year!=null">
+            ANNEE : {{ante.year}}
           </h4>
+        </mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+      <mat-expansion-panel *ngIf="patient?.socioDemographicVariables!=null"  style=" margin-top: 2em;  margin-bottom: 2em;">
+        <mat-expansion-panel-header>
+          <mat-panel-title style="color: #323232; font-weight: bold ">
+            <h4>Information socio-demographiques :</h4>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+          <h4>Niveau de scolarite</h4>
+          <h5 style="color: #039be5">{{socioDemo.education}}</h5>
+        <h4>Statut marital actuel</h4>
+        <h5 style="color: #039be5">{{socioDemo.civilStatus}}</h5>
+        <h4>Statut professionnel actuel</h4>
+        <h5 style="color: #039be5">{{socioDemo.jobStatus}}</h5>
+        <h4>Revenu familial </h4>
+        <h5 style="color: #039be5">{{socioDemo.familyIncome}} par an</h5>
+        <h4>Milieu de vie </h4>
+        <h5 style="color: #039be5">{{socioDemo.livingEnvironment.type}}</h5>
 
-        </mat-list-item>
 
-      </mat-list>
-      <mat-card style=" color : white; background :#323232; margin-bottom: 1em;">Scores, degres de confiance et barrierres </mat-card>
-      <mat-list #score>
-        <h2>Scores</h2>
-        <mat-list-item >
-          Score BREQ-2 (Motivation) : 2.5
-        </mat-list-item>
-        <mat-list-item >
-          Score GPAQ (Activite physique) : 3
-        </mat-list-item>
-      </mat-list>
-      <mat-list #confiance>
-        <h2> Degré de confiance (1-10) </h2>
-        <section class="example-section">
-          <mat-progress-bar
-            class="example-margin"
-            color="red"
-            value=10
-            >
-          </mat-progress-bar>
-        </section>
-      </mat-list>
-      <mat-list #barrieres>
-        <h2> barrieres pour le  patient</h2>
-        <mat-list-item >
-          Je n ai pas assez de temps pour le sport
-        </mat-list-item>
-        <mat-list-item >
-          Je me fatigue rapidement
-        </mat-list-item>
-      </mat-list>
+
+      </mat-expansion-panel>
+
+
 
     </mat-tab>
+    <mat-tab label="Saisir les informations du patient">
+      <mat-expansion-panel style="width:100%; margin-top: 2em; margin-bottom: 2em; ">
+        <mat-expansion-panel-header>
+          <mat-panel-title style="color: #323232; font-weight: bold ">
+            <span class="material-icons">note_add</span>
+            Informations Socio-démographiques
+          </mat-panel-title>
+
+        </mat-expansion-panel-header>
+        <app-sociodemo [id]="id"></app-sociodemo>
+      </mat-expansion-panel>
+      <mat-expansion-panel style="width:100%; margin-top: 2em; margin-bottom: 2em; ">
+        <mat-expansion-panel-header>
+          <mat-panel-title style="color: #323232; font-weight: bold ">
+            <span class="material-icons">accessibility_new</span>
+            Examen clinique
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-examenclinique [id]="id" ></app-examenclinique>
+      </mat-expansion-panel>
+      <mat-expansion-panel style="width:100%; margin-top: 2em; margin-bottom: 2em; ">
+        <mat-expansion-panel-header>
+          <mat-panel-title style="color: #323232; font-weight: bold ">
+            <span class="material-icons">local_hospital</span>
+            Antécédents
+          </mat-panel-title>
+
+        </mat-expansion-panel-header>
+        <app-histoire-sante [id]="id"></app-histoire-sante>
+      </mat-expansion-panel>
+      <mat-expansion-panel style="width:100%; margin-top: 2em; margin-bottom: 2em; ">
+        <mat-expansion-panel-header>
+          <mat-panel-title style="color: #323232; font-weight: bold ">
+            <span class="material-icons">watch</span>
+            PODOMETRE
+          </mat-panel-title>
+
+        </mat-expansion-panel-header>
+        <app-affectpodometre [id]="id" ></app-affectpodometre>
+      </mat-expansion-panel>
+    </mat-tab>
     <mat-tab label="Visites">
-      <mat-card style=" color : white; background :#323232;">planning</mat-card>
-   <kendo-scheduler [kendoSchedulerBinding]="events"
+   <!--<kendo-scheduler [kendoSchedulerBinding]="events"
                        [selectedDate]="selectedDate"
                        startTime="07:00" endTime="19:00"
                        style="height: 400px;">
@@ -116,15 +171,20 @@
 
         <kendo-scheduler-timeline-week-view>
         </kendo-scheduler-timeline-week-view>
-      </kendo-scheduler>
-      <mat-card style=" color : white; background :#323232;">toutes les visites </mat-card>
+      </kendo-scheduler>-->
       <app-list-visites [patient]="patient"></app-list-visites>
 
     </mat-tab>
-    <mat-tab label="statistiques et graphiques">
+    <mat-tab label="Rapport visuel">
 
-    <app-rapport></app-rapport>
+    <app-rapport [patient]="patient"></app-rapport>
     </mat-tab>
+    <mat-tab label="Rapport Global Pdf">
+
+      <app-rapport [patient]="patient"></app-rapport>
+    </mat-tab>
+
+<!--
     <mat-tab label="Resultats de l examen">
       <mat-form-field appearance="fill" style="  margin-left: 40%">
       <select #afficher_par style="" matInput matNativeControl >
@@ -263,6 +323,7 @@
     <mat-checkbox #anxiolytique style="margin-left: 1em" disabled ="true"  value="Anxiolytique" >Anxiolytique</mat-checkbox>
     <mat-checkbox #anti_depresseurs style="margin-left: 1em" disabled ="true"  value="Anti dépresseurs">Anti dépresseurs</mat-checkbox>
     </mat-tab>
+-->
   </mat-tab-group>
 
 

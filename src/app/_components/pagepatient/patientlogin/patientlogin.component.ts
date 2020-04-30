@@ -45,7 +45,7 @@ export class PatientloginComponent implements OnInit {
        let data = new  PatientDto(null,null,null,null,null,null,
          new ContactDto(null,null ,this.emailFormControl.value,null),null,null,
          null, null, null, this.form.value.password,null,
-         null,null, null,null);
+         null,null, null,null, null,null);
         let request = new Request(data)
         this.patientService.login(request).pipe(first())
           .subscribe(token =>  {

@@ -13,6 +13,7 @@ import {first} from "rxjs/operators";
 import {UserService} from "../../../../_services";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Request} from "../../../../dto/Request";
+import {NavigationEnd, Router, RouterModule} from "@angular/router";
 
 
 @Component({
@@ -23,15 +24,33 @@ import {Request} from "../../../../dto/Request";
 export class AddpatientComponent implements OnInit {
   @Output() exampleOutput = new EventEmitter<PatientDto>()
   @Input() error: string | null;
-
+  mySubscription: any
   birthday: string = "";
   submitted = false;
   patient_added = true;
   constructor(private patientService : PatientService,private userService : UserService,
-              private _snackBar : MatSnackBar
-  ) { }
+              private _snackBar : MatSnackBar, private router : Router
+  ) {   this.router.routeReuseStrategy.shouldReuseRoute = function () {
+    return false;
+  };
+    this.mySubscription = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        // Trick the Router into believing it's last link wasn't previously loaded
+        this.router.navigated = false;
+      }
+    });
+
+
+  }
+
+  ngOnDestroy() {
+    if (this.mySubscription) {
+      this.mySubscription.unsubscribe();
+    }
+  }
 
   ngOnInit() {
+    this.error = null
   }
   emailFormControl = new FormControl('', [
     Validators.required,
@@ -63,7 +82,8 @@ export class AddpatientComponent implements OnInit {
   }
 
   matcher = new MyErrorStateMatcher();
-  ajouter(firstName : string, lastName : string, motherName : string, phone : string, email : string){
+  ajouter(firstName : string, lastName : string, motherName : string, phone : string, email : string, gender : string){
+    this.error = null
 
     if(firstName === "" || lastName === "" || motherName === "" || phone === "" || this.birthday === "")
     {
@@ -85,7 +105,7 @@ export class AddpatientComponent implements OnInit {
         new ContactDto(null,phone,email,null),
         familyDoctor , pharmacy,pro
         ,true,null,null, null,
-        null,null,null,null);
+        null,null,null,null, false,gender);
       let request = new Request(data);
       console.log(request)
 

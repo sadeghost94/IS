@@ -15,6 +15,15 @@
   <mat-label>Nom de la mere </mat-label>
   <input #mothername matInput placeholder="Nom de la mere* "  color="primary"  >
 </mat-form-field>
+<mat-form-field appearance="fill" style="width: 30%;">
+  <mat-label>Genre</mat-label>
+  <select #gender matNativeControl matInput placeholder="Genre">
+    <option></option>
+    <option>Homme</option>
+    <option>Femme</option>
+    <option>Autre</option>
+  </select>
+</mat-form-field>
 <mat-form-field appearance="fill">
   <mat-label>Numero de telephone</mat-label>
   <input #phone type="number" matInput placeholder="Numero de telephone*" color="primary"  >
@@ -39,11 +48,11 @@
   <mat-datepicker #picker disabled="false"></mat-datepicker>
 </mat-form-field>
 <button mat-stroked-button color="primary" class="btn-block" (click)="ajouter(firstname.value,lastname.value
-                                                                             ,mothername.value,phone.value,email.value
+                                                                             ,mothername.value,phone.value,email.value,gender.value
 )">Ajouter
 
 </button>
-<p *ngIf="error" class="error">
+<p *ngIf="error!=null" class="error">
   {{ error }}
 </p>
  <!-- <mat-tab label="Informations socio-demographiques " [disabled]='!patient_added'>

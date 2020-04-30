@@ -1,4 +1,4 @@
-import {Component, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, OnInit,Inject, SimpleChanges, ViewChild} from '@angular/core';
 import {UserRequestDto} from "../../../../dto";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
@@ -6,7 +6,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import { MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 import {BreakpointObserver} from "@angular/cdk/layout";
-import {Router} from "@angular/router";
+import {NavigationEnd, Router} from "@angular/router";
 import {PatientService} from "../../../../_services/patient.service";
 import {PatientDto} from "../../../../dto/patient/PatientDto";
 import {AddpatientComponent} from "../addpatient/addpatient.component";
@@ -27,8 +27,11 @@ export class ListPatientsComponent implements OnInit {
   patients : PatientDto[] ;
   patient = false;
   newPatient;
-  addpatient = false;
+  addpatient ;
+  selected ;
+  colorSelected;
   private modals;
+  appointment
   name;
   id : string;
   idante : string;
@@ -36,6 +39,7 @@ export class ListPatientsComponent implements OnInit {
   ante = false;
   socio = false;
   podo  = false;
+  mySubscription : any
   showProfile = false;
   blocK_checked : boolean = false ;
   @ViewChild(MatSort,{static: false}) sort: MatSort;
@@ -43,12 +47,13 @@ export class ListPatientsComponent implements OnInit {
   @ViewChild(AddpatientComponent,{static: false}) myChild;
 
 
-  public displayedColumns = ['numero_dossier', 'nom', 'Action'
+  public displayedColumns = ['numero_dossier', 'nom', 'action'
   ];
   public dataSource = new MatTableDataSource<PatientDto>();
   currentUser = localStorage.getItem("currentUser");
   constructor(private router : Router, private patientService : PatientService,
               public dialog: MatDialog) {
+
     if (localStorage.getItem("currentRole" ) === "role_professional") {
 
 
@@ -57,13 +62,22 @@ export class ListPatientsComponent implements OnInit {
 
     }
 
-  }
-  ngOnChanges(changes: SimpleChanges) {
+
+
 
   }
-  addNew(Appointment: AppointmentDto) {
+
+  ngOnDestroy() {
+    if (this.mySubscription) {
+      this.mySubscription.unsubscribe();
+    }
+  }
+  ngOnChanges(changes: SimpleChanges) {
+       this.getAllUsers()
+  }
+  addNew() {
     const dialogRef = this.dialog.open(AddDialogComponent, {
-      data: {Appointment: Appointment }
+      data: {Appointment: this.appointment }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result === 1) {
@@ -75,7 +89,10 @@ export class ListPatientsComponent implements OnInit {
     });
   }
 
-
+  selectedPatient(id: string){
+    this.selected = id;
+    this.colorSelected = "red"
+  }
 
   ajouter(){
     this.addpatient = true;
@@ -108,26 +125,8 @@ export class ListPatientsComponent implements OnInit {
 
 
   }
- /* openModel()
-  {
-    const dialogConfig = new MatDialogConfig();
-    // The user can't close the dialog by clicking outside its body
-    dialogConfig.disableClose = true;
-    dialogConfig.id = "modal-component";
-    dialogConfig.height = "500px";
-    dialogConfig.width = "500px";
-    // https://material.angular.io/components/dialog/overview
-    this.modals = this.matDialog.open(LogiComponent,{
-      data: {
-        patient : this.dataSource.data,
-        name : "sadegh"
-      }
-    });
 
-  }*/
-  onNoClick(): void {
-    this.modals.close();
-  }
+
   show_exam(id : string){
     this.addpatient = false;
     this.showProfile = false;
@@ -187,6 +186,7 @@ export class ListPatientsComponent implements OnInit {
 
   ngOnInit() {
     this.getAllUsers();
+
   }
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
@@ -204,7 +204,8 @@ export class ListPatientsComponent implements OnInit {
       console.log(pat)
       this.dataSource.data = pat.object as PatientDto[]
       this.patients = pat.object as PatientDto[]
-      this.dataSource.data.push(this.newPatient)
+      this.show_profile(this.patients[this.patients.length-1].id)
+      //this.dataSource.data.push(this.newPatient)
 
 
     });

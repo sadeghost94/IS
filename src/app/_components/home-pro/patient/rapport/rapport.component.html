@@ -1,29 +1,21 @@
 <div class="container" >
-  <mat-card style=" color : white; background : #323232;">  PODOMETRE
 
-    <h5>(les informations sont afficher par visite)</h5>
-  </mat-card>
   <mat-form-field appearance="fill" style="height: 1em;  margin-left: 40%">
     <mat-label style="">Afficher : </mat-label>
     <select #afficher_par style="color: black" matInput matNativeControl [(ngModel)]="afficher" >
-      <option>
-        Derniere visite : 19/02/2020
+      <option *ngFor="let visite of visites">
+        La visite du : {{visite.appointmentDate}}
       </option>
-      <option>
-        visite : 12/12/2019
-      </option>
-      <option>
-        visite : 15/11/2019
-      </option>
-      <option>
-        visite : 19/09/2019
-      </option>
-      <option>
-        Global
-      </option>
+
     </select>
   </mat-form-field>
-  <mat-card style="color : #323232;">Statistiques descriptives:</mat-card>
+  <mat-expansion-panel style=" margin-top: 2em;  margin-bottom: 2em;">
+    <mat-expansion-panel-header>
+      <mat-panel-title >
+        Statistiques descriptives:
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+  <mat-card >Statistiques descriptives:</mat-card>
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
@@ -73,8 +65,16 @@
     <tr class="active" mat-row *matRowDef="let row; columns: displayedColumns;"
         class="example-element-row"></tr>
   </table>
+  </mat-expansion-panel>
 
   <mat-divider></mat-divider>
+  <mat-expansion-panel style=" margin-top: 2em;  margin-bottom: 2em;">
+    <mat-expansion-panel-header>
+      <mat-panel-title style="color: #323232;">
+        Graphes : (PODOMETRE)
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
   <mat-card style="color : #323232;">Graphes :</mat-card>
 
   <mat-tab-group mat-align-tabs="center"  >
@@ -116,14 +116,15 @@
     </mat-tab>
 
   </mat-tab-group>
+  </mat-expansion-panel>
 
 
   <mat-expansion-panel style="  width:100%; margin-top: 5em;">
-    <mat-expansion-panel-header style="color: white; font-weight: bold; background : #323232; height: 5em;">
-      <mat-panel-title style="color: white; margin-top: 1em">
+    <mat-expansion-panel-header style=" height: 5em;">
+      <mat-panel-title style=" margin-top: 1em">
         Données anthropométriques
       </mat-panel-title>
-      <h6 style="color: white; ">(les courbes ici sont affichees d une maniere globale depuis la prepiere visites)</h6>
+      <h6 style="">(les courbes ici sont affichees d une maniere globale depuis la premiere visites)</h6>
     </mat-expansion-panel-header>
     <mat-tab-group mat-align-tabs="center"  >
       <mat-card style="color : #323232;">Graphes :</mat-card>
@@ -166,11 +167,11 @@
   </mat-expansion-panel>
   <mat-divider></mat-divider>
   <mat-expansion-panel style="  width:100%; margin-top: 5em;">
-    <mat-expansion-panel-header style="color: white;  background : #323232; height: 5em;">
-      <mat-panel-title style="color: white; margin-top: 1em">
+    <mat-expansion-panel-header style=" height: 5em;">
+      <mat-panel-title style=" margin-top: 1em">
         Fréquence cardiaque (repos)
       </mat-panel-title>
-      <h6 style="color: white; ">(les courbes ici sont affichees d une maniere globale depuis la premiere visites)</h6>
+      <h6 style=" ">(les courbes ici sont affichees d une maniere globale depuis la premiere visites)</h6>
       <br>
     </mat-expansion-panel-header>
     <mat-tab-group mat-align-tabs="center"  >

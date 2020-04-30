@@ -1,5 +1,5 @@
-<mat-card style=" color : white; background :#323232;">Informations socio-demographiques</mat-card>
-<mat-form-field appearance="fill" style="width: 30%;">
+<mat-card style=" color : white; background :#323232;">Informations Socio-démographiques</mat-card>
+<!--<mat-form-field appearance="fill" style="width: 30%;">
   <mat-label>Genre</mat-label>
   <select #gender matNativeControl matInput placeholder="Genre">
     <option></option>
@@ -7,14 +7,14 @@
     <option>Femme</option>
     <option>Autre</option>
   </select>
-</mat-form-field>
+</mat-form-field>-->
 <mat-form-field appearance="fill" style="width: 30%;">
-  <mat-label>Niveau de scolarite</mat-label>
+  <mat-label>Scolarité</mat-label>
   <select #scolarity  matNativeControl matInput placeholder="Niveau de scolaire">
     <option></option>
     <option> < 11 ans de scolarité (< Diplôme d’étude secondaire)</option>
     <option>Diplôme d’étude secondaire (DEP)</option>
-    <option>Formation professionnell</option>
+    <option>Formation prfessionnelle</option>
     <option>Formation collégiale</option>
     <option>Formation universitaire 1er cycle</option>
     <option>Formation universitaire 2ème et 3ème cycle</option>
@@ -26,12 +26,10 @@
   <mat-label>Statut marital actuel</mat-label>
   <select  #marital matNativeControl matInput placeholder="Statut marital actuel :">
     <option value="celibataire">Célibataire</option>
-    <option value="divorce">Divorcé(e)</option>
     <option value="marie">Marié(e)</option>
-    <option value="pasce">Pacsé(e)</option>
-    <option value="Vivant maritalement">Vivant maritalement</option>
+    <option value="Conjoints de fait">Conjoints de fait</option>
+    <option value="divorce">Divorcé(e)</option>
     <option value="veuf">veuf(ve)</option>
-
   </select>
 </mat-form-field>
 <mat-form-field appearance="fill" style="width: 30%;">
@@ -39,12 +37,12 @@
   <select #profession matNativeControl matInput placeholder="Statut professionnel actuel"
           >
     <option></option>
-    <option [(ngModel)]="Profession_librale">Profession libérale</option>
-    <option [(ngModel)]="Salarier">Salarié</option>
-    <option [(ngModel)]="Salarie">Retraité</option>
-    <option [(ngModel)]="Sans_activite">Sans activité</option>
-    <option [(ngModel)]="Etudiant">Étudiant</option>
-    <option [(ngModel)]="Autre">Autre</option>
+    <option >À l'emploi</option>
+    <option >Retraité</option>
+    <option >Arrêt (maladie/invalidité)</option>
+    <option>Au foyer</option>
+    <option >Étudiant</option>
+    <option >Autre</option>
 
   </select>
 </mat-form-field>
@@ -60,10 +58,7 @@
 
   </select>
 </mat-form-field>
-<mat-form-field appearance="fill" style="width: 30%;">
-  <mat-label>Age</mat-label>
-  <input #age   matInput placeholder="Age" type="number">
-</mat-form-field>
+
 <br>
 <mat-label style="font-weight: bold; font-size: 15px; width: 100%">Milieu de vie :</mat-label>
 <mat-radio-group  #zone="matRadioGroup" aria-label="choisissez une option" matNativeControl>
@@ -84,16 +79,16 @@
 <br>
 <mat-checkbox #bungalow  value="Bungalow" style="width: 100%" >Bungalow</mat-checkbox>
 <br>
-<mat-checkbox #condo  style="width: 100%"  value="Condo /appartemen">Condo /appartement</mat-checkbox>
+<mat-checkbox #condo  style="width: 100%"  value="Condo /appartement">Condo /appartement</mat-checkbox>
 <br>
 <mat-checkbox #app style="width: 100%" value="Appartement" >Appartement</mat-checkbox>
 
 <br>
 
 
-<button mat-stroked-button color="primary" class="btn-block" (click)="ajouter(gender.value,profession.value,revenu.value,retraite,
+<button mat-stroked-button color="primary" class="btn-block" (click)="ajouter(profession.value,revenu.value,retraite,
 services,house_uni,
-cottage,bungalow,condo,zone.value,age.value,app,marital.value,scolarity.value)">Enregistrer
+cottage,bungalow,condo,zone.value,app,marital.value,scolarity.value)">Enregistrer
 
 </button>
 

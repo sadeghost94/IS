@@ -1,6 +1,8 @@
 import {Component, SimpleChanges} from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {Router} from "@angular/router";
+import {UserIdleService} from "angular-user-idle";
+import {BnNgIdleService} from "bn-ng-idle";
 
 @Component({
   selector: 'app-root',
@@ -21,6 +23,7 @@ export class AppComponent {
   ngOnInit() {
 
   }
+
   ngOnChanges(changes: SimpleChanges) {
 
 

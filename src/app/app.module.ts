@@ -1,8 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { JwtInterceptor} from './_helpers/jwt.interceptor';
-
+import { UserIdleModule } from 'angular-user-idle';
 import { RouterModule } from '@angular/router';
 import { ChartsModule } from 'ng2-charts';
 import {MatSelectionList} from '@angular/material/list';
@@ -54,7 +53,7 @@ import { SchedulerModule } from '@progress/kendo-angular-scheduler';
 import { ListVisitesComponent } from './_components/home-pro/patient/list-visites/list-visites.component';
 import { RapportComponent } from './_components/home-pro/patient/rapport/rapport.component';
 import { AffectpodometreComponent } from './_components/home-pro/patient/affectpodometre/affectpodometre.component';
-import {MatDialogModule} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import { DevicesComponent } from './_components/home/devices/devices.component';
 import { RecomandationComponent } from './_components/home-pro/patient/recomandation/recomandation.component';
 import { PagepatientComponent } from './_components/pagepatient/pagepatient.component';
@@ -73,6 +72,20 @@ import {AddDialogComponent} from "./_components/dialogs/add/add.dialog.component
 import {DeleteDialogComponent} from "./_components/dialogs/delete/delete.dialog.component";
 import {EditDialogComponent} from "./_components/dialogs/edit/edit.dialog.component";
 import {DetailsRecoComponent} from "./_components/home-pro/patient/recomandation/details-reco/details-reco.component";
+import {AngularFireModule} from "@angular/fire";
+import {environment} from "../environments/environment";
+import {ErrorInterceptor} from "./_helpers";
+import {BnNgIdleService} from "bn-ng-idle";
+import {EncrDecrService} from "./_services/EncrDecrService";
+import { IddleUserComponent } from './_components/iddle-user/iddle-user.component';
+import {Idle} from "@ng-idle/core";
+import {NgIdleKeepaliveModule} from "@ng-idle/keepalive";
+import {BilanLipidiqueComponent} from "./_components/home-pro/patient/bilan-lipidique/bilan-lipidique.component";
+import {SociodemoComponentPatient} from "./_components/pagepatient/sociodemopatient/sociodemo-component-patient.component";
+import { RecomandationPatientComponent } from './_components/pagepatient/recomandation-patient/recomandation-patient.component';
+import { GpaqComponent } from './_components/pagepatient/gpaq/gpaq.component';
+import {GpaqQuizComponent} from "./_components/pagepatient/gpaq/quiz/quiz.component";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
 
 
@@ -102,6 +115,7 @@ import {DetailsRecoComponent} from "./_components/home-pro/patient/recomandation
     AddpatientComponent,
     ExamencliniqueComponent,
     SociodemoComponent,
+    SociodemoComponentPatient,
     AntecedantsComponent,
     ListVisitesComponent,
     RapportComponent,
@@ -117,13 +131,19 @@ import {DetailsRecoComponent} from "./_components/home-pro/patient/recomandation
     LogiComponent,
     AddDialogComponent,
     DeleteDialogComponent,
-    EditDialogComponent
+    EditDialogComponent,
+    IddleUserComponent,
+    RecomandationPatientComponent,
+    GpaqComponent,
+    GpaqQuizComponent
 
 
 
   ],
   imports: [
     BrowserModule,
+    UserIdleModule.forRoot({idle: 600, timeout: 10, ping: 120}),
+    AngularFireModule.initializeApp(environment.firebase),
     ModalModule,
     FlexLayoutModule,
     HomeRoutingModule,
@@ -150,15 +170,22 @@ import {DetailsRecoComponent} from "./_components/home-pro/patient/recomandation
     ChartsModule,
     MatDialogModule,
     RouterModule,
-
-
+    NgIdleKeepaliveModule.forRoot(),
     OAuthModule.forRoot(),
 
-    SchedulerModule
+    SchedulerModule,
+    MatButtonToggleModule
   ],
-//{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
-  providers: [],
-  entryComponents: [AddDialogComponent, DetailsRecoComponent, DeleteDialogComponent, EditDialogComponent],
+//
+
+  providers: [EncrDecrService,
+   { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: MatDialogRef, useValue: {} },
+    { provide: MAT_DIALOG_DATA, useValue: [] },
+
+   //{ provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+  ],
+  entryComponents: [SociodemoComponent,AddDialogComponent,RecomandationComponent, GpaqComponent, DetailsRecoComponent, DeleteDialogComponent, EditDialogComponent, IddleUserComponent, BilanLipidiqueComponent],
   exports: [],
   bootstrap: [AppComponent]
 })

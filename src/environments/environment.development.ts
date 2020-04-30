@@ -14,6 +14,7 @@ export const environment = {
   ADD_PATIENT_URL :"https://epod-zuul.herokuapp.com/api/v1/patient-service/create",
   LIST_PATIENT_URL :"https://epod-zuul.herokuapp.com/api/v1/patient-service/all/professional",
   ADD_SOCIO :"https://epod-zuul.herokuapp.com/api/v1/patient-service/socio",
+  ADD_LIPID : "https://epod-zuul.herokuapp.com/api/v1/patient-service/lipidprofile",
   ADD_ANTE :"https://epod-zuul.herokuapp.com/api/v1/patient-service/antecedents",
   GET_SOCIO :"https://epod-zuul.herokuapp.com/api/v1/patient-service/socio",
   ADD_EXAM : "https://epod-zuul.herokuapp.com/api/v1/patient-service/clinicalexamination",
@@ -28,7 +29,12 @@ export const environment = {
   AFFECT_DEVICE :"https://epod-zuul.herokuapp.com/api/v1/fitbit-service/device/assign",
   RECUP_DEVICE :"https://epod-zuul.herokuapp.com/api/v1/fitbit-service/device/back",
   ADD_RDV :"https://epod-zuul.herokuapp.com/api/v1/patient-service/appointment",
-  LIST_RDV : "https://epod-zuul.herokuapp.com/api/v1/patient-service/appointment/all"
+  LIST_RDV : "https://epod-zuul.herokuapp.com/api/v1/patient-service/appointment/all",
+  ADD_QUIZ : "https://epod-zuul.herokuapp.com/api/v1/patient-service/questionnaire",
+  ADD_RECO : "https://epod-zuul.herokuapp.com/api/v1/patient-service/recommendation",
+  REFRESH_TOKEN : 'https://epod-zuul.herokuapp.com/api/v1/auth-service/oauth/token'
+
+
 
 
 

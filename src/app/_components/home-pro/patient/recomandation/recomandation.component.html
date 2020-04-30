@@ -1,7 +1,5 @@
 <mat-card-title>{{data.patient.firstName}}, {{data.patient.lastName}}</mat-card-title>
 <mat-card-subtitle>Numero de dossier : {{data.patient.fileNumber}}</mat-card-subtitle>
-<mat-card-subtitle>Date de derniere visite : 12/12/2019 </mat-card-subtitle>
-<mat-card-subtitle style="color: crimson">Date de la prochaine visite : 01/01/2020 </mat-card-subtitle>
 <mat-card-subtitle>Code compte patient : {{data.patient.loginCode}}</mat-card-subtitle>
 <mat-tab-group>
 
@@ -72,7 +70,7 @@
 <mat-label>temps sédentaire</mat-label>
   <mat-chip-list #chipListsedentaire aria-label="temps sédentaire">
 
-    <mat-chip (click)="chipDetails2()"
+    <mat-chip (click)="chipDetails2(r)"
               *ngFor="let r of Reco2"
               [selectable]="selectable"
               [removable]="removable"
@@ -96,7 +94,7 @@
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>
-  <button mat-button color="primary" style="background-color: aliceblue; width: 100%">
+  <button mat-button color="primary" (click)="enregister()" style="background-color: aliceblue; width: 100%">
     Enregistrer
   </button>
 </mat-tab>

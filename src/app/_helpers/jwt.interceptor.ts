@@ -36,6 +36,14 @@ export class JwtInterceptor implements HttpInterceptor {
             console.log('event--->>>', event);
           }
           return event;
-        }));
+        })/*,catchError((error: HttpErrorResponse) => {
+        this.authenticationService.refresh_token().subscribe(reponse =>{
+          console.log("ok")
+        }, error1 => {
+          console.log("non")
+        });
+        return throwError(error);
+      }*/);
+
     }
 }

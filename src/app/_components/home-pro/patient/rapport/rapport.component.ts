@@ -1,9 +1,13 @@
-import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {DescStats} from "../../../../_models/DescStats";
 import {MatTableDataSource} from "@angular/material/table";
 import {Patient} from "../../../../_models/patient";
 import {Color, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, SingleDataSet} from "ng2-charts";
 import {ChartDataSets, ChartOptions, ChartType} from "chart.js";
+import {AppointmentDto} from "../../../../dto/AppointmentDto";
+import {PatientService} from "../../../../_services/patient.service";
+import {PatientDto} from "../../../../dto/patient/PatientDto";
+import {NavigationEnd, Router} from "@angular/router";
 
 @Component({
   selector: 'app-rapport',
@@ -12,12 +16,19 @@ import {ChartDataSets, ChartOptions, ChartType} from "chart.js";
 })
 export class RapportComponent implements OnInit, OnChanges  {
   tabIndex = 0;
+  @Input() patient: PatientDto
   afficher ;
+  mySubscription : any
+  datevisites : string [] =["string"];
+  visites : AppointmentDto[];
   public patientRow: Patient[] = [];
   public stats : DescStats [];
   barChartOptions: ChartOptions = {
     responsive: true,
   };
+
+
+
   barChartLabels: Label[] = ['Jour 1', 'Jour 2', 'Jour 3', 'Jour 4\'', 'Jour 5\'', 'Jour 6\'', 'Jour 7\''];
   barChartType: ChartType = 'bar';
   barChartLegend = true;
@@ -33,7 +44,8 @@ export class RapportComponent implements OnInit, OnChanges  {
     { data: [30, 35, 40, 35, 20, 75], label: 'par minute' },
   ];
 
-  lineChartLabels: Label[] = ['Viste1', 'visite 2', 'Visite 3', 'Visite 4', 'Visite 5', 'Visite 6'];
+
+  lineChartLabels: Label[] = this.datevisites;
 
   lineChartOptions = {
     responsive: true,
@@ -70,8 +82,7 @@ export class RapportComponent implements OnInit, OnChanges  {
   public pieChartData: SingleDataSet = [30, 50, 20];
   public pieChartLegend = true;
   public pieChartPlugins = [];
-  constructor() {
-
+  constructor(private  patientService : PatientService, private router : Router) {
 
     this.statis =  [ new DescStats("Minutes lightly active", 50,10,26,15,14,12),
       new DescStats("Minutes fairly active", 13,14,11,10,5,5),
@@ -81,11 +92,37 @@ export class RapportComponent implements OnInit, OnChanges  {
     this.dataSource.data = this.statis;
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend();
+
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
+    this.mySubscription = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        // Trick the Router into believing it's last link wasn't previously loaded
+        this.router.navigated = false;
+      }
+    });
+
+
   }
 
+  ngOnDestroy() {
+    if (this.mySubscription) {
+      this.mySubscription.unsubscribe();
+    }
+  }
   ngOnInit() {
+      this.getAllVisites()
+
+
+
+
+
   }
   ngOnChanges(changes: SimpleChanges): void {
+    this.getAllVisites()
+
+
 
   }
   public chartClicked(e: any): void {
@@ -95,6 +132,23 @@ export class RapportComponent implements OnInit, OnChanges  {
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+  public getAllVisites = () => {
+    console.log(this.patient)
+   this.patientService.getRdv(this.patient.id).subscribe( patients => {
+       //let tabusers = JSON.parse(JSON.stringify(users.toString()))
+     this.visites = JSON.parse(JSON.stringify(patients)).object as AppointmentDto[]
+     console.log(patients)
+     console.log(this.visites)
+     for (let i = 0; i<this.visites.length; i++){
+       this.datevisites[i] = this.visites[i].appointmentDate
+     }
+
+
+
+
+
+    });
   }
 
 

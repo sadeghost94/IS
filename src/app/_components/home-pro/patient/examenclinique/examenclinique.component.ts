@@ -12,6 +12,7 @@ import {first} from "rxjs/operators";
 import {PatientService} from "../../../../_services/patient.service";
 import {Request} from "../../../../dto";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {NavigationEnd, Router} from "@angular/router";
 
 @Component({
   selector: 'app-examenclinique',
@@ -34,10 +35,28 @@ export class ExamencliniqueComponent implements OnInit {
   pitaille : number ;
   btbloq ;
   active ;
+  mySubscription : any
   now : string;
 
-  constructor(private patientService : PatientService,private _snackBar : MatSnackBar) {
+  constructor(private patientService : PatientService,private _snackBar : MatSnackBar, private router : Router) {
     this.getBirthday()
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
+    this.mySubscription = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        // Trick the Router into believing it's last link wasn't previously loaded
+        this.router.navigated = false;
+      }
+    });
+
+
+  }
+
+  ngOnDestroy() {
+    if (this.mySubscription) {
+      this.mySubscription.unsubscribe();
+    }
   }
 
   ngOnInit() {

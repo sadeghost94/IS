@@ -19,14 +19,16 @@ export class PatientDto {
   familyDoctor: FamilyDoctorDto[];
   pharmacy: PharmacyDto [];
   isActive: boolean;
+  gender : string
   questionnaireToken: string
   questionnaireTokenExpirationDate : string
   professionals: ProfessionalDto[];
-  medicalFileDto: MedicalFileDto;
+  medicalFile: MedicalFileDto;
   loginCode: string
   socioDemographicVariables : string
   appointments : AppointmentDto[]
   questionnaires : QuestionnaireDto[]
+  hasBREQ : boolean
 
 
   constructor(id: string, fileNumber: string, firstName: string, lastName: string,
@@ -36,7 +38,7 @@ export class PatientDto {
               medicalFileDto: MedicalFileDto, loginCode: string,
               questionnaireToken: string, socioDemographicVariables : string,
               questionnaireTokenExpirationDate : string,questionnaires : QuestionnaireDto[],
-              appointments : AppointmentDto[]) {
+              appointments : AppointmentDto[],hasBREQ: boolean, genre : string) {
     this.id = id;
     this.fileNumber = fileNumber;
     this.firstName = firstName;
@@ -48,13 +50,15 @@ export class PatientDto {
     this.pharmacy = pharmacy;
     this.professionals = professionals;
     this.isActive = isActive;
-    this.medicalFileDto = medicalFileDto
+    this.medicalFile = medicalFileDto
     this.loginCode = loginCode
     this.questionnaireToken = questionnaireToken
     this.socioDemographicVariables = socioDemographicVariables
     this.appointments = appointments
     this.questionnaireTokenExpirationDate = questionnaireTokenExpirationDate
     this.questionnaires = questionnaires
+    this.hasBREQ = hasBREQ
+    this.gender = genre
 
 
 

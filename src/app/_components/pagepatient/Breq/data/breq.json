@@ -50,7 +50,7 @@
         "name": "Multiple Choice",
         "isActive": true
       },
-      "regulation": 
+      "regulation":
         {
           "id": 2,
           "questionId": 1010,
@@ -105,7 +105,7 @@
         "name": "Multiple Choice",
         "isActive": true
       },
-         "regulation": 
+         "regulation":
         {
           "id": 3,
           "questionId": 1011,
@@ -160,13 +160,13 @@
         "name": "Multiple Choice",
         "isActive": true
       } ,
-      "regulation": 
+      "regulation":
         {
           "id": 4,
           "questionId": 1012,
           "name": "Identified regulation",
           "coef" : 2
-        } 
+        }
     },
     {
       "id": 1013,
@@ -215,13 +215,13 @@
         "name": "Multiple Choice",
         "isActive": true
       },
-      "regulation": 
+      "regulation":
       {
         "id": 5,
         "questionId": 1013,
         "name": "Intrinsic regulation",
         "coef" : 3
-      } 
+      }
     },
     {
       "id": 1014,
@@ -269,7 +269,7 @@
         "name": "Multiple Choice",
         "isActive": true
       },
-      "regulation": 
+      "regulation":
       {
         "id": 1,
         "questionId": 1014,
@@ -324,7 +324,7 @@
         "name": "Multiple Choice",
         "isActive": true
       },
-      "regulation": 
+      "regulation":
         {
           "id": 2,
           "questionId": 1015,
@@ -378,7 +378,7 @@
         "id": 1,
         "name": "Multiple Choice",
         "isActive": true
-      }, "regulation": 
+      }, "regulation":
       {
         "id": 3,
         "questionId": 1016,
@@ -431,7 +431,7 @@
       "name": "Multiple Choice",
       "isActive": true
     },
-      "regulation": 
+      "regulation":
       {
         "id": 4,
         "questionId": 1017,
@@ -485,7 +485,7 @@
         "name": "Multiple Choice",
         "isActive": true
       },
-      "regulation": 
+      "regulation":
         {
           "id": 1,
           "questionId": 1018,
@@ -539,7 +539,7 @@
       "name": "Multiple Choice",
       "isActive": true
     },
-      "regulation": 
+      "regulation":
       {
         "id": 5,
         "questionId": 1019,
@@ -595,7 +595,7 @@
         "name": "Multiple Choice",
         "isActive": true
       },
-      "regulation": 
+      "regulation":
         {
           "id": 2,
           "questionId": 1020,
@@ -650,7 +650,7 @@
         "name": "Multiple Choice",
         "isActive": true
       },
-      "regulation": 
+      "regulation":
         {
           "id": 1,
           "questionId": 1021,
@@ -704,7 +704,7 @@
         "name": "Multiple Choice",
         "isActive": true
       },
-      "regulation": 
+      "regulation":
       {
         "id": 3,
         "questionId": 1022,
@@ -769,7 +769,7 @@
     },
     {
       "id": 1025,
-      "name": "Je trouve que l’activité physique est une agréable",
+      "name": "Je trouve que l’activité physique est  agréable",
       "questionTypeId": 1,
       "options": [
         {
@@ -813,7 +813,7 @@
         "name": "Multiple Choice",
         "isActive": true
       },
-      "regulation": 
+      "regulation":
         {
           "id": 5,
           "questionId": 1025,
@@ -867,7 +867,7 @@
         "name": "Multiple Choice",
         "isActive": true
       },
-      "regulation": 
+      "regulation":
         {
           "id": 2,
           "questionId": 1026,
@@ -923,7 +923,7 @@
         "name": "Multiple Choice",
         "isActive": true
       },
-      "regulation": 
+      "regulation":
       {
         "id": 4,
         "questionId": 1027,
@@ -977,7 +977,7 @@
         "name": "Multiple Choice",
         "isActive": true
       },
-      "regulation": 
+      "regulation":
         {
           "id": 5,
           "questionId": 1028,
@@ -1031,7 +1031,7 @@
         "name": "Multiple Choice",
         "isActive": true
       },
-      "regulation": 
+      "regulation":
         {
           "id": 1,
           "questionId": 1030,

@@ -4,6 +4,7 @@ import {Request} from "../../../../dto";
 import {first} from "rxjs/operators";
 import {PatientService} from "../../../../_services/patient.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {NavigationEnd, Router} from "@angular/router";
 
 @Component({
   selector: 'app-antecedants',
@@ -15,10 +16,28 @@ export class AntecedantsComponent implements OnInit {
   annee : number = null;
   name : string;
   ant;
+  mySubscription : any
 
-  constructor(private patientService : PatientService,private _snackBar : MatSnackBar) {
+  constructor(private patientService : PatientService,private _snackBar : MatSnackBar, private router : Router) {
 
 
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
+    this.mySubscription = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        // Trick the Router into believing it's last link wasn't previously loaded
+        this.router.navigated = false;
+      }
+    });
+
+
+  }
+
+  ngOnDestroy() {
+    if (this.mySubscription) {
+      this.mySubscription.unsubscribe();
+    }
   }
   @Input() id: string;
 
@@ -94,7 +113,7 @@ export class AntecedantsComponent implements OnInit {
          let count = this.lis_antecedant.push(this.ant)
 
        }
-       if(list_antecedants[i].value="CLAUDICATION"){
+        else if(list_antecedants[i].value="CLAUDICATION"){
          if(claudicationyear.value != ""){
            this.annee = +claudicationyear
          }
@@ -103,7 +122,7 @@ export class AntecedantsComponent implements OnInit {
 
 
        }
-       if(list_antecedants[i].value="THROMEBECTOMIE"){
+       else if(list_antecedants[i].value="THROMEBECTOMIE"){
          if(mpocyear.value != ""){
            this.annee = +thrombectomieyear
          }
@@ -112,7 +131,7 @@ export class AntecedantsComponent implements OnInit {
 
 
        }
-       if(list_antecedants[i].value="AIT"){
+       else if(list_antecedants[i].value="AIT"){
          if(aityear.value != ""){
            this.annee = +aityear
 
@@ -122,12 +141,16 @@ export class AntecedantsComponent implements OnInit {
          let count = this.lis_antecedant.push(this.ant)
 
        }
-       if(list_antecedants[i].value="AVC"){
+       else if(list_antecedants[i].value="AVC"){
          if(avcyear.value != ""){
            this.annee = +avcyear
          }
          this.ant = new AntecedentsDto(list_antecedants[i].value,this.annee)
          let count = this.lis_antecedant.push(this.ant)
+
+       }
+       else {
+         this.ant = new AntecedentsDto(list_antecedants[i].value,null)
 
        }
 

@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
 
 
   @ViewChild(AppComponent, {static: false}) child;
-  constructor(private router : Router, private route : ActivatedRoute) {
+  constructor(public router : Router, private route : ActivatedRoute) {
      this.ngOnInit()
     this.currentUser = localStorage.getItem("currentUser")
     this.currentRole = localStorage.getItem("currentRole")

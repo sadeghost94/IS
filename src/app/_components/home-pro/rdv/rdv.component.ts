@@ -69,6 +69,9 @@ export class RdvComponent implements OnInit {
 
 
 }
+ajouter(){
+
+}
 
   ngOnInit() {
 

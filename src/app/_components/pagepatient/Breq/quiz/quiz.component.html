@@ -11,8 +11,8 @@
   <div *ngIf="mode=='quiz' && quiz"> <!-- Partie affichage des questions un par un  -->
     <div *ngFor="let question of filteredQuestions;">
       <mat-card  >Question {{pager.index + 1}} de {{pager.count}}.</mat-card>
-      <div  *ngIf="config.duration" class="badge badge-info float-right">Temps ecoule : {{ellapsedTime}}
-        / {{duration}}</div>
+      <!--<div  *ngIf="config.duration" class="badge badge-info float-right">Temps ecoule : {{ellapsedTime}}
+        / {{duration}}</div>-->
       <h3 class="font-weight-normal">{{pager.index + 1}}.
         <span [innerHTML]="question.name"></span>
       </h3>

@@ -8,7 +8,13 @@ import {map, startWith} from 'rxjs/operators';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {AppointmentDto} from "../../../../dto/AppointmentDto";
 import {PatientDto} from "../../../../dto/patient/PatientDto";
-import {DetailsRecoComponent} from "./details-reco/details-reco.component";
+import {Details, DetailsRecoComponent} from "./details-reco/details-reco.component";
+import {RecommandationDto} from "../../../../dto/RecommandationDto";
+import {Request} from "../../../../dto";
+import {PatientService} from "../../../../_services/patient.service";
+import {NavigationEnd, Router} from "@angular/router";
+import {ProfessionalDto} from "../../../../dto/patient/ProfessionalDto";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-recomandation',
@@ -19,6 +25,7 @@ import {DetailsRecoComponent} from "./details-reco/details-reco.component";
 export class RecomandationComponent {
 
   visible = true;
+  message : string
   selectable = true;
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -29,34 +36,35 @@ export class RecomandationComponent {
   filteredRecoActions: Observable<string[]> = null;
   filteredRecoSedentaires: Observable<string[]> = null;
   filteredRecoGeneraux: Observable<string[]> = null;
-
+  mySubscription : any
   Reco: string[] = null
   Reco1: string[] = null
   Reco2: string[] = null
-  allRecoActions : string[] = ['Augmenter le nombre de pas'];
-  allRecoSedentaires : string[] = ['Se lever le plus souvent possible'];
+  allRecoActions : string[] = null;
+  newRecom : Recomandation[]
+  allRecoSedentaires : string[] = null;
 
-  allRecoGeneraux: string[] = ['Augmenter les transports actifs à la marche'];
-  Recom: recomandation[] = [
+  allRecoGeneraux: string[] = null;
+  Recom: Recomandation[] = [
 
-    {valeur :'Augmenter le nombre de pas', type: 1},
-    {valeur :'Atteindre un nombre de minutes de marche',type: 1},
-    {valeur :'Atteindre un nombre de pas',type:1},
-    {valeur :'Mettre une alarme aux 30 minutes pour penser à se lever',type: 2},
-    {valeur :'Se lever le plus souvent possible',type: 2},
-    {valeur :'Réduire les minutes continues du temps assis',type: 2},
-    {valeur :'faire un nombre de pas par minutes',type: 2},
-    {valeur :'se lever pendants les pauses commerciales',type: 2},
-    {valeur :'Augmenter les transports actifs à la marche',type: 3},
-    {valeur :'Faire une liste des moments clés pour faire de l\'activité physique ',type: 3},
-    {valeur :'S\'inscrire à un club/groupe de marche',type: 3},
-    {valeur :'Écouter de la musique ou des livres audios en marchand',type: 3},
-    {valeur :'Aller marcher avec quelqu\'un d\'autre',type: 3},
-    {valeur :'Prévoir un plan B en cas d\'imprévus pour atteindre les objectifs',type: 3},
-    {valeur :'Rechercher les infrastructures pour marcher dans votre environnement',type: 3},
-    {valeur :'Référez-vous à une infirmière',type: 3},
-    {valeur :'Référez-vous à un kinésiologue',type: 3},
-    {valeur :'Référez-vous à un médecin de famille',type: 3}
+    {id : null ,  valeur :'Augmenter le nombre de pas', type: 1, details : null},
+    {id : null ,  valeur :'Atteindre un nombre de minutes de marche',type: 1, details : null},
+    {id : null ,  valeur :'Atteindre un nombre de pas',type:1, details : null},
+    {id : null ,  valeur :'Mettre une alarme aux 30 minutes pour penser à se lever',type: 2, details : null},
+    {id : null ,  valeur :'Se lever le plus souvent possible',type: 2, details : null},
+    {id : null ,  valeur :'Réduire les minutes continues du temps assis',type: 2, details : null},
+    {id : null ,  valeur :'faire un nombre de pas par minutes',type: 2, details : null},
+    {id : null ,  valeur :'se lever pendants les pauses commerciales',type: 2, details : null},
+    {id : null ,  valeur :'Augmenter les transports actifs à la marche',type: 3, details : null},
+    {id : null ,  valeur :'Faire une liste des moments clés pour faire de l\'activité physique ',type: 3, details : null},
+    {id : null ,  valeur :'S\'inscrire à un club/groupe de marche',type: 3, details : null},
+    {id : null ,  valeur :'Écouter de la musique ou des livres audios en marchand',type: 3, details : null},
+    {id : null ,  valeur :'Aller marcher avec quelqu\'un d\'autre',type: 3, details : null},
+    {id : null ,  valeur :'Prévoir un plan B en cas d\'imprévus pour atteindre les objectifs',type: 3, details : null},
+    {id : null ,  valeur :'Rechercher les infrastructures pour marcher dans votre environnement',type: 3, details : null},
+    {id : null ,  valeur :'Référez-vous à une infirmière',type: 3, details : null},
+    {id : null ,  valeur :'Référez-vous à un kinésiologue',type: 3, details : null},
+    {id : null ,  valeur :'Référez-vous à un médecin de famille',type: 3, details : null}
 
 
 
@@ -68,17 +76,27 @@ export class RecomandationComponent {
   @ViewChild('auto', {static : false}) matAutocomplete: MatAutocomplete;
 
   constructor(public dialogRef: MatDialogRef<RecomandationComponent>,public dialog: MatDialog,
-              @Inject(MAT_DIALOG_DATA) public data) {
+              private _snackBar : MatSnackBar,
+              @Inject(MAT_DIALOG_DATA) public data, private  patientService : PatientService, private router : Router) {
     if(this.filteredRecoSedentaires == null && this.filteredRecoActions == null && this.filteredRecoGeneraux == null) {
       for (let i = 0; i < this.Recom.length; i++) {
         if (this.Recom[i].type === 1) {
-          this.allRecoActions.push(this.Recom[i].valeur)
+          if(this.allRecoActions == null){
+            this.allRecoActions = [this.Recom[i].valeur]
+          }else{
+          this.allRecoActions.push(this.Recom[i].valeur)}
         }
         if (this.Recom[i].type === 2) {
-          this.allRecoSedentaires.push(this.Recom[i].valeur)
+          if(this.allRecoSedentaires == null){
+            this.allRecoSedentaires = [this.Recom[i].valeur]
+          }else{
+          this.allRecoSedentaires.push(this.Recom[i].valeur)}
         }
         if (this.Recom[i].type === 3) {
-          this.allRecoGeneraux.push(this.Recom[i].valeur)
+          if(this.allRecoGeneraux == null){
+            this.allRecoGeneraux = [this.Recom[i].valeur]
+          }else{
+          this.allRecoGeneraux.push(this.Recom[i].valeur)}
         }
 
 
@@ -94,6 +112,23 @@ export class RecomandationComponent {
     this.filteredRecoGeneraux = this.RecoCtrlG.valueChanges.pipe(
       startWith(null),
       map((generaux: string | null) => generaux ? this._filterGeneraux(generaux) : this.allRecoGeneraux.slice()));
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
+    this.mySubscription = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        // Trick the Router into believing it's last link wasn't previously loaded
+        this.router.navigated = false;
+      }
+    });
+
+
+  }
+
+  ngOnDestroy() {
+    if (this.mySubscription) {
+      this.mySubscription.unsubscribe();
+    }
   }
 
   add(event: MatChipInputEvent): void {
@@ -183,27 +218,68 @@ export class RecomandationComponent {
   voir(){
     console.log("oui")
   }
-  chipDetails(reco: string){
+  chipDetails(reco: string) {
     const index = this.Reco.indexOf(reco);
     console.log("oui")
     const dialogRef = this.dialog.open(DetailsRecoComponent, {
-      data : {reco : this.Reco[index], type : 1},
-      width :'60%',
-      height:'85%'
+      data: {reco: this.Reco[index], type: 1, details: null},
+      width: '60%',
+      height: '85%'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (this.newRecom === undefined) {
+        //this.newRecom = [{id : result.id, type : result.type, valeur: result.reco, details : result.details}]
+      } else {
+        this.newRecom.push({id : result.id, type : result.type, valeur: result.reco, details : result.details})
+
+      }
+
+      // After dialog is closed we're doing frontend updates
+      // For add we're just pushing a new row inside DataService
+
     });
   }
+
+
   chipDetails1(reco1 : string){
     console.log("oui")
     const index = this.Reco1.indexOf(reco1);
     console.log("oui")
     const dialogRef = this.dialog.open(DetailsRecoComponent, {
-      data : {rec : this.Reco1[index], type : 3},
+      data : {reco : this.Reco1[index], type : 3, details : null, id : null},
       width :'60%',
       height:'85%'
     });
+    dialogRef.afterClosed().subscribe(result => {
+      if (this.newRecom === undefined) {
+        this.newRecom = [{id : result.id, type : result.type, valeur: result.reco, details : result.details}]
+      } else {
+        this.newRecom.push({id : result.id, type : result.type, valeur: result.reco, details : result.details})
+
+      }
+        // After dialog is closed we're doing frontend updates
+        // For add we're just pushing a new row inside DataService
+    });
+
   }
-  chipDetails2(){
+  chipDetails2(reco2 : string){
     console.log("oui")
+    const index = this.Reco2.indexOf(reco2);
+    console.log("oui")
+    const dialogRef = this.dialog.open(DetailsRecoComponent, {
+      data : {reco : this.Reco2[index], type : 2, details : null},
+      width :'60%',
+      height:'85%'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (this.newRecom === undefined) {
+        this.newRecom = [{id : result.id, type : result.type, valeur: result.reco, details : result.details}]
+      } else {
+        this.newRecom.push({id : result.id, type : result.type, valeur: result.reco, details : result.details})
+
+      }
+    });
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
@@ -253,11 +329,35 @@ export class RecomandationComponent {
 
     return this.allRecoGeneraux.filter(reco => reco.toLowerCase().indexOf(filterValue) === 0);
   }
+  enregister(){
+    let professionel = JSON.parse(localStorage.getItem("currentUser"))
+    console.log(professionel["id"])
+    let patient = new PatientDto(this.data.patient.id, null,null, null, null, null, null, null, null, null,
+      null, null, null, null, null, null, null, null, null, null)
+    let recomm = new RecommandationDto(null, patient, null, JSON.stringify(this.newRecom),null)
+    let request = new Request(recomm)
+    this.patientService.addReco(request).subscribe( reponse =>{
+      console.log("Ajout reussi")
+      this.message = "Ajout reussi"
+      this.openSnackBar(this.message,"Ok")
+      this.dialogRef.close();
+    }, error => {
+      console.log("erreur")
+    })
+
+  }
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 500,
+
+    })}
 
 }
-export interface recomandation {
+export interface Recomandation {
+  id: number
   valeur : string
   type : number
+  details : Details[]
 
 
 }

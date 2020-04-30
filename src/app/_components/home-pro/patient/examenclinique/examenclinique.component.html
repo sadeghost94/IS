@@ -53,34 +53,14 @@ cm ou pi
   <input type="number" [disabled]="disaledactif" #nb_cigarettes matInput placeholder="nombre de cigarettes/jour">
 </mat-form-field>
 <br>
-<mat-radio-button #passiftabac (click)="onChangePassif()" value="passif">Passif </mat-radio-button>
+<mat-radio-button #passiftabac (click)="onChangePassif()" value="passif">Non Fumeur </mat-radio-button>
 <br>
 <mat-radio-button #anterieurtabac (click)="onChangeAnterieur()" value="anterieur">Anterieur – Arrêt depuis :</mat-radio-button>
 <mat-form-field appearance="fill" style="width: 30%">
 
   <input type="number" [disabled]="disaledanterieur" #annee_arret matInput placeholder="Annee">
 </mat-form-field>
-<mat-card style=" color : white; background : #323232;"> Bilan lipidique</mat-card>
-    <mat-form-field appearance="fill">
-      <mat-label>LDL (mmol/L) </mat-label>
-      <input type="number" #ldl matInput placeholder="LDL (mmol/L)">
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>HDL (mml/L) </mat-label>
-      <input type="number" #hdl matInput placeholder="HDL (mml/L) ">
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Non HDL  (CT- HDL) </mat-label>
-      <input type="number" #nonhdl matInput placeholder="Non HDL  (CT- HDL) ">
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-    <mat-label>Triglycérides (mmol/L)</mat-label>
-    <input type="number" #triglycerides matInput placeholder="Triglycérides (mmol/L)">
-  </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>HbA1c   (%)  </mat-label>
-      <input type="number" #hba1c matInput placeholder="HbA1c   (%) " min="0" max="100">
-    </mat-form-field>
+
 
 <mat-card style=" color : white; background : #323232; "> Pharmacothérapie
 </mat-card>
