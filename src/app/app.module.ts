@@ -36,8 +36,8 @@ import { ConfirmaccountComponent } from './_components/confirmaccount/confirmacc
 import {MatSnackBar} from "@angular/material";
 import { ResetpasswordComponent } from './_components/resetpassword/resetpassword.component';
 import {InviteComponent} from "./_components/home/invite/invite.component";
-import {MainNavProfComponent} from "./_components/home-pro/main-nav-prof/main-nav-prof.component";
-import { MainNavModuleProf} from "./_components/home-pro/main-nav-prof/main-nav.module-prof";
+import {MainNavProfComponent} from "./_components/home-pro/patient/main-nav-prof/main-nav-prof.component";
+import { MainNavModuleProf} from "./_components/home-pro/patient/main-nav-prof/main-nav.module-prof";
 import { HomeProComponent } from './_components/home-pro/home-pro.component';
 import { ListUsersComponent } from './_components/home/list-users/list-users.component';
 import { HomeseaComponent } from './_components/homesea/homesea.component';
@@ -86,6 +86,8 @@ import { RecomandationPatientComponent } from './_components/pagepatient/recoman
 import { GpaqComponent } from './_components/pagepatient/gpaq/gpaq.component';
 import {GpaqQuizComponent} from "./_components/pagepatient/gpaq/quiz/quiz.component";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {TwoDigitDecimaNumberDirective} from "./_components/home-pro/patient/examenclinique/two-digit-decima-number.directive";
+import {OptionComponent} from "./_components/home-pro/patient/histoire-sante/option/option.component";
 
 
 
@@ -93,6 +95,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 @NgModule({
   declarations: [
     AppComponent,
+    TwoDigitDecimaNumberDirective,
     MainNavSeaComponent,
     LoginComponent,
     Error404Component,
@@ -142,7 +145,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
   ],
   imports: [
     BrowserModule,
-    UserIdleModule.forRoot({idle: 600, timeout: 10, ping: 120}),
+    UserIdleModule.forRoot({idle: 600, timeout: 10, ping: 30}),
     AngularFireModule.initializeApp(environment.firebase),
     ModalModule,
     FlexLayoutModule,
@@ -185,7 +188,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 
    //{ provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
-  entryComponents: [SociodemoComponent,AddDialogComponent,RecomandationComponent, GpaqComponent, DetailsRecoComponent, DeleteDialogComponent, EditDialogComponent, IddleUserComponent, BilanLipidiqueComponent],
+  entryComponents: [OptionComponent,SociodemoComponent,AddDialogComponent,RecomandationComponent, GpaqComponent, DetailsRecoComponent, DeleteDialogComponent, EditDialogComponent, IddleUserComponent, BilanLipidiqueComponent],
   exports: [],
   bootstrap: [AppComponent]
 })

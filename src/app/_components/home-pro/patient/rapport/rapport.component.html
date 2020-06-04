@@ -1,6 +1,5 @@
 <div class="container" >
-
-  <mat-form-field appearance="fill" style="height: 1em;  margin-left: 40%">
+<!--  <mat-form-field appearance="fill" style="height: 1em;  margin-left: 40%">
     <mat-label style="">Afficher : </mat-label>
     <select #afficher_par style="color: black" matInput matNativeControl [(ngModel)]="afficher" >
       <option *ngFor="let visite of visites">
@@ -8,15 +7,14 @@
       </option>
 
     </select>
-  </mat-form-field>
-  <mat-expansion-panel style=" margin-top: 2em;  margin-bottom: 2em;">
+  </mat-form-field>-->
+<!--  <mat-expansion-panel style=" margin-top: 2em;  margin-bottom: 2em;">
     <mat-expansion-panel-header>
       <mat-panel-title >
         Statistiques descriptives:
       </mat-panel-title>
-    </mat-expansion-panel-header>
-  <mat-card >Statistiques descriptives:</mat-card>
-
+    </mat-expansion-panel-header>-->
+  <mat-card>Statistiques descriptives:</mat-card>
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
     <!-- Name Column -->
@@ -65,17 +63,16 @@
     <tr class="active" mat-row *matRowDef="let row; columns: displayedColumns;"
         class="example-element-row"></tr>
   </table>
-  </mat-expansion-panel>
+<!--  </mat-expansion-panel>-->
 
-  <mat-divider></mat-divider>
-  <mat-expansion-panel style=" margin-top: 2em;  margin-bottom: 2em;">
+<!--  <mat-divider></mat-divider>
+  <mat-expansion-panel style=" margin-top: 2em;  margin-bottom: 2em;" >
     <mat-expansion-panel-header>
       <mat-panel-title style="color: #323232;">
         Graphes : (PODOMETRE)
       </mat-panel-title>
-    </mat-expansion-panel-header>
+    </mat-expansion-panel-header>-->
 
-  <mat-card style="color : #323232;">Graphes :</mat-card>
 
   <mat-tab-group mat-align-tabs="center"  >
 
@@ -91,116 +88,48 @@
       </div>
     </mat-tab>
 
-    <mat-tab label="Steps">
+    <mat-tab label="Nombre de pas " >
       <div class="col-sm-4 text-center">
-        <h2 class="text-center">Steps</h2>
+        <h2 class="text-center">Nombre de pas</h2>
       </div>
-      <div class="chart" style="margin-top:2em" *ngIf="barChartData?.length > 0">
+      <div class="chart" style="margin-top:2em" >
         <div style="display: block;">
           <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [chartType]="barChartType" (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event)"></canvas>
         </div>
       </div>
     </mat-tab>
-
-    <mat-tab label="Distance">
+    <mat-tab label="Poids">
       <div class="col-sm-4 text-center">
-        <h2 class="text-center">Distance</h2>
+        <h2 class="text-center">Poids</h2>
       </div>
-      <div class="chart" style="margin-top:2em" *ngIf="barChartData?.length > 0">
+      <div class="chart" style="margin-top:2em" *ngIf="lineChartLabels?.length > 0">
         <div style="display: block;">
-          <canvas baseChart [data]="barChartType" [labels]="barChartLabels" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+          <canvas baseChart [data]="lineChartData" [labels]="lineChartLabels" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)"></canvas>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Tour de taille">
+      <div class="col-sm-4 text-center">
+        <h2 class="text-center">Tour de taille</h2>
+      </div>
+      <div class="chart" style="margin-top:2em" *ngIf="lineChartLabels?.length > 0">
+        <div style="display: block;">
+          <canvas baseChart [data]="lineChartData" [options]="lineChartOptions" [labels]="lineChartLabels" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event)"></canvas>
         </div>
       </div>
     </mat-tab>
 
+
+
   </mat-tab-group>
-  </mat-expansion-panel>
-
-
-  <mat-expansion-panel style="  width:100%; margin-top: 5em;">
-    <mat-expansion-panel-header style=" height: 5em;">
-      <mat-panel-title style=" margin-top: 1em">
-        Données anthropométriques
-      </mat-panel-title>
-      <h6 style="">(les courbes ici sont affichees d une maniere globale depuis la premiere visites)</h6>
-    </mat-expansion-panel-header>
-    <mat-tab-group mat-align-tabs="center"  >
-      <mat-card style="color : #323232;">Graphes :</mat-card>
-
-      <mat-tab label="Poids">
-        <div class="col-sm-4 text-center" >
-          <h2 class="text-center">Poids</h2>
-        </div>
-        <div class="chart" style="margin-top:2em" *ngIf="pieChartLabels?.length > 0">
-          <div style="display: block;">
-            <canvas baseChart  baseChart
-                    [datasets]="lineChartData"
-                    [labels]="lineChartLabels"
-                    [options]="lineChartOptions"
-                    [colors]="lineChartColors"
-                    [legend]="lineChartLegend"
-                    [chartType]="lineChartType"
-                    [plugins]="lineChartPlugins">(chartHover)="chartHovered($event)"
-                    (chartClick)="chartClicked($event)"></canvas>
-          </div>
-        </div>
-      </mat-tab>
-
-      <mat-tab label="Tour de taille">
-        <div class="col-sm-4 text-center">
-          <h2 class="text-center">Tour de taille</h2>
-        </div>
-        <div class="chart" style="margin-top:2em" *ngIf="barChartData?.length > 0">
-          <div style="display: block;">
-            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [chartType]="barChartType" (chartHover)="chartHovered($event)"
-                    (chartClick)="chartClicked($event)"></canvas>
-          </div>
-        </div>
-      </mat-tab>
+<!--  </mat-expansion-panel>-->
 
 
 
-    </mat-tab-group>
 
-  </mat-expansion-panel>
-  <mat-divider></mat-divider>
-  <mat-expansion-panel style="  width:100%; margin-top: 5em;">
-    <mat-expansion-panel-header style=" height: 5em;">
-      <mat-panel-title style=" margin-top: 1em">
-        Fréquence cardiaque (repos)
-      </mat-panel-title>
-      <h6 style=" ">(les courbes ici sont affichees d une maniere globale depuis la premiere visites)</h6>
-      <br>
-    </mat-expansion-panel-header>
-    <mat-tab-group mat-align-tabs="center"  >
-      <mat-card style="color : #323232;">Graphes :</mat-card>
-
-      <mat-tab label="FC (repos)">
-        <div class="col-sm-4 text-center" >
-          <h2 class="text-center"> batt. / par minute</h2>
-        </div>
-        <div class="chart" style="margin-top:2em" *ngIf="pieChartLabels?.length > 0">
-          <div style="display: block;">
-            <canvas baseChart  baseChart
-                    [datasets]="lineChartData_fcrepos"
-                    [labels]="lineChartLabels"
-                    [options]="lineChartOptions"
-                    [colors]="lineChartColors"
-                    [legend]="lineChartLegend"
-                    [chartType]="lineChartType"
-                    [plugins]="lineChartPlugins">(chartHover)="chartHovered($event)"
-              (chartClick)="chartClicked($event)"></canvas>
-          </div>
-        </div>
-      </mat-tab>
-
-
-
-    </mat-tab-group>
-
-  </mat-expansion-panel>
 
 
 

@@ -12,6 +12,7 @@ import {catchError, map, retry, shareReplay} from "rxjs/operators";
 import {PatientDto} from "../dto/patient/PatientDto";
 import {Environment} from "@angular/compiler-cli/src/ngtsc/typecheck/src/environment";
 import {EMPTY} from "rxjs";
+import {AppointmentDto} from "../dto/AppointmentDto";
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,10 @@ export class PatientService {
   LIST_RDV : string
   ADD_QUIZ : string
   ADD_RECO : string
+  ALL_RECO : string
   ADD_LIPID : string
+  GET_STEPS : string
+  GET_MINUTES : string
 
 
 
@@ -55,6 +59,9 @@ export class PatientService {
     this.ADD_QUIZ = environment.ADD_QUIZ
     this.ADD_RECO = environment.ADD_RECO
     this.ADD_LIPID = environment.ADD_LIPID
+    this.GET_STEPS = environment.GET_STEPS
+    this.ALL_RECO = environment.ALL_RECO
+    this.GET_MINUTES = environment.GET_ACTIVEMINUTES
   }
 
 
@@ -185,10 +192,7 @@ export class PatientService {
 
   }
   addQuiz(request: Request){
-    let token = localStorage.getItem("currentToken");
-    const obj = JSON.parse(token);
-    let header = new HttpHeaders({'Authorization': "bearer "+obj.access_token,'Content-Type': 'application/json'} );
-    return this.http.post(this.ADD_QUIZ, request, {headers: header});
+    return this.http.post(this.ADD_QUIZ, request);
   }
   getRdv(id: string){
     let token = localStorage.getItem("currentToken");
@@ -302,7 +306,41 @@ export class PatientService {
     return this.http.get(this.ADD_RECO, {headers: header, params: params})
 
   }
+  getAllReco(id: string) {
+    let token = localStorage.getItem("currentToken");
+    let params = new HttpParams().set('patientId',id)
+    const obj = JSON.parse(token);
+    let header = new HttpHeaders({'Authorization': "bearer " + obj.access_token});
+    return this.http.get(this.ALL_RECO, {headers: header, params: params})
 
+  }
+
+  getSteps(id: string, request : Request) {
+    let token = localStorage.getItem("currentToken");
+    let params = new HttpParams().set('medicalFileId',id)
+    const obj = JSON.parse(token);
+  let header = new HttpHeaders({'Authorization': "bearer "+obj.access_token,'Content-Type': 'application/json'} );
+ /* const options = {
+      headers: new HttpHeaders({
+        'Authorization': "bearer "+obj.access_token,'Content-Type': 'application/json'})
+      ,params: params
+    };*/
+    return this.http.post(this.GET_STEPS, request, {headers: header,params: params})
+
+  }
+  getMinutes(id: string, request : Request) {
+    let token = localStorage.getItem("currentToken");
+    let params = new HttpParams().set('medicalFileId',id)
+    const obj = JSON.parse(token);
+    let header = new HttpHeaders({'Authorization': "bearer "+obj.access_token,'Content-Type': 'application/json'} );
+    /* const options = {
+         headers: new HttpHeaders({
+           'Authorization': "bearer "+obj.access_token,'Content-Type': 'application/json'})
+         ,params: params
+       };*/
+    return this.http.post(this.GET_MINUTES, request, {headers: header,params: params})
+
+  }
 
 
 

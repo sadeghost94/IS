@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 
 import {QuizService} from '../services/quiz.service';
 import {HelperService} from '../services/helper.service';
@@ -13,6 +13,8 @@ import {PatientDto} from "../../../../dto/patient/PatientDto";
 import {Patient} from "../../../../_models/patient";
 import {PatientService} from "../../../../_services/patient.service";
 import {Request} from "../../../../dto";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 
 
@@ -26,6 +28,7 @@ export class QuizComponent implements OnInit {
   @Input () patient : PatientDto
   quizes: any[];
   obj
+  comfirmer : boolean = false;
    data  = require('../data/breq.json');
   regulations: any [];
   rep: Reponse[] = [];
@@ -47,7 +50,7 @@ export class QuizComponent implements OnInit {
   config: QuizConfig = {
     'allowBack': true,
     'allowReview': true,
-    'autoMove': true,  // if true, it will move to next question automatically when answered.
+    'autoMove': false,  // if true, it will move to next question automatically when answered.
     'duration': 600,  // indicates the time (in secs) in which quiz needs to be completed. 0 means unlimited.
     'pageSize': 1,
     'requiredAll': false,  // indicates if you must answer all the questions before submitting.
@@ -61,7 +64,7 @@ export class QuizComponent implements OnInit {
 
   pager = {
     index: 0,
-    size: 1,
+    size: 20,
     count: 1
   };
   timer: any = null;
@@ -72,7 +75,10 @@ export class QuizComponent implements OnInit {
   questionnaireToken: string;
 
   constructor(private quizService: QuizService, private http :HttpClient,private  route : ActivatedRoute,
-              private patientService : PatientService) {
+              private patientService : PatientService,
+              public dialogRef: MatDialogRef<QuizComponent>,
+              private _snackBar : MatSnackBar
+              ) {
     this.questionnaireToken = localStorage.getItem("currentPatientToken")
   }
 
@@ -84,6 +90,9 @@ export class QuizComponent implements OnInit {
    // console.log(this.quizName)
     this.loadQuiz();
 
+  }
+  fermer(){
+    this.dialogRef.close()
   }
 
   loadQuiz() {
@@ -129,13 +138,27 @@ export class QuizComponent implements OnInit {
         if (x.id !== option.id) {
           x.selected = false;
         } else {
+
+          let exist = false;
+          for(let i=0 ; i< this.rep.length; i++){
+            if(this.rep[i].questionId ===question.id){
+              exist = true;
+              this.rep[i] =  new Reponse(
+                question.id,
+                option.poids)        }
+          }
+          if(exist == false)
+          {
           this.rep.push(new Reponse(
             question.id,
             option.poids));
 
           console.log(this.rep);
           this.score(question, option);
-        }
+          if(this.rep.length === 19){
+            this.comfirmer = true
+          }
+        }}
       });
     }
 
@@ -229,9 +252,12 @@ export class QuizComponent implements OnInit {
       let breq = new QuestionnaireDto(null, this.patientId, "BREQ", JSON.stringify(this.value), null)
     let request = new Request(breq)
     this.patientService.addQuiz(request).subscribe( reponse =>{
-      console.log("Ajout reussi")
+      this.openSnackBar(" AJOUT REUSSI","Ok")
+      this.dialogRef.close()
+
     }, error => {
-      console.log("erreur")
+      this.openSnackBar(" Erreur !! Assurez-vous que le formulaire est bien rempli","Ok")
+
     })
       console.log(breq)
 
@@ -270,4 +296,9 @@ export class QuizComponent implements OnInit {
 
 
   }
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+
+    })}
 }

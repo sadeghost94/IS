@@ -2,16 +2,17 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
-import {environment} from "../../../../environments/environment";
+import {environment} from "../../../../../environments/environment";
 
 
 
 
-import { map, shareReplay } from 'rxjs/operators';
+import {first, map, shareReplay} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {AuthenticationService} from "../../../_services";
+import {AuthenticationService} from "../../../../_services";
 declare var  appitems ;
 import { NgZone } from '@angular/core';
+import {LoginClientDTO} from "../../../../dto/LoginClientDTO";
 
 @Component({
   selector: 'app-main-nav-prof',
@@ -114,7 +115,10 @@ appitems  = [
   }
   logOut() {
   console.log("oui")
-    console.log(this.authenticationService.logout())
+    localStorage.clear()
+    this.router.navigate(["/login"])
+   this.authenticationService.logout()
+
 
 
 

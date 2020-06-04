@@ -1,7 +1,7 @@
 import {Component, OnInit, SimpleChanges} from '@angular/core';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
-import {first} from 'rxjs/operators';
+import {catchError, first, retry, tap} from 'rxjs/operators';
 import {messages} from '../../_services/messages'
 import { Keepalive } from '@ng-idle/keepalive';
 
@@ -15,9 +15,10 @@ import {BnNgIdleService} from "bn-ng-idle";
 import {EncrDecrService} from "../../_services/EncrDecrService";
 import {DEFAULT_INTERRUPTSOURCES, Idle} from "@ng-idle/core";
 import {Timer} from "../Timer";
-import {timer} from "rxjs";
+import {throwError, timer} from "rxjs";
 import {IddleUserComponent} from "../iddle-user/iddle-user.component";
 import {MatDialog} from "@angular/material/dialog";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-login',
@@ -150,7 +151,20 @@ export class LoginComponent implements OnInit {
           // Start watching when user idle is starting.
           this.userIdle.onTimerStart().subscribe(count => {console.log(count)})
 
+           // ping
+/*          this.userIdle.ping$.subscribe(() => this.authenticationService.refresh_token().subscribe(result =>{
+            console.log("refresh")
+            let token = localStorage.getItem("currentToken");
+            const obj = JSON.parse(token);
+                console.log("result")
+              },
 
+
+
+            error1 => {
+
+            console.log("non")
+          }));*/
           // Start watch when time is up.
           this.userIdle.onTimeout().subscribe(() => {
             console.log('Time is up!')

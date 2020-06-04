@@ -27,7 +27,7 @@
       </a>-->
     </mat-nav-list>
   </mat-sidenav>
- <!-- <mat-sidenav-content>
+<mat-sidenav-content>
 
     <mat-toolbar color="primary">
       <div fxHide.gt-xs>
@@ -42,14 +42,15 @@
 
 
           <li>
-            <a  mat-list-item type="button"  style="color: red">
-              <mat-icon class="icon" >input</mat-icon>
-              <span class="label">Deconnexion</span>
+            <a  mat-menu-item >
+              <mat-icon color="warn">exit_to_app</mat-icon>
+              <span style="color: red" (click)="logOut()"> Deconnexion</span>
             </a>
           </li>
         </ul>
       </div>
-    </mat-toolbar>-->
+    </mat-toolbar>
+
 
     <div class="pagel"  style="margin-bottom:1em; position: relative">
       <mat-card class="example-card" style="margin-bottom: 2em">
@@ -118,7 +119,7 @@
 
     </div>
 
-
+</mat-sidenav-content>
 </mat-sidenav-container>
 
 

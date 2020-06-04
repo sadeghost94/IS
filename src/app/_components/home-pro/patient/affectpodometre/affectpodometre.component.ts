@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Inject, Input, OnInit, Output, SimpleChanges} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef,MatDialog} from "@angular/material/dialog";
 import {ActivatedRoute, NavigationEnd, Router, RouterLinkActive} from "@angular/router";
 import {PatientService} from "../../../../_services/patient.service";
@@ -22,6 +22,7 @@ export class AffectpodometreComponent implements OnInit{
   message : string
   patientId;
   patient;
+  expanded = true;
   birthday: string = "";
   po : PatientDeviceDto[];
   hiden_affecter = true;
@@ -78,6 +79,7 @@ export class AffectpodometreComponent implements OnInit{
     this.birthday = year + '-' + mois + '-' + jr;
     console.log(this.birthday)
   }
+  @Output() expandedEvent = new EventEmitter<boolean>();
   constructor(private router : Router, private route : ActivatedRoute, private _snackBar : MatSnackBar, private patientService : PatientService)
     {
       this.getPatientById()
@@ -119,7 +121,7 @@ export class AffectpodometreComponent implements OnInit{
       this.hiden_affecter = true
       this.message = "POFOMETRE RECUPERE"
       this.openSnackBar(this.message,"Ok")
-      location.reload()
+      this.expandedEvent.emit(!this.expanded)
     })
 
   }
@@ -139,7 +141,8 @@ export class AffectpodometreComponent implements OnInit{
       reponse => {
         this.message = "Ajout reussi"
         this.openSnackBar(this.message,"Ok")
-        location.reload()
+        this.expandedEvent.emit(!this.expanded)
+
 
       }, error => {
             console.log(error)

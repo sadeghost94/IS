@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Inject, Input, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {SchedulerEvent, SchedulerModule} from '@progress/kendo-angular-scheduler';
 import {displayDate, sampleData} from "./events.utc";
 import {MatDialog} from '@angular/material/dialog';
@@ -17,6 +17,10 @@ import {MedicalFileDto} from "../../../../dto/medicalfile/MedicalFileDto";
 import {AppointmentDto} from "../../../../dto/AppointmentDto";
 import {HistoireSanteComponent} from "../histoire-sante/histoire-sante.component";
 import {SociodemoComponent} from "../sociodemo/sociodemo.component";
+import {MatTableDataSource} from "@angular/material/table";
+import {ClinicalExaminationDto} from "../../../../dto/medicalfile/clinical_examination/ClinicalExaminationDto";
+import {LipidProfileDto} from "../../../../dto/medicalfile/LipidProfileDto";
+import {CardiovascularDto} from "../../../../dto/medicalfile/clinical_examination/cardiovascular/CardiovascularDto";
 
 @Component({
   selector: 'app-patient-profile',
@@ -25,11 +29,21 @@ import {SociodemoComponent} from "../sociodemo/sociodemo.component";
 })
 export class PatientProfileComponent implements OnInit {
   @Input() id: string;
+  expanded: boolean = false;
+  expandedpodo : boolean = false;
+  expandedAnte : boolean = false;
+  expandedExam : boolean = false;
+  @ViewChild(SociodemoComponent,{static: false}) child;
   patient : PatientDto = null;
   medicalfile : MedicalFileDto = null
   list_ante : MedicalFileHistoryDto[]
+  bilan_lipidique : LipidProfileDto = null
   antecedents : AntecedentsDto[]
+  clinicalExam : ClinicalExaminationDto = null
+  displayedColumns: string[] = ['antecedants', 'mois', 'aneee', 'type','traitement' ];
+  dataSource = new MatTableDataSource(this.antecedents);
   socioDemo : SocioDemographicVariablesDto = null;
+  cardiovascular : CardiovascularDto = null;
   public selectedDate: Date = displayDate;
   ant: any[]
   age = null
@@ -50,22 +64,57 @@ export class PatientProfileComponent implements OnInit {
 
 
   }
+  ngAfterViewInit() {
+
+  }
 
   ngOnDestroy() {
     //this.patient = null
+    //this.receiveMessage(this.expanded)
   }
 
   ngOnInit() {
     this.getAllUsers()
 
 
+
+
   }
-
-
+  mattab($event){
+    this.getAllUsers()
+  }
+  onOpen(expanded : boolean) {
+    this.expanded = expanded
+  }
+  onOpenPodo(expanded : boolean) {
+    this.expandedpodo = expanded
+  }
+  onOpenAnte(expanded : boolean) {
+    this.expandedAnte = expanded
+  }
+  onOpenExam(expanded : boolean) {
+    this.expandedExam = expanded
+  }
+  expan($event){
+    console.log($event)
+    this.expandedExam = $event
+    this.expandedAnte = $event
+    this.expanded = $event;
+    this.expandedpodo = $event
+    console.log(this.expanded)
+  }
+  receiveMessage($event) {
+    this.expan($event)
+  }
+  printPage() {
+    window.print();
+  }
   ngOnChanges(changes: SimpleChanges) {
     this.getAllUsers()
-    this.patient = changes.patient.currentValue
-    console.log("ayo")
+
+
+
+
 
 
   }
@@ -93,10 +142,10 @@ export class PatientProfileComponent implements OnInit {
   lipdProfile(patient : PatientDto){
     const dialogRef = this.dialog.open(BilanLipidiqueComponent, {
       data: {patient: patient,
-             }
+      }
     });
     dialogRef.afterClosed().subscribe(result => {
-     // this.openSnackBar(result,"Ok")
+      // this.openSnackBar(result,"Ok")
     })
   }
 
@@ -124,14 +173,15 @@ export class PatientProfileComponent implements OnInit {
       console.log(this.medicalfile)
       if(this.medicalfile.clinicalExamination.length > 0)
       {
+        this.clinicalExam = this.medicalfile.clinicalExamination[this.medicalfile.clinicalExamination.length-1]
         this.weight = this.medicalfile.clinicalExamination[this.medicalfile.clinicalExamination.length-1].anthropometry.weight
         this.weight = this.medicalfile.clinicalExamination[this.medicalfile.clinicalExamination.length-1].anthropometry.weight
         this.imc = this.medicalfile.clinicalExamination[this.medicalfile.clinicalExamination.length-1].anthropometry.imc
         this.height = this.medicalfile.clinicalExamination[this.medicalfile.clinicalExamination.length-1].anthropometry.height
-        }
-        else{
-          this.weight = null
-          this.age = null
+      }
+      else{
+        this.weight = null
+        this.age = null
         this.imc = null
         this.height = null
       }
@@ -143,7 +193,7 @@ export class PatientProfileComponent implements OnInit {
             this.antecedents = [JSON.parse(this.list_ante[i].antecedents)]
 
           }else{
-          this.antecedents.push(JSON.parse(this.list_ante[i].antecedents))}
+            this.antecedents.push(JSON.parse(this.list_ante[i].antecedents))}
         }
         console.log(this.antecedents)
         console.log(this.list_ante)
@@ -152,13 +202,24 @@ export class PatientProfileComponent implements OnInit {
         this.list_ante = null
 
       }
+      if(this.medicalfile.lipidProfiles.length > 0)
+      {
+        this.bilan_lipidique = this.medicalfile.lipidProfiles[this.medicalfile.lipidProfiles.length-1]
+
+
+
+      }else{
+        this.bilan_lipidique = null
+
+      }
       //this.liste_antecedants = JSON.parse(JSON.stringify(this.patient.medicalFile.medicalFileHistory)) as MedicalFileHistoryDto[]
       //console.log(this.liste_antecedants[0].antecedents)
 
 
     });
 
-       this.getAllVisites()
+    this.getAllVisites()
+
 
 
   }

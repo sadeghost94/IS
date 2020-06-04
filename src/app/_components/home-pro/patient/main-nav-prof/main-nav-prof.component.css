@@ -6,9 +6,13 @@
   margin: 0 0 ;
 }
 .mat-toolbar {
-  background-color: #323232;
   color: white;
   height: 1px;
+}
+@media print {
+  :not(.print) {
+    display: none !important;
+  }
 }
 
 .navigation-items {

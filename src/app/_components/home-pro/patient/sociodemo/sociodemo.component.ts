@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
 import {PatientService} from "../../../../_services/patient.service";
 import {SocioDemographicVariablesDto} from "../../../../dto/medicalfile/SocioDemographicVariablesDto";
 import {LivingEnvironmentDto} from "../../../../dto/medicalfile/LivingEnvironmentDto";
@@ -16,6 +16,7 @@ import {NavigationEnd, Router} from "@angular/router";
 export class SociodemoComponent implements OnInit {
   disabled = false;
   exist = false;
+  expanded = true;
   rural : boolean = false;
   urbaine : boolean = false;
   socioObject;
@@ -48,14 +49,15 @@ export class SociodemoComponent implements OnInit {
 
   }
 
+
   ngOnDestroy() {
     if (this.mySubscription) {
       this.mySubscription.unsubscribe();
     }
   }
+  @Output() expandedEvent = new EventEmitter<boolean>();
 
   @Input() id: string;
-
   ngOnInit() {
 
 
@@ -171,8 +173,7 @@ export class SociodemoComponent implements OnInit {
 
     }
     let type = hse_uni + cttge + bglv + cdo + ap + rtraite
-
-    let socioinformation = new SocioDemographicVariablesDto( marital, 10000, profession, scolarity, new LivingEnvironmentDto(zone, type, srvice))
+    let socioinformation = new SocioDemographicVariablesDto( marital, revenu, profession, scolarity, new LivingEnvironmentDto(zone, type, srvice))
     console.log(socioinformation)
     console.log(this.id)
     let request = new Request(socioinformation);
@@ -181,8 +182,7 @@ export class SociodemoComponent implements OnInit {
       .subscribe(
         data => {
           this.openSnackBar(" AJOUT REUSSI","Ok")
-
-
+          this.expandedEvent.emit(!this.expanded)
         },
         error => {
           this.openSnackBar(" Erreur verifiez le type de donnes saisi","Ok")
@@ -195,7 +195,7 @@ export class SociodemoComponent implements OnInit {
 
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
-      duration: 20000,
+      duration: 2000,
 
     })
 

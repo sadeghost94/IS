@@ -15,6 +15,9 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import { BilanLipidiqueComponent } from './patient/bilan-lipidique/bilan-lipidique.component';
 import { HistoireSanteComponent } from './patient/histoire-sante/histoire-sante.component';
+import { RaportGComponent } from './patient/raport-g/raport-g.component';
+import {QRCodeModule} from "angularx-qrcode";
+import { OptionComponent } from './patient/histoire-sante/option/option.component';
 
 export const homeProRoutes: Routes = [
   {
@@ -35,8 +38,8 @@ export const homeProRoutes: Routes = [
   }
 ];
 @NgModule({
-  imports: [RouterModule.forChild(homeProRoutes), MatRadioModule, MatFormFieldModule, MaterialModule, FormsModule, CommonModule, ReactiveFormsModule],
-    exports: [RouterModule, HistoireSanteComponent],
-  declarations: [AppointComponent, DetailsRecoComponent, BilanLipidiqueComponent, HistoireSanteComponent]
+  imports: [RouterModule.forChild(homeProRoutes), MatRadioModule, MatFormFieldModule, MaterialModule, FormsModule, CommonModule, ReactiveFormsModule, QRCodeModule],
+    exports: [RouterModule, HistoireSanteComponent, RaportGComponent, BilanLipidiqueComponent],
+  declarations: [AppointComponent, DetailsRecoComponent, BilanLipidiqueComponent, HistoireSanteComponent, RaportGComponent, OptionComponent]
 })
 export class HomeProRoutingModule{ }

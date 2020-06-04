@@ -10,11 +10,12 @@ import {AppointmentDto} from "../../../../dto/AppointmentDto";
 import {PatientDto} from "../../../../dto/patient/PatientDto";
 import {Details, DetailsRecoComponent} from "./details-reco/details-reco.component";
 import {RecommandationDto} from "../../../../dto/RecommandationDto";
-import {Request} from "../../../../dto";
+import {Request, Response} from "../../../../dto";
 import {PatientService} from "../../../../_services/patient.service";
 import {NavigationEnd, Router} from "@angular/router";
 import {ProfessionalDto} from "../../../../dto/patient/ProfessionalDto";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {ok} from "assert";
 
 @Component({
   selector: 'app-recomandation',
@@ -23,7 +24,10 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 
 export class RecomandationComponent {
-
+  id : string = null;
+  recomm : any;
+  detaills : any[]
+  recommandation : any[]
   visible = true;
   message : string
   selectable = true;
@@ -101,6 +105,7 @@ export class RecomandationComponent {
 
 
       }
+      this.getAllReco()
     }
 
     this.filteredRecoActions = this.RecoCtrlA.valueChanges.pipe(
@@ -229,7 +234,7 @@ export class RecomandationComponent {
     dialogRef.afterClosed().subscribe(result => {
 
       if (this.newRecom === undefined) {
-        //this.newRecom = [{id : result.id, type : result.type, valeur: result.reco, details : result.details}]
+        this.newRecom = [{id : result.id, type : result.type, valeur: result.reco, details : result.details}]
       } else {
         this.newRecom.push({id : result.id, type : result.type, valeur: result.reco, details : result.details})
 
@@ -275,9 +280,10 @@ export class RecomandationComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (this.newRecom === undefined) {
         this.newRecom = [{id : result.id, type : result.type, valeur: result.reco, details : result.details}]
+        console.log(this.newRecom)
       } else {
         this.newRecom.push({id : result.id, type : result.type, valeur: result.reco, details : result.details})
-
+        console.log(this.newRecom)
       }
     });
   }
@@ -335,6 +341,7 @@ export class RecomandationComponent {
     let patient = new PatientDto(this.data.patient.id, null,null, null, null, null, null, null, null, null,
       null, null, null, null, null, null, null, null, null, null)
     let recomm = new RecommandationDto(null, patient, null, JSON.stringify(this.newRecom),null)
+    console.log(JSON.stringify(this.newRecom))
     let request = new Request(recomm)
     this.patientService.addReco(request).subscribe( reponse =>{
       console.log("Ajout reussi")
@@ -351,6 +358,32 @@ export class RecomandationComponent {
       duration: 500,
 
     })}
+    getAllReco (){
+      this.patientService.getReco(this.data.patient.id).subscribe(recommandations => {
+        let reco = recommandations as Response
+        this.recomm = reco.object
+        console.log(recommandations)
+        console.log(this.recomm)
+        this.recommandation = JSON.parse(this.recomm.recommendation)
+        console.log(this.recommandation)
+        for (let i = 0 ; i<this.recommandation.length; i++){
+          if(i==0) {this.detaills = this.recommandation[i].details}
+          else {
+            this.detaills.push(this.recommandation[i].details)
+          }
+          console.log(this.detaills)
+
+        }
+
+
+
+        //this.liste_antecedants = JSON.parse(JSON.stringify(this.patient.medicalFile.medicalFileHistory)) as MedicalFileHistoryDto[]
+        //console.log(this.liste_antecedants[0].antecedents)
+
+
+      });
+
+    }
 
 }
 export interface Recomandation {

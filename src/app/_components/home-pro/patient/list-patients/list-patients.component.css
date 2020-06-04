@@ -71,6 +71,7 @@ tr.example-element-row:active{
 
 
 }
+
 .page{
   position: relative; margin-left: 28%; width: 65%;
   margin-top: 2em;
@@ -93,5 +94,26 @@ tr.example-element-row:active{
 
 
 }
+@media print {
+  /* invert the display (show/hide) properties of the main */
+  /* aplication component and the printing component       */
+
+  .pagel{
+   display: none;
+
+
+  }
+  mat-tab mat-tab-header { display: none}
+  button {
+    display: none;
+
+  }
+  app-raport-g {
+    display: block;
+  }
+
+
+}
+
 
 

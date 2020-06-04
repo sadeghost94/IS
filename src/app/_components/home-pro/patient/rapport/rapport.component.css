@@ -3,5 +3,27 @@ table {
   margin:5%;
   background-color: white;
 }
-.mat-stroked-button{border:5px solid black; width: 100%; margin-top: 2em; margin-left: 2em}
+@media(max-width: 1000px) {
 
+  .example-card {
+    width: 100%;
+  }
+
+  .example-header-image {
+    background-size: cover;
+  }
+
+
+}
+
+.example-card {
+  width: 40%;
+  height: 400px;
+  margin-left: 5%;
+  display: inline-block;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}

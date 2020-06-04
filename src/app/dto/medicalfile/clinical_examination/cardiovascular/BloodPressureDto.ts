@@ -1,11 +1,16 @@
 
 export class BloodPressureDto {
 
-   bloodPressureRightHand : number;
-   bloodPressureLeftHand : number;
+   bloodPressureRightHandDiastolique : number;
+   bloodPressureLeftHandDiastolique : number;
+   bloodPressureRightHandSystolique : number;
+    bloodPressureLeftHandSystolique : number;
 
-  constructor(blood_pressure_rightHand: number, blood_pressure_left_hand: number) {
-    this.bloodPressureRightHand = blood_pressure_rightHand;
-    this.bloodPressureLeftHand = blood_pressure_left_hand;
+  constructor(bloodPressureLeftHandDiastolique: number, bloodPressureRightHandDiastolique: number, bloodPressureRightHandSystolique : number,
+              bloodPressureLeftHandSystolique : number) {
+    this.bloodPressureRightHandDiastolique = bloodPressureLeftHandDiastolique;
+    this.bloodPressureLeftHandDiastolique = bloodPressureRightHandDiastolique;
+    this.bloodPressureRightHandSystolique= bloodPressureRightHandSystolique;
+    this.bloodPressureLeftHandSystolique = bloodPressureLeftHandSystolique;
   }
 }

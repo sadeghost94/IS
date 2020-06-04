@@ -1,6 +1,8 @@
 <div class="row">
   <div class="col-6">
     <img src="" alt="">
+    <button mat-button style="margin-left: 95%; margin-right: 5%"  (click)="fermer()">Fermer
+    </button>
   </div>
 </div>
 <div id="quiz"><!-- Partie affichage du questionnaire -->
@@ -10,10 +12,10 @@
 
   <div *ngIf="mode=='quiz' && quiz"> <!-- Partie affichage des questions un par un  -->
     <div *ngFor="let question of filteredQuestions;">
-      <mat-card  >Question {{pager.index + 1}} de {{pager.count}}.</mat-card>
+    <!--  <mat-card  >Question {{pager.index + 1}} de {{pager.count}}.</mat-card>-->
       <!--<div  *ngIf="config.duration" class="badge badge-info float-right">Temps ecoule : {{ellapsedTime}}
         / {{duration}}</div>-->
-      <h3 class="font-weight-normal">{{pager.index + 1}}.
+      <h3 class="font-weight-normal">
         <span [innerHTML]="question.name"></span>
       </h3>
       <mat-card class="row text-left options">
@@ -32,14 +34,16 @@
     </div>
     <hr/>
     <div >
-      <button mat-button color="primary" style="margin-left: 50%"  *ngIf="config.allowBack"
+     <!-- <button mat-button color="primary" style="margin-left: 50%"  *ngIf="config.allowBack"
               (click)="goTo(pager.index - 1);">
         Precedent
-      </button>
-      <button mat-button color="primary"  (click)="goTo(pager.index + 1);">Suivant</button>
-      <button mat-button style="background-color: darkseagreen" *ngIf="pager.index +1  == pager.count   " style="margin-left: 1em;"
+      </button>-->
+    <!--  <button mat-button color="primary"  (click)="goTo(pager.index + 1);">Suivant</button>-->
+     <!-- <button mat-button style="background-color: darkseagreen" *ngIf="comfirmer == true   " style="margin-left: 1em;"
               (click)="mode='result'"> Confirmer
-      </button>
+      </button>-->
+      <button mat-raised-button color="primary"  [disabled]="!comfirmer" class="btn btn-primary" (click)="onSubmit()">Envoyer</button>
+
     </div>
   </div>
 

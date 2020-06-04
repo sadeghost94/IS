@@ -219,29 +219,20 @@ export class AuthenticationService {
 
   }
 
-  logout() : boolean {
+  logout()  {
     // remove user from local storage to log user out
     let token = localStorage.getItem("currentToken");
     const obj = JSON.parse(token);
-    let disconneted = false;
+
     let header = new HttpHeaders({'Authorization': "bearer " + obj.access_token});
-    this.http.delete(this.LOG_OUT_URL, {headers: header})
-      .subscribe(response => {
+    this.http.delete(this.LOG_OUT_URL, {headers: header}).subscribe(reponse => {
+      console.log("gg")
+      localStorage.clear()
+      this.router.navigate(["/login"])
+    })
 
-          console.log(response)
 
-          localStorage.removeItem("currentUser")
-          localStorage.removeItem("currentToken")
-          localStorage.removeItem("currentRole")
-          this.router.navigate(["/login"])
-          disconneted = true
 
-        },
-        error => {
-
-        }
-      );
-    return disconneted;
 
   }
 }

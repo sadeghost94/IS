@@ -46,7 +46,8 @@ export class ListVisitesComponent implements OnInit {
   }
   addNew() {
     const dialogRef = this.dialog.open(AddDialogComponent, {
-      data: {Appointment: this.appointment }
+      data: {Appointment: this.appointment,
+              id : this.patient.id}
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result === 1) {
@@ -91,12 +92,14 @@ export class ListVisitesComponent implements OnInit {
 
   ngOnInit() {
     this.getAllUsers();
+
   }
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
 
   }
+
   public doFilter = (value: string) => {
     this.dataSource.filter = value.trim().toLocaleLowerCase();
   }

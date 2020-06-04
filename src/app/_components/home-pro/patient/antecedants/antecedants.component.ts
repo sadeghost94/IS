@@ -59,22 +59,22 @@ export class AntecedantsComponent implements OnInit {
            avcyear ,others : string,others_fac: string){
    for (let i = 0 ; i< list_antecedants.length; i++){
      if(i==0 && list_antecedants[i].value != "Cancer1"){
-       this.lis_antecedant = [new AntecedentsDto(list_antecedants[i].value,this.annee)]
+       this.lis_antecedant = [new AntecedentsDto(list_antecedants[i].value,this.annee, null,null,null)]
      } else  if ((list_antecedants[i].value === "Cancer1" || list_antecedants[i].value === "Cancer2"  ||
        list_antecedants[i].value === "Cancer2") && i==0 ){
        let cancer;
        if(cancer1_year != ""){
           cancer = "Cancer de "+cancer1_organe
          this.annee = +cancer1_year
-         this.lis_antecedant = [new AntecedentsDto(cancer ,this.annee)]
+         this.lis_antecedant = [new AntecedentsDto(cancer ,this.annee, null,null,null)]
        }  if(cancer2_year != ""){
           cancer = "Cancer de "+cancer2_organe
-         this.lis_antecedant = [new AntecedentsDto(cancer ,this.annee)]
+         this.lis_antecedant = [new AntecedentsDto(cancer ,this.annee, null,null,null)]
          this.annee = +cancer2_year
        }  if(cancer3_year != ""){
           cancer = "Cancer de "+cancer3_organe
          this.annee = +cancer3_year
-         this.lis_antecedant = [new AntecedentsDto(cancer ,this.annee)]
+         this.lis_antecedant = [new AntecedentsDto(cancer ,this.annee, null,null,null)]
        }
 
 
@@ -86,19 +86,19 @@ export class AntecedantsComponent implements OnInit {
        if(cancer1_year != ""){
          cancer = "Cancer de "+cancer1_organe
          this.annee = +cancer1_year
-         this.ant = new AntecedentsDto(cancer,this.annee)
+         this.ant = new AntecedentsDto(cancer,this.annee, null,null,null)
          let count = this.lis_antecedant.push(this.ant)
 
        }  if(cancer2_year != ""){
          cancer = "Cancer de "+cancer2_organe
          this.annee = +cancer2_year
-         this.ant = new AntecedentsDto(cancer,this.annee)
+         this.ant = new AntecedentsDto(cancer,this.annee, null,null,null)
          let count = this.lis_antecedant.push(this.ant)
 
        }  if(cancer3_year != ""){
          cancer = "Cancer de "+cancer3_organe
          this.annee = +cancer3_year
-         this.ant = new AntecedentsDto(cancer,this.annee)
+         this.ant = new AntecedentsDto(cancer,this.annee, null,null,null)
          let count = this.lis_antecedant.push(this.ant)
 
        }
@@ -109,7 +109,7 @@ export class AntecedantsComponent implements OnInit {
            this.annee = +mpocyear
 
          }
-         this.ant = new AntecedentsDto(list_antecedants[i].value,this.annee)
+         this.ant = new AntecedentsDto(list_antecedants[i].value,this.annee, null,null,null)
          let count = this.lis_antecedant.push(this.ant)
 
        }
@@ -117,7 +117,7 @@ export class AntecedantsComponent implements OnInit {
          if(claudicationyear.value != ""){
            this.annee = +claudicationyear
          }
-         this.ant = new AntecedentsDto(list_antecedants[i].value,this.annee)
+         this.ant = new AntecedentsDto(list_antecedants[i].value,this.annee, null,null,null)
          let count = this.lis_antecedant.push(this.ant)
 
 
@@ -126,7 +126,7 @@ export class AntecedantsComponent implements OnInit {
          if(mpocyear.value != ""){
            this.annee = +thrombectomieyear
          }
-         this.ant = new AntecedentsDto(list_antecedants[i].value,this.annee)
+         this.ant = new AntecedentsDto(list_antecedants[i].value,this.annee, null,null,null)
          let count = this.lis_antecedant.push(this.ant)
 
 
@@ -137,7 +137,7 @@ export class AntecedantsComponent implements OnInit {
 
 
          }
-         this.ant = new AntecedentsDto(list_antecedants[i].value,this.annee)
+         this.ant = new AntecedentsDto(list_antecedants[i].value,this.annee, null,null,null)
          let count = this.lis_antecedant.push(this.ant)
 
        }
@@ -145,12 +145,12 @@ export class AntecedantsComponent implements OnInit {
          if(avcyear.value != ""){
            this.annee = +avcyear
          }
-         this.ant = new AntecedentsDto(list_antecedants[i].value,this.annee)
+         this.ant = new AntecedentsDto(list_antecedants[i].value,this.annee, null,null,null)
          let count = this.lis_antecedant.push(this.ant)
 
        }
        else {
-         this.ant = new AntecedentsDto(list_antecedants[i].value,null)
+         this.ant = new AntecedentsDto(list_antecedants[i].value,null, null,null,null)
 
        }
 

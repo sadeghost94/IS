@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
 import {AntecedentsDto} from "../../../../dto/medicalfile/AntecedentsDto";
 import {PharmacotherapyDto} from "../../../../dto/medicalfile/clinical_examination/PharmacotherapyDto";
 import {AnthropometryDto} from "../../../../dto/medicalfile/clinical_examination/AnthropometryDto";
@@ -25,18 +25,20 @@ export class ExamencliniqueComponent implements OnInit {
   others  : string[];
   diabete : string[];
   cardiovasculaire : string[];
-
+  expanded = true
   disaledactif = true;
   disaledanterieur= true;
   kg : number ;
   cm : number ;
-  imccm : number = 0;
+  imccm : string ;
   lbpoids : number ;
   pitaille : number ;
   btbloq ;
   active ;
   mySubscription : any
   now : string;
+  @Output() expandedEvent = new EventEmitter<boolean>();
+
 
   constructor(private patientService : PatientService,private _snackBar : MatSnackBar, private router : Router) {
     this.getBirthday()
@@ -52,6 +54,7 @@ export class ExamencliniqueComponent implements OnInit {
 
 
   }
+
 
   ngOnDestroy() {
     if (this.mySubscription) {
@@ -74,15 +77,15 @@ export class ExamencliniqueComponent implements OnInit {
   calcul_imc() {
 
     if(this.kg != 0 && this.cm != 0){
-      this.pitaille = this.cm / 30.48;
-      this.lbpoids = this.kg * 2.20462;
+      this.pitaille = +(this.cm / 30.48).toFixed(2);
+      this.lbpoids = +(this.kg * 2.20462).toFixed(2);
       let carrepoid = (this.cm/100) * (this.cm/100)
-      this.imccm =this.kg/carrepoid;
+      this.imccm =(this.kg/carrepoid).toFixed(2);
     }else if (this.lbpoids !=0 && this.pitaille !=0 ){
       this.cm = this.pitaille * 30.48;
       this.kg = this.lbpoids / 2.20462;
       let carrepoid = (this.cm/100) * (this.cm/100)
-      this.imccm =this.kg/carrepoid
+      this.imccm =(this.kg/carrepoid).toFixed(2);
 
     }
   }
@@ -136,7 +139,8 @@ export class ExamencliniqueComponent implements OnInit {
     console.log(this.now)
   }
   ajouter(cardiovasculaire_list : any[],dyslipidemie_list : any[],
-  diabete_list : any [],others_list : any [],fc_repos,tadr,tagc,poidskg,taillecm,imc,tour_taille,
+  diabete_list : any [],others_list : any [],fc_repos,tadrsys : number,
+          tadrdias : number,tagcsys : number,tagcdias: number,poidskg,taillecm,imc,tour_taille,
   actiftabac,nb_cigarettes,passiftabac,anterieurtabac,annee_arret){
     let typefumeur;
     for (let i = 0 ; i< cardiovasculaire_list.length; i++){
@@ -182,10 +186,10 @@ export class ExamencliniqueComponent implements OnInit {
       typefumeur = anterieurtabac.value;
 
     }
-    let  pharma = new PharmacotherapyDto(this.cardiovasculaire,this.dyslipidemie,this.diabete,this.others)
+    let  pharma = new PharmacotherapyDto(JSON.stringify(this.cardiovasculaire),JSON.stringify(this.dyslipidemie),JSON.stringify(this.diabete),JSON.stringify(this.others))
     let antro = new AnthropometryDto(poidskg,taillecm,imc,tour_taille)
     let smok = new SmokingDto(typefumeur,nb_cigarettes)
-    let ta = new BloodPressureDto(tadr,tagc)
+    let ta = new BloodPressureDto(tagcdias,tadrdias,tadrsys,tagcsys)
     let fc = new HeartRateDto(fc_repos,true)
     let cardio = new CardiovascularDto(fc,ta);
 
@@ -198,6 +202,8 @@ export class ExamencliniqueComponent implements OnInit {
       .subscribe(
         data => {
           this.openSnackBar(" AJOUT REUSSI","Ok")
+          this.expandedEvent.emit(!this.expanded)
+
 
 
         },

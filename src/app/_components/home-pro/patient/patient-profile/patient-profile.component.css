@@ -28,4 +28,37 @@ button {
   background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR2pKfz6MeqrIgC0FDDhcn6pnFoxf3nF1iqjgv1XmWlUEXeoDy3');
   background-size: cover;
 }
+app-raport-g {
+  display: none;
+}
+@media print {
+  /* invert the display (show/hide) properties of the main */
+  /* aplication component and the printing component       */
+
+  .pagel{
+    display: none;
+
+
+  }
+  .example-card mat-card-header {
+    display: none;
+  }
+  app-rapport{
+    display: block;
+  }
+ mat-tab-group {
+   display: none;
+ }
+  button {
+    display: none;
+
+  }
+  app-raport-g {
+    display: block;
+  }
+
+
+}
+
+
 

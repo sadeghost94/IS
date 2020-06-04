@@ -27,6 +27,7 @@ export class AddpatientComponent implements OnInit {
   mySubscription: any
   birthday: string = "";
   submitted = false;
+  phonee : string = "";
   patient_added = true;
   constructor(private patientService : PatientService,private userService : UserService,
               private _snackBar : MatSnackBar, private router : Router
@@ -48,7 +49,13 @@ export class AddpatientComponent implements OnInit {
       this.mySubscription.unsubscribe();
     }
   }
-
+  changePhone(value : string){
+    if(value.length == 3 || value.length === 7  ){
+      console.log(value)
+      let tiret = "-";
+      this.phonee = value.concat(tiret)
+    }
+  }
   ngOnInit() {
     this.error = null
   }
@@ -87,13 +94,23 @@ export class AddpatientComponent implements OnInit {
 
     if(firstName === "" || lastName === "" || motherName === "" || phone === "" || this.birthday === "")
     {
-      console.log("Vous devrez remplir tous les champs obligatoires*")
+      this.openSnackBar("Vous devrez remplir tous les champs obligatoires*\"","Ok")
+    } else if (firstName.length <3 || lastName.length < 3 ){
+      this.openSnackBar("les champs nom et prenoms doivent contenir au minimum 3 caracteres","Ok")
     } else {
       this.submitted = true;
       let familyDoctor = null
       let pharmacy = null
       let birth = this.birthday
-
+      for(let i=0; i < phone.length; i++ ){
+        let exist = phone.indexOf("-")
+        if(exist >= 0){
+          let phont = phone.split('')
+          phont.splice(exist, 1);
+          phone = phont.join('')
+        }
+      }
+      console.log(phone)
 
 
       let user = JSON.parse(localStorage.getItem("currentUser"));

@@ -8,6 +8,7 @@ import {DetailsRecoComponent} from "../home-pro/patient/recomandation/details-re
 import {GpaqComponent} from "./gpaq/gpaq.component";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {BreqComponent} from "./Breq/breq.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 
 @Component({
@@ -34,6 +35,7 @@ export class PagepatientComponent implements OnInit {
               private route: ActivatedRoute,
               public dialogRef: MatDialogRef<PagepatientComponent>,
               public dialog: MatDialog,
+              private _snackBar : MatSnackBar,
               @Inject(MAT_DIALOG_DATA) public data
   ) {
     this.questionnaireToken = localStorage.getItem("currentPatientToken")
@@ -49,7 +51,7 @@ export class PagepatientComponent implements OnInit {
 
   gpag(){
     const dialogRef = this.dialog.open(GpaqComponent, {
-      width :'60%',
+      width :'80%',
       height:'85%'
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -63,10 +65,11 @@ export class PagepatientComponent implements OnInit {
   }
   breq(){
     const dialogRef = this.dialog.open(BreqComponent, {
-      width :'60%',
+      width :'80%',
       height:'85%'
     });
     dialogRef.afterClosed().subscribe(result => {
+
 
 
 
@@ -134,6 +137,14 @@ export class PagepatientComponent implements OnInit {
 
 
   }
+  logOut(){
+    localStorage.clear()
+    location.reload()
+  }
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
 
+    })}
 
 }
