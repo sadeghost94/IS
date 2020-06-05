@@ -4,6 +4,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UserIdleModule } from 'angular-user-idle';
 import { RouterModule } from '@angular/router';
 import { ChartsModule } from 'ng2-charts';
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+
 import {MatSelectionList} from '@angular/material/list';
 
 
@@ -88,6 +90,7 @@ import {GpaqQuizComponent} from "./_components/pagepatient/gpaq/quiz/quiz.compon
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {TwoDigitDecimaNumberDirective} from "./_components/home-pro/patient/examenclinique/two-digit-decima-number.directive";
 import {OptionComponent} from "./_components/home-pro/patient/histoire-sante/option/option.component";
+import {MatCardModule} from "@angular/material/card";
 
 
 
@@ -145,6 +148,9 @@ import {OptionComponent} from "./_components/home-pro/patient/histoire-sante/opt
   ],
   imports: [
     BrowserModule,
+    FormsModule , MatCardModule,
+    NgxMatTimepickerModule,
+    NgxMatDatetimePickerModule,
     UserIdleModule.forRoot({idle: 600, timeout: 10, ping: 30}),
     AngularFireModule.initializeApp(environment.firebase),
     ModalModule,

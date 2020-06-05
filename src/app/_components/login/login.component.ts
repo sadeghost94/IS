@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
     if (localStorage.getItem("currentUser")) {
       // redirect to home if already logged in
       if (localStorage.getItem("currentRole") === "role_professional") {
-        this.router.navigate(['home/professional']);
+        this.router.navigate(['listpatient']);
       } else if (localStorage.getItem("currentRole") === "role_admin") {
         this.router.navigate(['/home']);
       } else if (localStorage.getItem("currentRole") === "role_searcher") {
