@@ -9,11 +9,14 @@ import {PasswordUpdateDto} from "../dto";
 import {environment} from "../../environments/environment";
 import {Router} from "@angular/router";
 import {Timer} from "../_components/Timer";
+import "rxjs-compat/add/observable/of";
 
 @Injectable({providedIn: 'root'})
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
+  public authTokenNew: string = 'new_auth_token';
+  public currentToken: string;
   LOGIN_URL: string
   FORGET_PASSWORD_URL: string;
   CONFIRMATION_EMAIL_URL: string;
@@ -102,6 +105,9 @@ export class AuthenticationService {
 
 
   }
+  delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+  }
 
   refresh_token() {
     let currentToken = JSON.parse(localStorage.getItem("currentToken"))
@@ -131,6 +137,7 @@ export class AuthenticationService {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
             localStorage.clear();
             console.log(tokken)
+
             localStorage.setItem('currentToken', JSON.stringify(tokken));
             let code = localStorage.getItem('currentToken')
             let decoded = jwtDecode(code)
@@ -161,7 +168,7 @@ export class AuthenticationService {
             localStorage.setItem("currentRole", role.toLowerCase())
             localStorage.setItem('currentUser', JSON.stringify(decoded));
             console.log(localStorage.getItem("currentRole"))
-            return obj
+            return Promise.resolve(tokken)
             //this.router.navigate([this.route.url])
 
           }else{
@@ -172,7 +179,6 @@ export class AuthenticationService {
 
         })
       );
-
 
   }
 

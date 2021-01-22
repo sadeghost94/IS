@@ -38,6 +38,7 @@ export class PatientService {
   ADD_LIPID : string
   GET_STEPS : string
   GET_MINUTES : string
+  GET_QUIZ : string
 
 
 
@@ -62,6 +63,7 @@ export class PatientService {
     this.GET_STEPS = environment.GET_STEPS
     this.ALL_RECO = environment.ALL_RECO
     this.GET_MINUTES = environment.GET_ACTIVEMINUTES
+    this.GET_QUIZ = environment.GET_QUIZ
   }
 
 
@@ -339,6 +341,15 @@ export class PatientService {
          ,params: params
        };*/
     return this.http.post(this.GET_MINUTES, request, {headers: header,params: params})
+
+  }
+  getQuiz(id: string){
+    let token = localStorage.getItem("currentToken");
+    const obj = JSON.parse(token);
+    let params = new HttpParams()
+      .set('patientId', id )
+    let header = new HttpHeaders({'Authorization': "bearer "+obj.access_token});
+    return this.http.get(this.GET_QUIZ, {headers: header, params: params})
 
   }
 

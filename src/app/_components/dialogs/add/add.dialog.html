@@ -21,28 +21,19 @@
     <mat-card-content>
 
       <mat-dialog-content class="mat-typography">
-        <mat-form-field appearance="fill">
+<!--        <mat-form-field appearance="fill">
           <mat-label>Date</mat-label>
           <input #datev (dateChange)="getBirthday($event)" [matDatepicker]="picker" disabled matInput
                  placeholder="Date de naissance">
           <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
           <mat-datepicker #picker disabled="false"></mat-datepicker>
-        </mat-form-field>
+        </mat-form-field>-->
       </mat-dialog-content>
-      <mat-form-field>
-        <input [disabled]="disabled" [formControl]="dateControl" [max]="maxDate" [min]="minDate"
-               [ngxMatDatetimePicker]="picker" matInput placeholder="Choose a date">
-        <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
-        <ngx-mat-datetime-picker #picker [color]="color" [disableMinute]="disableMinute"
-                                 [enableMeridian]="enableMeridian" [hideTime]="hideTime" [showSeconds]="showSeconds"
-                                 [showSpinners]="showSpinners" [stepHour]="stepHour" [stepMinute]="stepMinute"
-                                 [stepSecond]="stepSecond" [touchUi]="touchUi">
-        </ngx-mat-datetime-picker>
-      </mat-form-field>
+      <ejs-datetimepicker #datevv></ejs-datetimepicker>
 
       <mat-dialog-actions align="end" appearance="fill">
         <button mat-button mat-dialog-close>Fermer</button>
-        <button (click)="comfirmer(data.id,datev.value)"  cdkFocusInitial mat-button>Comfirmer</button>
+        <button (click)="comfirmer(data.id,datevv.value)"  cdkFocusInitial mat-button>Comfirmer</button>
       </mat-dialog-actions>
       <p *ngIf="error" class="error">
         {{ error }}

@@ -16,55 +16,36 @@ import { AuthenticationService } from '../_services';
 export class ErrorInterceptor implements HttpInterceptor {
   cachedRequests: Array<HttpRequest<any>> = [];
   tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
-  timeLeft: number = 60;
-  interval;
-  tokenrefreshed = false
+  isRefreshingToken: boolean = false;
+  newToken : string
+  objj;
   request: HttpRequest<any>
   constructor(private authenticationService: AuthenticationService) {
 
   }
-  addToken(req: HttpRequest<any>, token: string): HttpRequest<any> {
-    console.log(req)
-    return req.clone({headers: req.headers.set('Authorization', 'bearer ' + token)})
 
 
-
-  }
-
-    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-     console.log(request.url)
-      let requestDate = new Date().getTime()
-      console.log(requestDate)
-      let diffDate =  requestDate -  window.localStorage.time
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
       return next.handle(request).pipe(catchError(err => {
         if (err.status === 401) {
           this.collectFailedRequest( request );
           this.tokenSubject.next(null);
-          this.authenticationService.refresh_token().subscribe(result =>{
-            console.log("ok")
-            console.log(this.cachedRequests)
-            let token = localStorage.getItem("currentToken");
-            const obj = JSON.parse(token);
-            this.tokenSubject.next(obj.access_token);
-            let req = request.clone({headers: request.headers.set('Authorization', 'bearer ' + token)})
-            return next.handle(req).pipe(tap(result => {
-              console.log("result")
-              }),
-              retry(2),
-              catchError((error: HttpErrorResponse) => {
-                if (error.status !== 401) {
-                  // 401 handled in auth.interceptor
-                  console.log("ok")
-                }
-                return throwError(error);
-              })
-            )
+          this.authenticationService.refresh_token().subscribe(ok => {
+            console.log(ok)
+            let o = JSON.parse(JSON.stringify(ok))
+            console.log(o.access_token)
+            this.newToken = o.access_token
 
-
-          }, error1 => {
-
-            console.log("non")
           })
+          let token = localStorage.getItem("currentToken");
+          const obj = JSON.parse(token);
+          let req = request.clone({headers: request.headers.set('Authorization', 'bearer ' + obj.access_token)})
+          return next.handle(req)
+          //let obj = JSON.parse(JSON.stringify(this.authenticationService.refresh_token()))
+
+
+
+
         } else  if (err.status === 500 && request.url.startsWith("https://epod-zuul.herokuapp.com/api/v1/auth-service/oauth/token")) {
           localStorage.clear()
           this.authenticationService.logout()
@@ -75,21 +56,26 @@ export class ErrorInterceptor implements HttpInterceptor {
         return throwError(error);
       }))
     }
+ /*   async retryReq(request: HttpRequest<any>, next: HttpHandler) {
+    try {
+      const TokenPromise = this.authenticationService.refresh_token()
+      let tok = await TokenPromise
+      console.log(tok)
+      let req = request.clone({headers: request.headers.set('Authorization', 'bearer ' + this.newToken)})
+      return next.handle(req)
+    } catch (e) {
+      return e
+
+
+
+
+
+
+    }
+     }*/
+
   public collectFailedRequest ( request ): void {
     this.cachedRequests.push( request );
   }
-  public retryFailedRequests (): void {
-    // retry the requests. this method can
-    // be called after the token is refreshed
-    let token = localStorage.getItem("currentToken");
-    const obj = JSON.parse(token);
-    console.log("iii")
 
-    this.cachedRequests.forEach( request => {
-      console.log("ooo")
-      return request.clone({ setHeaders: { Authorization:"bearer "+obj.access_token}})
-
-    } );
-
-  }
 }

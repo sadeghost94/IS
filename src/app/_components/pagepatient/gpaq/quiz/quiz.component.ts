@@ -56,7 +56,7 @@ export class GpaqQuizComponent implements OnInit {
 
   pager = {
     index: 0,
-    size: 4,
+    size: 1,
     count: 1
   };
   timer: any = null;
@@ -192,7 +192,7 @@ export class GpaqQuizComponent implements OnInit {
   }
 
   goTo(index: number) {
-  if(this.rep.length == 16) this.comfirmer =true
+  if(this.rep.length == 22) this.comfirmer =true
     if (index >= 0 && index < this.pager.count) {
       this.ellapsedTime = '00:00';
       this.pager.index = index;

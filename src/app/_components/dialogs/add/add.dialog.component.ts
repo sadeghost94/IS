@@ -22,19 +22,7 @@ import {ThemePalette} from "@angular/material/core";
 
 export class AddDialogComponent {
 
-  public date: moment.Moment;
-  public disabled = false;
-  public showSpinners = true;
-  public showSeconds = false;
-  public touchUi = false;
-  public enableMeridian = false;
-  public minDate: moment.Moment;
-  public maxDate: moment.Moment;
-  public stepHour = 1;
-  public stepMinute = 1;
-  public stepSecond = 1;
-  public color: ThemePalette = 'primary';
-  time = {hour: 13, minute: 30};
+
   @Input() error: string | null;
   selected = false
   patientCtrl = new FormControl();
@@ -44,11 +32,12 @@ export class AddDialogComponent {
   filteredPatients: Observable<PatientDto[]>;
   patients: PatientDto[];
   birthday: string
-  formControl = new FormControl('', [
-    Validators.required
-    // Validators.email,
-  ]);
+  ngOnInit() {
 
+    this.getAllUsers()
+
+
+  }
   constructor(public dialogRef: MatDialogRef<AddDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: AppointmentDto,
               private _snackBar : MatSnackBar,
@@ -57,17 +46,18 @@ export class AddDialogComponent {
 
 
   }
-
-  ngOnInit() {
-
-    this.getAllUsers()
-
-
-  }
-
   ngOnChanges(changes: SimpleChanges){
 
   }
+  private _filterPatients(value: string): PatientDto[] {
+    const filterValue = value.toLowerCase();
+
+    return this.patients.filter(patient => patient.fileNumber.toLowerCase().indexOf(filterValue) === 0);
+  }
+  formControl = new FormControl('', [
+    Validators.required
+    // Validators.email,
+  ]);
 
   getErrorMessage() {
     return this.formControl.hasError('required') ? 'Required field' :
@@ -83,7 +73,6 @@ export class AddDialogComponent {
       }
     })
   }
-
   getBirthday(event: MatDatepickerInputEvent<Date>) {
     const d = new Date(event.value);
     console.log(d)
@@ -109,8 +98,10 @@ export class AddDialogComponent {
     console.log(this.birthday)
   }
 
-  comfirmer(patientId : string, datev: string){
-   if(datev!=""){
+  comfirmer(patientId : string, datev: Date){
+      console.log(datev)
+    let t = new Date(datev).toUTCString()
+    console.log(t)
   /*   for (let i =0 ; i < this.patients.length; i++)
      {
        if(this.patients[i].fileNumber === patientId){
@@ -121,7 +112,7 @@ export class AddDialogComponent {
      }*/
 
        let currentUser = JSON.parse(localStorage.getItem("currentUser"))
-       let appoint = new AppointmentDto(null,this.data.id,currentUser["id"],null,this.birthday)
+       let appoint = new AppointmentDto(null,this.data.id,currentUser["id"],null,datev)
        let request= new Request(appoint)
        this.patientService.addRdv(request).pipe(first())
          .subscribe(
@@ -139,12 +130,10 @@ export class AddDialogComponent {
 
 
           console.log(patientId)
-   }else {
-     console.log("Veuillez Remplir tous les champs ")
 
-   }
 
 }
+
 
   submit() {
   // emppty stuff
@@ -157,7 +146,6 @@ export class AddDialogComponent {
   public confirmAdd(): void {
     //this.dataService.addIssue(this.data);
   }
-
   public getAllUsers = () => {
 
     this.patientService.getAll().subscribe( patients => {
@@ -178,17 +166,10 @@ export class AddDialogComponent {
 
     // console.log("yes "+this.users)
   }
-
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
       duration: 2000,
 
     })}
-
-  private _filterPatients(value: string): PatientDto[] {
-    const filterValue = value.toLowerCase();
-
-    return this.patients.filter(patient => patient.fileNumber.toLowerCase().indexOf(filterValue) === 0);
-  }
 }
 

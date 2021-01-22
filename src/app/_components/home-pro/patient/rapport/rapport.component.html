@@ -18,37 +18,37 @@
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
     <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
+    <ng-container matColumnDef="Minutes">
+      <th mat-header-cell *matHeaderCellDef> Minutes </th>
       <td mat-cell *matCellDef="let element"> {{element.name}} </td>
     </ng-container>
 
     <!-- Max Column -->
-    <ng-container matColumnDef="max">
-      <th mat-header-cell *matHeaderCellDef> Max </th>
+    <ng-container matColumnDef="Maximum">
+      <th mat-header-cell *matHeaderCellDef> Maximum </th>
       <td mat-cell *matCellDef="let element"> {{element.max}} </td>
     </ng-container>
 
     <!-- Min Column -->
-    <ng-container matColumnDef="min">
-      <th mat-header-cell *matHeaderCellDef> Min </th>
+    <ng-container matColumnDef="Minimum">
+      <th mat-header-cell *matHeaderCellDef> Minimum </th>
       <td mat-cell *matCellDef="let element"> {{element.min}} </td>
     </ng-container>
 
     <!-- Average Column -->
-    <ng-container matColumnDef="average">
-      <th mat-header-cell *matHeaderCellDef> Average </th>
+    <ng-container matColumnDef="Moyenne">
+      <th mat-header-cell *matHeaderCellDef> Moyenne </th>
       <td mat-cell *matCellDef="let element"> {{element.average}} </td>
     </ng-container>
 
     <!-- Median Column -->
-    <ng-container matColumnDef="median">
-      <th mat-header-cell *matHeaderCellDef> Median </th>
+    <ng-container matColumnDef="Mediane">
+      <th mat-header-cell *matHeaderCellDef> Mediane </th>
       <td mat-cell *matCellDef="let element"> {{element.median}} </td>
     </ng-container>
 
     <!-- Variance Column -->
-    <ng-container matColumnDef="variance">
+    <ng-container matColumnDef="Variance">
       <th mat-header-cell *matHeaderCellDef> Variance </th>
       <td mat-cell *matCellDef="let element"> {{element.variance}} </td>
     </ng-container>
@@ -75,6 +75,42 @@
 
 
   <mat-tab-group mat-align-tabs="center"  >
+    <mat-tab label="Questionnaire">
+
+      <div class="col-sm-4 text-center" >
+
+          <div *ngFor="let x of this.val">
+            <div *ngIf="x.type === 'GPAQ'" style="border: 2px solid blue;">
+           <h3> {{x.date}} :  {{x.type}} </h3>
+              <h5>Travail</h5>
+              Modéré-vigoureux :   {{(x.value.reponses[5].hr * 60 + x.value.reponses[5].minu) * x.value.reponses[4].jr +
+            (x.value.reponses[3].hr * 60 + x.value.reponses[3].minu) * x.value.reponses[2].jr}} minutes
+              <h5>Transport (déplacement) : </h5>
+              A pied : {{(x.value.reponses[8].hr * 60 + x.value.reponses[8].minu) * x.value.reponses[7].jr }} minutes<br>
+              A vélo : {{(x.value.reponses[11].hr * 60 + x.value.reponses[11].minu) * x.value.reponses[10].jr}} minutes
+              <h5>Loisirs : </h5>
+              Modéré-vigoureux : {{(x.value.reponses[17].hr * 60 + x.value.reponses[17].minu) * x.value.reponses[16].jr +
+            (x.value.reponses[14].hr * 60 + x.value.reponses[14].minu) * x.value.reponses[13].jr}} minutes<br>
+              Marche : {{(x.value.reponses[20].hr * 60 + x.value.reponses[20].minu) * x.value.reponses[19].jr}} minutes<br>
+              <div style="display: block; float: right; margin-top: -20em;">
+                <canvas baseChart
+                        [datasets]="barChartDatagpaq"
+                        [labels]="barChartLabelsgpaq"
+                        [options]="barChartOptions"
+                        [plugins]="barChartPluginsgpaq"
+                        [legend]="barChartLegendgpaq"
+                        [chartType]="barChartTypegpaq">
+                </canvas>
+              </div>
+            </div>
+
+          </div>
+
+
+
+      </div>
+
+    </mat-tab>
 
     <mat-tab label="Minutes">
       <div class="col-sm-4 text-center" >
@@ -105,8 +141,15 @@
       </div>
       <div class="chart" style="margin-top:2em" *ngIf="lineChartLabels?.length > 0">
         <div style="display: block;">
-          <canvas baseChart [data]="lineChartData" [labels]="lineChartLabels" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
-                  (chartClick)="chartClicked($event)"></canvas>
+          <canvas baseChart width="400" height="400"
+                  [datasets]="lineChartData"
+                  [labels]="lineChartLabels"
+                  [options]="lineChartOptions"
+                  [colors]="lineChartColors"
+                  [legend]="lineChartLegend"
+                  [chartType]="lineChartType"
+                  [plugins]="lineChartPlugins">
+          </canvas>
         </div>
       </div>
     </mat-tab>
@@ -116,8 +159,15 @@
       </div>
       <div class="chart" style="margin-top:2em" *ngIf="lineChartLabels?.length > 0">
         <div style="display: block;">
-          <canvas baseChart [data]="lineChartData" [options]="lineChartOptions" [labels]="lineChartLabels" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
-                  (chartClick)="chartClicked($event)"></canvas>
+          <canvas baseChart width="400" height="400"
+                  [datasets]="lineChartDatat"
+                  [labels]="lineChartLabelst"
+                  [options]="lineChartOptionst"
+                  [colors]="lineChartColorst"
+                  [legend]="lineChartLegendt"
+                  [chartType]="lineChartTypet"
+                  [plugins]="lineChartPluginst">
+          </canvas>
         </div>
       </div>
     </mat-tab>

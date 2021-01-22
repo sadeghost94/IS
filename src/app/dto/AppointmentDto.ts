@@ -3,9 +3,9 @@ export class AppointmentDto {
    patientId : string;
    professionalId : string;
     creationDate : string;
-   appointmentDate : string;
+   appointmentDate : Date;
 
-  constructor(id: string, patientId: string, professionalId: string, creationDate: string, appointmentDate: string) {
+  constructor(id: string, patientId: string, professionalId: string, creationDate: string, appointmentDate: Date) {
     this.id = id;
     this.patientId = patientId;
     this.professionalId = professionalId;

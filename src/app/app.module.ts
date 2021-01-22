@@ -8,7 +8,7 @@ import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-mat
 
 import {MatSelectionList} from '@angular/material/list';
 
-
+import { DatePipe } from '@angular/common'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -91,6 +91,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {TwoDigitDecimaNumberDirective} from "./_components/home-pro/patient/examenclinique/two-digit-decima-number.directive";
 import {OptionComponent} from "./_components/home-pro/patient/histoire-sante/option/option.component";
 import {MatCardModule} from "@angular/material/card";
+import {DateTimePickerModule} from "@syncfusion/ej2-angular-calendars";
 
 
 
@@ -160,6 +161,7 @@ import {MatCardModule} from "@angular/material/card";
     HomeSeaRoutingModule,
     PagePatientRoutingModule,
     FormsModule,
+    DateTimePickerModule,
     ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -187,7 +189,7 @@ import {MatCardModule} from "@angular/material/card";
   ],
 //
 
-  providers: [EncrDecrService,
+  providers: [EncrDecrService,DatePipe,
    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: MatDialogRef, useValue: {} },
     { provide: MAT_DIALOG_DATA, useValue: [] },

@@ -359,7 +359,171 @@
     },
     {
       "id": 1025,
-      "name": "Combien de temps passez-vous en position assise ou\ncouchée lors d'une journée habituelle ?",
+      "name": "\tEst-ce que vous pratiquez des sports, du fitness ou des activités de loisirs d'intensité modérée qui nécessitent une petite augmentation de la respiration ou du rythme cardiaque (marche rapide, jogging relax, vélo relax, yoga) pendant au moins 10 minutes consécutives ? OUI ou NON",
+      "questionTypeId": 2,
+      "questionPere" : 0,
+      "options": [
+        {
+          "id": 1055,
+          "questionId": 1010,
+          "name": "oui !",
+          "poids" : 0
+
+        },
+        {
+          "id": 1056,
+          "questionId": 1010,
+          "name": "Non !",
+
+          "poids" : 1
+        }
+      ],
+      "questionType": {
+        "id": 2,
+        "name": "One Choice",
+        "isActive": true
+      }
+
+
+    },
+    {
+      "id": 1026,
+      "name": "\tHabituellement, combien de jours par semaine pratiquez-vous une activité sportive, du fitness ou d'autres activités de loisirs d'intensité modérée ?",
+      "questionTypeId": 3,
+      "questionPere" : 1025,
+      "jours": 0,
+
+      "options": [
+        {
+          "jours": 0
+        }
+
+      ],
+      "questionType": {
+        "id": 3,
+        "name": "Select",
+        "isActive": true
+      }
+
+    },
+    {
+      "id": 1027,
+      "name": "Lors d’une journée habituelle, combien de temps y consacrez-vous\n?",
+      "questionTypeId": 4,
+      "questionPere" : 1026,
+
+
+      "options": [
+        {
+          "minutes" : 0,
+          "heures" : 0
+
+        }
+
+      ],
+      "questionType": {
+        "id": 4,
+        "name": "Select",
+        "isActive": true
+      }
+    }
+  ,
+    {
+      "id": 1028,
+      "name": "\tEst-ce que vous pratiquez des marches de loisirs de faible intensité pendant au moins 10 minutes consécutives ? OUI ou NON",
+      "questionTypeId": 2,
+      "questionPere" : 0,
+      "options": [
+        {
+          "id": 1055,
+          "questionId": 1010,
+          "name": "oui !",
+          "poids" : 0
+
+        },
+        {
+          "id": 1056,
+          "questionId": 1010,
+          "name": "Non !",
+
+          "poids" : 1
+        }
+      ],
+      "questionType": {
+        "id": 2,
+        "name": "One Choice",
+        "isActive": true
+      }
+
+
+    },
+    {
+      "id": 1029,
+      "name": "\tHabituellement, combien de jours par semaine pratiquez-vous de la marche de loisir?",
+      "questionTypeId": 3,
+      "questionPere" : 1028,
+      "jours": 0,
+
+      "options": [
+        {
+          "jours": 0
+        }
+
+      ],
+      "questionType": {
+        "id": 3,
+        "name": "Select",
+        "isActive": true
+      }
+
+    },
+    {
+      "id": 1030,
+      "name": "Lors d’une journée habituelle, combien de temps y consacrez-vous\n?",
+      "questionTypeId": 4,
+      "questionPere" : 1028,
+
+
+      "options": [
+        {
+          "minutes" : 0,
+          "heures" : 0
+
+        }
+
+      ],
+      "questionType": {
+        "id": 4,
+        "name": "Select",
+        "isActive": true
+      }
+    },
+    {
+      "id": 1031,
+      "name": "\tCombien de jours avez-vous pratiqué des activités physiques de loisirs dans les 7 derniers jours?",
+      "questionTypeId": 3,
+      "questionPere" : 0,
+      "minutes" : 0,
+      "heures" : 0,
+
+      "options": [
+
+
+          {
+            "jours": 0
+          }
+
+
+      ],
+      "questionType": {
+        "id": 4,
+        "name": "Select",
+        "isActive": true
+      }
+    },
+    {
+      "id": 1032,
+      "name": "23.\tCombien de temps passez-vous en position assise ou couchée (excluant la nuit) lors d'une journée habituelle en moyenne (ceci comprends : les temps de repas, la télévision/ordinateur, le travail, lors des déplacements en voiture ou en autobus) ? ",
       "questionTypeId": 4,
       "questionPere" : 0,
       "minutes" : 0,
