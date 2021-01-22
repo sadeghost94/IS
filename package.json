@@ -52,7 +52,7 @@
     "angular-user-idle": "^2.2.2",
     "angularx-qrcode": "^2.1.1",
     "aws-sdk": "^2.610.0",
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^5.0.0",
     "bn-ng-idle": "^1.0.1",
     "chart.js": "^2.9.3",
     "crypto-js": "^4.0.0",
